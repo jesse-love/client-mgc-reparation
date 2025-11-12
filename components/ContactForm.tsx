@@ -80,9 +80,9 @@ const ContactForm: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="text-center p-8 bg-green-50 border border-green-200 rounded-lg">
-        <h3 className="text-2xl font-bold text-green-800">{t.contactForm.success.title}</h3>
-        <p className="mt-2 text-green-700">{t.contactForm.success.message}</p>
+      <div className="text-center p-8 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/50 dark:border-green-700">
+        <h3 className="text-2xl font-bold text-green-800 dark:text-green-300">{t.contactForm.success.title}</h3>
+        <p className="mt-2 text-green-700 dark:text-green-400">{t.contactForm.success.message}</p>
         <button onClick={() => { setIsSubmitted(false); setFormData(initialFormData); }} className="mt-4 bg-orange-500 text-brand-dark font-bold py-2 px-6 rounded-md hover:bg-orange-600 transition duration-300">
           {t.contactForm.success.button}
         </button>
@@ -135,9 +135,9 @@ const ContactForm: React.FC = () => {
                     className={`
                         w-10 h-10 rounded-full transition-colors duration-200
                         ${isSelected ? 'bg-orange-500 text-brand-dark font-bold' : ''}
-                        ${!isSelected && !isDisabled ? 'hover:bg-orange-100' : ''}
-                        ${isToday && !isSelected ? 'text-orange-600 font-bold' : ''}
-                        ${isDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700'}
+                        ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
+                        ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}
+                        ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'text-gray-700 dark:text-gray-200'}
                     `}
                 >
                     {day}
@@ -147,17 +147,17 @@ const ContactForm: React.FC = () => {
     });
 
     return (
-        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10">
+        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10 dark:bg-slate-800 dark:border-gray-600">
             <div className="flex justify-between items-center mb-4">
-                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100">
-                    <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
+                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+                    <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                 </button>
-                <div className="font-bold text-gray-800">{monthName} {year}</div>
-                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100">
-                    <ChevronRightIcon className="h-5 w-5 text-gray-600" />
+                <div className="font-bold text-gray-800 dark:text-gray-100">{monthName} {year}</div>
+                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+                    <ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                 </button>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 mb-2">
+            <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-gray-400 mb-2">
                 {weekDays.map(d => <div key={d}>{d}</div>)}
             </div>
             <div className="grid grid-cols-7 gap-y-1">
@@ -173,27 +173,27 @@ const ContactForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">{t.contactForm.fullName}</label>
-          <input type="text" name="fullName" id="fullName" required value={formData.fullName} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500" />
+          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.fullName}</label>
+          <input type="text" name="fullName" id="fullName" required value={formData.fullName} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">{t.contactForm.phone}</label>
-          <input type="tel" name="phone" id="phone" required value={formData.phone} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500" />
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.phone}</label>
+          <input type="tel" name="phone" id="phone" required value={formData.phone} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">{t.contactForm.email}</label>
-          <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500" />
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.email}</label>
+          <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">{t.contactForm.contactMethod}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.contactMethod}</label>
           <div className="mt-2 flex space-x-4">
             <label className="inline-flex items-center">
-              <input type="radio" name="contactMethod" value="Email" checked={formData.contactMethod === 'Email'} onChange={handleChange} className="form-radio text-orange-500 focus:ring-orange-500" />
-              <span className="ml-2">Email</span>
+              <input type="radio" name="contactMethod" value="Email" checked={formData.contactMethod === 'Email'} onChange={handleChange} className="form-radio text-orange-500 focus:ring-orange-500 dark:bg-slate-700 dark:border-gray-600" />
+              <span className="ml-2 text-gray-700 dark:text-gray-300">Email</span>
             </label>
             <label className="inline-flex items-center">
-              <input type="radio" name="contactMethod" value="Phone" checked={formData.contactMethod === 'Phone'} onChange={handleChange} className="form-radio text-orange-500 focus:ring-orange-500" />
-              <span className="ml-2">{t.contactForm.phoneRadio}</span>
+              <input type="radio" name="contactMethod" value="Phone" checked={formData.contactMethod === 'Phone'} onChange={handleChange} className="form-radio text-orange-500 focus:ring-orange-500 dark:bg-slate-700 dark:border-gray-600" />
+              <span className="ml-2 text-gray-700 dark:text-gray-300">{t.contactForm.phoneRadio}</span>
             </label>
           </div>
         </div>
@@ -201,37 +201,37 @@ const ContactForm: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700">{t.contactForm.vehicleType}</label>
-          <select id="vehicleType" name="vehicleType" value={formData.vehicleType} onChange={handleChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
+          <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.vehicleType}</label>
+          <select id="vehicleType" name="vehicleType" value={formData.vehicleType} onChange={handleChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white">
             {t.contactForm.vehicleOptions.map(opt => <option key={opt}>{opt}</option>)}
           </select>
         </div>
         <div>
-          <label htmlFor="vehicleDetails" className="block text-sm font-medium text-gray-700">{t.contactForm.vehicleDetails}</label>
-          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500" placeholder={t.contactForm.vehicleDetailsPlaceholder} />
+          <label htmlFor="vehicleDetails" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.vehicleDetails}</label>
+          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400" placeholder={t.contactForm.vehicleDetailsPlaceholder} />
         </div>
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700">{t.contactForm.serviceNeeded}</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.serviceNeeded}</label>
         <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-4">
           {services.map(service => (
             <label key={service.slug} className="inline-flex items-center">
-              <input type="checkbox" value={service.title.en} onChange={handleServiceChange} checked={formData.serviceNeeded.includes(service.title.en)} className="form-checkbox h-5 w-5 text-orange-500 rounded focus:ring-orange-500" />
-              <span className="ml-2 text-sm text-gray-600">{service.title[language]}</span>
+              <input type="checkbox" value={service.title.en} onChange={handleServiceChange} checked={formData.serviceNeeded.includes(service.title.en)} className="form-checkbox h-5 w-5 text-orange-500 rounded focus:ring-orange-500 dark:bg-slate-700 dark:border-gray-600" />
+              <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">{service.title[language]}</span>
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">{t.contactForm.description}</label>
-        <textarea id="description" name="description" rows={4} required value={formData.description} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500" placeholder={t.contactForm.descriptionPlaceholder}></textarea>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.description}</label>
+        <textarea id="description" name="description" rows={4} required value={formData.description} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400" placeholder={t.contactForm.descriptionPlaceholder}></textarea>
       </div>
 
       {/* --- Date Picker Input --- */}
       <div className="relative" ref={datePickerRef}>
-        <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700">{t.contactForm.appointmentDate}</label>
+        <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.appointmentDate}</label>
         <div className="relative mt-1">
           <input
               type="text"
@@ -241,7 +241,7 @@ const ContactForm: React.FC = () => {
               value={formData.appointmentDate}
               onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
               placeholder={t.contactForm.appointmentDatePlaceholder}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
               aria-haspopup="true"
               aria-expanded={isDatePickerOpen}
           />

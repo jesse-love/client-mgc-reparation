@@ -12,14 +12,14 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
   const { language, t } = useLanguage();
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-slate-900">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="bg-gray-50">
+      <nav aria-label="Breadcrumb" className="bg-gray-50 dark:bg-slate-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <ol role="list" className="flex items-center space-x-2 py-4">
               <li>
                 <div className="flex items-center">
-                  <a href="/" className="mr-2 text-sm font-medium text-gray-900 hover:text-gray-700">
+                  <a href="/" className="mr-2 text-sm font-medium text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300">
                     {t.breadcrumbs.home}
                   </a>
                   <svg
@@ -28,7 +28,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
                     viewBox="0 0 16 20"
                     fill="currentColor"
                     aria-hidden="true"
-                    className="h-5 w-4 text-gray-300"
+                    className="h-5 w-4 text-gray-300 dark:text-gray-600"
                   >
                     <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                   </svg>
@@ -36,7 +36,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
               </li>
               <li>
                 <div className="flex items-center">
-                  <a href="/services" className="mr-2 text-sm font-medium text-gray-900 hover:text-gray-700">
+                  <a href="/services" className="mr-2 text-sm font-medium text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300">
                     {t.breadcrumbs.services}
                   </a>
                   <svg
@@ -45,14 +45,14 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
                     viewBox="0 0 16 20"
                     fill="currentColor"
                     aria-hidden="true"
-                    className="h-5 w-4 text-gray-300"
+                    className="h-5 w-4 text-gray-300 dark:text-gray-600"
                   >
                     <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                   </svg>
                 </div>
               </li>
               <li>
-                <span className="text-sm font-medium text-gray-500">{service.title[language]}</span>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{service.title[language]}</span>
               </li>
             </ol>
         </div>
@@ -71,9 +71,9 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column - Content */}
             <div className="lg:col-span-2">
-              <div className="prose prose-lg max-w-none text-gray-700">
+              <div className="prose prose-lg max-w-none text-gray-700 dark:prose-invert dark:text-gray-300">
                 <p className="lead">{service.pageContent[language]}</p>
-                <h3 className="font-bold text-brand-dark mt-12">{t.serviceDetail.includesTitle.replace('{service}', service.title[language])}</h3>
+                <h3 className="font-bold text-brand-dark dark:text-white mt-12">{t.serviceDetail.includesTitle.replace('{service}', service.title[language])}</h3>
                 <ul className="space-y-2">
                   {service.servicePoints.map((point, index) => (
                     <li key={index} className="flex items-start">
@@ -87,13 +87,13 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
             {/* Right Column - Why Choose Us & CTA */}
             <aside className="lg:col-span-1 space-y-8">
-              <div className="bg-gray-50 p-8 rounded-lg border border-gray-200">
-                <h3 className="text-2xl font-bold text-brand-dark mb-4">{t.serviceDetail.whyTrustTitle.replace('{service}', service.title[language])}</h3>
+              <div className="bg-gray-50 dark:bg-slate-800 p-8 rounded-lg border border-gray-200 dark:border-slate-700">
+                <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.serviceDetail.whyTrustTitle.replace('{service}', service.title[language])}</h3>
                 <div className="space-y-4">
                   {service.whyChoosePoints.map((point, index) => (
                     <div key={index}>
-                      <h4 className="font-semibold text-gray-800">{point.title[language]}</h4>
-                      <p className="text-gray-600">{point.description[language]}</p>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100">{point.title[language]}</h4>
+                      <p className="text-gray-600 dark:text-gray-300">{point.description[language]}</p>
                     </div>
                   ))}
                 </div>

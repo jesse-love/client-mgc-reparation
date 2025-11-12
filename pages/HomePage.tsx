@@ -41,18 +41,18 @@ const Hero: React.FC = () => {
 const ServicesOverview: React.FC = () => {
     const { language, t } = useLanguage();
     return (
-        <section className="py-16 lg:py-24 bg-gray-50">
+        <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark">{t.home.services.title}</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600">{t.home.services.subtitle}</p>
+                    <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.services.title}</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">{t.home.services.subtitle}</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service) => (
-                        <a key={service.slug} href={`/services/${service.slug}`} className="group block bg-white p-8 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <a key={service.slug} href={`/services/${service.slug}`} className="group block bg-white dark:bg-slate-900 p-8 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                             <service.icon className="h-12 w-12 text-orange-500 mb-4" />
-                            <h3 className="text-xl font-bold text-brand-dark mb-2 group-hover:text-orange-600">{service.title[language]}</h3>
-                            <p className="text-gray-600">{service.shortDescription[language]}</p>
+                            <h3 className="text-xl font-bold text-brand-dark dark:text-white mb-2 group-hover:text-orange-500">{service.title[language]}</h3>
+                            <p className="text-gray-600 dark:text-gray-300">{service.shortDescription[language]}</p>
                             <span className="mt-4 inline-block font-semibold text-orange-500 group-hover:text-orange-600">{t.home.services.learnMore} &rarr;</span>
                         </a>
                     ))}
@@ -69,8 +69,8 @@ const WhyChooseUs: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark">{t.home.whyUs.title}</h2>
-                        <p className="mt-4 text-lg text-gray-600">{t.home.whyUs.subtitle}</p>
+                        <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.whyUs.title}</h2>
+                        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">{t.home.whyUs.subtitle}</p>
                         <div className="mt-8 space-y-6">
                             {WHY_CHOOSE_US_POINTS.map((point, index) => {
                                 const IconComponent = iconMap[point.icon];
@@ -80,8 +80,8 @@ const WhyChooseUs: React.FC = () => {
                                             <IconComponent className="h-8 w-8 text-orange-500" />
                                         </div>
                                         <div className="ml-4">
-                                            <h3 className="text-lg font-bold text-brand-dark">{point.title[language]}</h3>
-                                            <p className="mt-1 text-gray-600">{point.description[language]}</p>
+                                            <h3 className="text-lg font-bold text-brand-dark dark:text-white">{point.title[language]}</h3>
+                                            <p className="mt-1 text-gray-600 dark:text-gray-300">{point.description[language]}</p>
                                         </div>
                                     </div>
                                 );
@@ -125,15 +125,15 @@ const ContactMapSection: React.FC = () => {
         <section className="py-16 lg:py-24">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark">{t.home.contactMap.title}</h2>
+                    <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.contactMap.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                    <div className="bg-white p-8 rounded-lg shadow-md">
-                        <h3 className="text-2xl font-bold text-brand-dark mb-4">{t.home.contactMap.visitTitle}</h3>
+                    <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-md">
+                        <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.home.contactMap.visitTitle}</h3>
                         <p className="text-lg font-semibold">{CONTACT_INFO.address}</p>
-                        <p className="text-gray-600 mb-4">{t.home.contactMap.visitSubtitle}</p>
-                        <h3 className="text-2xl font-bold text-brand-dark mb-2 mt-6">{OPERATING_HOURS.title[language]}</h3>
-                        <ul className="space-y-1 text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">{t.home.contactMap.visitSubtitle}</p>
+                        <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2 mt-6">{OPERATING_HOURS.title[language]}</h3>
+                        <ul className="space-y-1 text-gray-600 dark:text-gray-300">
                             {OPERATING_HOURS.hours.map((line, index) => (
                                 <li key={index}>{line[language]}</li>
                             ))}
@@ -151,6 +151,7 @@ const ContactMapSection: React.FC = () => {
                             allowFullScreen={true} 
                             loading="lazy" 
                             referrerPolicy="no-referrer-when-downgrade"
+                            className="dark:grayscale dark:invert dark:hue-rotate-180"
                         ></iframe>
                     </div>
                 </div>
