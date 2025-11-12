@@ -280,14 +280,16 @@ ${wizardData.description}
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>
                                     <div className="relative">
-                                    <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+                                    {/* FIX: Use t.quoteWizard.appointment for translations */}
+                                    <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.quoteWizard.appointment.appointmentDatePlaceholder} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><CalendarIcon className="h-5 w-5 text-gray-400" /></div>
                                     </div>
                                     {isDatePickerOpen && renderCalendar()}
                                 </div>
                                 <div>
                                      {!wizardData.appointmentDate ? (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-md text-gray-500 dark:text-gray-400">{t.contactForm.selectDateFirst}</div>
+                                        // FIX: Use t.quoteWizard.appointment for translations
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-md text-gray-500 dark:text-gray-400">{t.quoteWizard.appointment.selectDateFirst}</div>
                                     ) : availableSlots.length > 0 ? (
                                         <select 
                                             id="appointmentTime" 
@@ -296,13 +298,15 @@ ${wizardData.description}
                                             onChange={handleChange} 
                                             className="h-full block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white"
                                         >
-                                            <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
+                                            {/* FIX: Use t.quoteWizard.appointment for translations */}
+                                            <option value="">{t.quoteWizard.appointment.appointmentTimePlaceholder}</option>
                                             {availableSlots.map(time => (
                                             <option key={time} value={time}>{time}</option>
                                             ))}
                                         </select>
                                     ) : (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
+                                        // FIX: Use t.quoteWizard.appointment for translations
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300">{t.quoteWizard.appointment.noSlotsAvailable}</div>
                                     )}
                                 </div>
                             </div>

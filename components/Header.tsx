@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { NAV_LINKS } from '../i18n';
+import { NAV_LINKS } from '../data';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../App';

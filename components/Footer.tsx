@@ -1,5 +1,5 @@
 import React from 'react';
-import { NAV_LINKS } from '../i18n';
+import { NAV_LINKS } from '../data';
 import { PhoneIcon, MapPinIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';

@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { services } from '../i18n';
+import { services } from '../data';
 import { useLanguage } from '../contexts/LanguageContext';
 import InlineQuoteWizard from '../components/InlineQuoteWizard';
 
