@@ -1,0 +1,72 @@
+
+import React from 'react';
+import { services } from '../i18n';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const ServicesPage: React.FC = () => {
+  const { language, t } = useLanguage();
+
+  return (
+    <>
+      <nav aria-label="Breadcrumb" className="bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <ol role="list" className="flex items-center space-x-2 py-4">
+              <li>
+                <div className="flex items-center">
+                  <a href="/" className="mr-2 text-sm font-medium text-gray-900 hover:text-gray-700">
+                    {t.breadcrumbs.home}
+                  </a>
+                  <svg
+                    width="16"
+                    height="20"
+                    viewBox="0 0 16 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="h-5 w-4 text-gray-300"
+                  >
+                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                  </svg>
+                </div>
+              </li>
+              <li>
+                <span className="text-sm font-medium text-gray-500">{t.breadcrumbs.services}</span>
+              </li>
+            </ol>
+        </div>
+      </nav>
+      <div className="bg-white py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-brand-dark">
+              {t.services.title}
+            </h1>
+            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+              {t.services.subtitle}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service) => (
+              <div key={service.slug} className="flex flex-col bg-gray-50 rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                <div className="p-8 flex-grow">
+                  <div className="flex items-center mb-4">
+                    <service.icon className="h-10 w-10 text-orange-500 mr-4 flex-shrink-0" />
+                    <h2 className="text-2xl font-bold text-brand-dark">{service.title[language]}</h2>
+                  </div>
+                  <p className="text-gray-600 mb-6">{service.shortDescription[language]}</p>
+                </div>
+                <div className="bg-gray-100 p-4">
+                   <a href={`/services/${service.slug}`} className="font-bold text-orange-600 hover:text-orange-700 transition duration-300">
+                    {t.services.viewDetails} &rarr;
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ServicesPage;
