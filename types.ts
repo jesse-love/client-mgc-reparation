@@ -40,5 +40,6 @@ export interface FormData {
   serviceNeeded: string[];
   description: string;
   appointmentDate: string;
+  appointmentTime: string;
   referralSource: string;
 }

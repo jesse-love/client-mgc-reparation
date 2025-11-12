@@ -188,7 +188,7 @@ export const testimonials: Testimonial[] = [
   { quote: { en: "MGC Réparation fixed my truck's generator quickly and professionally. Highly recommend for any heavy vehicle work!", fr: "MGC Réparation a arrangé la génératrice de mon camion rapidement et professionnellement. Je les recommande fortement pour toute job de véhicule lourd!" }, name: 'Jean-Luc P.' },
   { quote: { en: "Always reliable for my car's maintenance. Trustworthy and honest mechanics right here in Mascouche. I won't go anywhere else.", fr: "Toujours fiables pour l'entretien de mon char. Des mécanos de confiance et honnêtes, ici même à Mascouche. J'irai jamais ailleurs." }, name: 'Sophie L.' },
   { quote: { en: "Finding a heavy vehicle mechanic who truly understands the work is tough. MGC exceeded expectations. Great service and fair pricing.", fr: "Trouver un mécano de véhicules lourds qui connaît vraiment son affaire, c'est rare. MGC a dépassé mes attentes. Super service et prix justes." }, name: 'Marc D.' },
-  { quote: { en: "They handled the AC repair on my SUV perfectly. It's colder than when it was new! Very friendly staff.", fr: "Ils ont réparé l'AC de mon VUS parfaitement. Il fait plus frette que quand il était neuf! Le personnel est vraiment sympathique." }, name: 'Chantal B.' },
+  { quote: { en: "They handled the AC repair on my SUV perfectly. It's colder than when it was new! Very friendly staff.", fr: "Ils ont réparé l'AC de mon VUS perfectly. Il fait plus frette que quand il était neuf! Le personnel est vraiment sympathique." }, name: 'Chantal B.' },
 ];
 
 export const WHY_CHOOSE_US_POINTS = [
@@ -291,8 +291,11 @@ const en = {
     serviceNeeded: 'Service(s) Needed',
     description: 'Describe Your Issue/Service Request',
     descriptionPlaceholder: 'Please provide as much detail as possible...',
-    appointmentDate: 'Preferred Appointment Date (Optional)',
+    appointmentDate: 'Preferred Appointment Date',
     appointmentDatePlaceholder: 'Select a date',
+    appointmentTime: 'Preferred Time',
+    selectDateFirst: 'Please select a date to see available times.',
+    noSlotsAvailable: 'No appointments available on this day. Please select another.',
     submitButton: 'Get My Free Quote',
     success: {
       title: 'Thank You!',
@@ -391,8 +394,11 @@ const fr: typeof en = {
     serviceNeeded: 'Service(s) Requis',
     description: 'Décrivez le problème ou le service demandé',
     descriptionPlaceholder: 'Donnez-nous le plus de détails possible, s\'il vous plaît...',
-    appointmentDate: 'Date de rendez-vous souhaitée (Optionnel)',
+    appointmentDate: 'Date de rendez-vous souhaitée',
     appointmentDatePlaceholder: 'Sélectionnez une date',
+    appointmentTime: 'Heure souhaitée',
+    selectDateFirst: 'Veuillez sélectionner une date pour voir les heures disponibles.',
+    noSlotsAvailable: 'Aucun rendez-vous disponible ce jour-là. Veuillez en sélectionner un autre.',
     submitButton: 'Obtenir ma soumission gratuite',
     success: {
       title: 'Merci!',
