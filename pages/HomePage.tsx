@@ -214,8 +214,8 @@ const HomePage: React.FC = () => {
       <Hero />
       <ServicesOverview />
       <WhyChooseUs />
-      <Testimonials />
       <BookingAndMapSection />
+      <Testimonials />
     </>
   );
 };

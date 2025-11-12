@@ -220,7 +220,7 @@ ${wizardData.description}
     const renderContent = () => {
         if (isSubmitted) {
             return (
-                <div className="text-center p-4">
+                <div className="text-center p-4 flex flex-col justify-center items-center h-full">
                     <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-6" />
                     <h2 className="text-3xl font-bold font-oswald text-slate-800 dark:text-white">{t.quoteWizard.success.title}</h2>
                     <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">{t.quoteWizard.success.message}</p>
@@ -331,11 +331,11 @@ ${wizardData.description}
     return (
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={closeWizard}></div>
-            <div className={`relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+            <div className={`relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[90vh] transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                 <button onClick={closeWizard} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 z-10 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                     <XMarkIcon className="h-8 w-8" />
                 </button>
-                <div className="grid md:grid-cols-2">
+                <div className="grid md:grid-cols-2 flex-1 md:overflow-hidden">
                     <div className="hidden md:flex flex-col justify-center p-12 bg-brand-dark text-white" style={{backgroundImage: "url('https://images.unsplash.com/photo-1548695604-94ab0a3a5f33?q=80&w=2940&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
                          <div className="relative z-10 bg-brand-dark/60 p-8 rounded-lg">
                             <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500"> RÉPARATION</span></span>
@@ -343,9 +343,9 @@ ${wizardData.description}
                             <p className="mt-4 text-slate-300 text-lg">{t.quoteWizard.brandSubtitle}</p>
                         </div>
                     </div>
-                    <div className="p-8 sm:p-12">
+                    <div className="p-8 sm:p-12 overflow-y-auto">
                         {!isSubmitted && <ProgressBar current={wizardData.step} total={3} />}
-                        <div className="mt-8 min-h-[450px] flex flex-col justify-center">
+                        <div className="mt-8">
                             {renderContent()}
                         </div>
                     </div>
