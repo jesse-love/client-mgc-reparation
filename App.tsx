@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,6 +10,7 @@ import { services } from './i18n';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
+import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
 import QuoteWizard from './components/QuoteWizard';
 
 type Theme = 'light' | 'dark';
@@ -176,9 +176,11 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <QuoteWizardProvider>
-          <MainLayout route={route} />
-        </QuoteWizardProvider>
+        <BusinessInfoProvider>
+          <QuoteWizardProvider>
+            <MainLayout route={route} />
+          </QuoteWizardProvider>
+        </BusinessInfoProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

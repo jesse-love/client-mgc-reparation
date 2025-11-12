@@ -1,12 +1,12 @@
-
 import React from 'react';
 import InlineQuoteWizard from '../components/InlineQuoteWizard';
-import { CONTACT_INFO, OPERATING_HOURS } from '../i18n';
 import { PhoneIcon, MapPinIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 const ContactPage: React.FC = () => {
   const { language, t } = useLanguage();
+  const { address, phone, googleMapsUrl, operatingHours, isLoading } = useBusinessInfo();
 
   return (
     <>
@@ -55,40 +55,44 @@ const ContactPage: React.FC = () => {
             <div className="lg:col-span-2 space-y-8">
               <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg">
                 <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.contact.infoTitle}</h3>
+                {isLoading ? Array.from({length: 3}).map((_, i) => <div key={i} className="h-8 bg-gray-200 dark:bg-slate-700 rounded w-full my-4 animate-pulse"></div>) :
                 <ul className="space-y-4 text-gray-700 dark:text-gray-300">
                   <li className="flex items-start">
                     <MapPinIcon className="h-6 w-6 mt-1 mr-4 flex-shrink-0 text-orange-500" />
                     <div>
                       <strong className="block text-gray-900 dark:text-gray-100">{t.contact.address}</strong>
-                      <a href={CONTACT_INFO.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-orange-600">{CONTACT_INFO.address}</a>
+                      <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-orange-600">{address}</a>
                     </div>
                   </li>
                   <li className="flex items-start">
                     <PhoneIcon className="h-6 w-6 mt-1 mr-4 flex-shrink-0 text-orange-500" />
                     <div>
                       <strong className="block text-gray-900 dark:text-gray-100">{t.contact.phone}</strong>
-                      <a href={CONTACT_INFO.phoneHref} className="hover:text-orange-600">{CONTACT_INFO.phone}</a>
+                      <a href={`tel:${phone}`} className="hover:text-orange-600">{phone}</a>
                     </div>
                   </li>
                   <li className="flex items-start">
                     <EnvelopeIcon className="h-6 w-6 mt-1 mr-4 flex-shrink-0 text-orange-500" />
                     <div>
                       <strong className="block text-gray-900 dark:text-gray-100">{t.contact.email}</strong>
-                      <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-orange-600">{CONTACT_INFO.email}</a>
+                      <a href={`mailto:info@mgcreparation.com`} className="hover:text-orange-600">info@mgcreparation.com</a>
                     </div>
                   </li>
                 </ul>
+                }
               </div>
               <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg">
                   <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4 flex items-center">
                       <ClockIcon className="h-6 w-6 mr-3 text-orange-500"/>
-                      {OPERATING_HOURS.title[language]}
+                      {t.footer.operatingHours}
                   </h3>
+                   {isLoading ? Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-5 bg-gray-200 dark:bg-slate-700 rounded w-3/4 my-2 animate-pulse"></div>) :
                   <ul className="space-y-1 text-gray-700 dark:text-gray-300">
-                      {OPERATING_HOURS.hours.map((line, index) => (
+                      {operatingHours.map((line, index) => (
                           <li key={index}>{line[language]}</li>
                       ))}
                   </ul>
+                  }
               </div>
             </div>
           </div>

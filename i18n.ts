@@ -1,27 +1,5 @@
-
-import type { Service, Testimonial, NavLink, BilingualText } from './types';
+import type { Service, NavLink } from './types';
 import { WrenchScrewdriverIcon, TruckIcon, CogIcon, FireIcon, BoltIcon, SunIcon } from '@heroicons/react/24/outline';
-
-export const CONTACT_INFO = {
-  name: "MGC Réparation Inc.",
-  phone: "(514) 609-4141",
-  phoneHref: "tel:514-609-4141",
-  address: "1287 Chemin de la Côte Georges, Mascouche, QC J7K 3C2",
-  email: "info@mgcreparation.com",
-  googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=MGC+Réparation+Inc.+1287+Chemin+de+la+Côte+Georges,+Mascouche,+QC+J7K+3C2"
-};
-
-export const OPERATING_HOURS = {
-  title: {
-    en: "Operating Hours",
-    fr: "Heures d'Ouverture"
-  },
-  hours: [
-    { en: "Mon-Thurs: 7:30 AM - 4:00 PM", fr: "Lun-Jeu: 7h30 - 16h00" },
-    { en: "Fri: 7:30 AM - 12:00 PM", fr: "Ven: 7h30 - 12h00" },
-    { en: "Sat-Sun: Closed", fr: "Sam-Dim: Fermé" }
-  ]
-};
 
 export const NAV_LINKS: NavLink[] = [
   { name: { en: 'Home', fr: 'Accueil' }, href: '/' },
@@ -185,13 +163,6 @@ export const services: Service[] = [
   },
 ];
 
-export const testimonials: Testimonial[] = [
-  { quote: { en: "MGC Réparation fixed my truck's generator quickly and professionally. Highly recommend for any heavy vehicle work!", fr: "MGC Réparation a arrangé la génératrice de mon camion rapidement et professionnellement. Je les recommande fortement pour toute job de véhicule lourd!" }, name: 'Jean-Luc P.' },
-  { quote: { en: "Always reliable for my car's maintenance. Trustworthy and honest mechanics right here in Mascouche. I won't go anywhere else.", fr: "Toujours fiables pour l'entretien de mon char. Des mécanos de confiance et honnêtes, ici même à Mascouche. J'irai jamais ailleurs." }, name: 'Sophie L.' },
-  { quote: { en: "Finding a heavy vehicle mechanic who truly understands the work is tough. MGC exceeded expectations. Great service and fair pricing.", fr: "Trouver un mécano de véhicules lourds qui connaît vraiment son affaire, c'est rare. MGC a dépassé mes attentes. Super service et prix justes." }, name: 'Marc D.' },
-  { quote: { en: "They handled the AC repair on my SUV perfectly. It's colder than when it was new! Very friendly staff.", fr: "Ils ont réparé l'AC de mon VUS perfectly. Il fait plus frette que quand il était neuf! Le personnel est vraiment sympathique." }, name: 'Chantal B.' },
-];
-
 export const WHY_CHOOSE_US_POINTS = [
   {
     title: { en: "Family-Owned & Community Focused", fr: "Entreprise Familiale Axée sur la Communauté" },
@@ -223,6 +194,7 @@ const en = {
   footer: {
     about: 'Your trusted, family-owned auto and heavy vehicle experts in Mascouche, QC since 2012.',
     contactUs: 'Contact Us',
+    operatingHours: 'Operating Hours',
     quickLinks: 'Quick Links',
     rights: 'All Rights Reserved.'
   },
@@ -241,11 +213,12 @@ const en = {
     },
     whyUs: {
       title: 'Why Mascouche Drivers Trust MGC Réparation Inc.',
-      subtitle: 'We’re more than just mechanics; we’re your neighbors dedicated to ensuring the safety and performance of your vehicles and equipment in Mascouche.'
+      subtitle: 'We’re more than just mechanics; we’re your neighbors dedicated to ensuring the safety and performance of your vehicles and equipment in Mascouche.',
+      points: WHY_CHOOSE_US_POINTS
     },
     testimonials: {
       title: 'What Our Clients Say',
-      subtitle: 'Rated 4.8 Stars on Google by 43+ Customers!'
+      subtitle: 'Live from our Google Reviews!'
     },
     contactMap: {
       title: 'Book an Appointment & Visit Us',
@@ -367,6 +340,7 @@ const fr: typeof en = {
   footer: {
     about: 'Vos experts de confiance pour l\'auto et les véhicules lourds à Mascouche, QC depuis 2012.',
     contactUs: 'Nous Contacter',
+    operatingHours: 'Heures d\'Ouverture',
     quickLinks: 'Liens Rapides',
     rights: 'Tous droits réservés.'
   },
@@ -385,11 +359,12 @@ const fr: typeof en = {
     },
     whyUs: {
       title: 'Pourquoi les Chauffeurs de Mascouche Font Confiance à MGC Réparation Inc.',
-      subtitle: 'On est pas juste des mécanos; on est vos voisins, dédiés à assurer la sécurité et la performance de vos chars et équipements à Mascouche.'
+      subtitle: 'On est pas juste des mécanos; on est vos voisins, dédiés à assurer la sécurité et la performance de vos chars et équipements à Mascouche.',
+      points: WHY_CHOOSE_US_POINTS
     },
     testimonials: {
       title: 'Ce que nos Clients en Disent',
-      subtitle: 'Noté 4.8 étoiles sur Google par plus de 43 clients!'
+      subtitle: 'En direct de nos avis Google!'
     },
     contactMap: {
       title: 'Prenez RDV et Visitez-Nous',

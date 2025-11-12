@@ -1,10 +1,10 @@
-
 import React from 'react';
-import { services, testimonials, WHY_CHOOSE_US_POINTS, CONTACT_INFO, OPERATING_HOURS } from '../i18n';
-import { CheckCircleIcon, UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon } from '@heroicons/react/24/solid';
+import { services } from '../i18n';
+import { CheckCircleIcon, UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon, StarIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import InlineQuoteWizard from '../components/InlineQuoteWizard';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 // Helper to map icon names to actual icon components
 const iconMap: { [key: string]: React.ElementType } = {
@@ -16,8 +16,9 @@ const iconMap: { [key: string]: React.ElementType } = {
 
 
 const Hero: React.FC = () => {
-    const { language, t } = useLanguage();
+    const { t } = useLanguage();
     const { openWizard } = useQuoteWizard();
+    const { phone, isLoading } = useBusinessInfo();
     return (
         <section className="relative h-[60vh] md:h-[80vh] flex items-center justify-center text-white bg-brand-dark">
             <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: "url('https://picsum.photos/1920/1080?grayscale&blur=2')" }}></div>
@@ -32,8 +33,8 @@ const Hero: React.FC = () => {
                     <button onClick={() => openWizard()} className="bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
                         {t.home.hero.ctaBook}
                     </button>
-                    <a href={CONTACT_INFO.phoneHref} className="border-2 border-orange-500 text-white font-bold py-3 px-8 rounded-md hover:bg-orange-500 hover:text-brand-dark transition duration-300 text-lg">
-                        {t.home.hero.ctaCall} {CONTACT_INFO.phone}
+                    <a href={`tel:${phone}`} className="border-2 border-orange-500 text-white font-bold py-3 px-8 rounded-md hover:bg-orange-500 hover:text-brand-dark transition duration-300 text-lg">
+                        {t.home.hero.ctaCall} {isLoading ? '...' : phone}
                     </a>
                 </div>
             </div>
@@ -75,7 +76,7 @@ const WhyChooseUs: React.FC = () => {
                         <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.whyUs.title}</h2>
                         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">{t.home.whyUs.subtitle}</p>
                         <div className="mt-8 space-y-6">
-                            {WHY_CHOOSE_US_POINTS.map((point, index) => {
+                            {t.home.whyUs.points.map((point, index) => {
                                 const IconComponent = iconMap[point.icon];
                                 return (
                                     <div key={index} className="flex items-start">
@@ -101,7 +102,10 @@ const WhyChooseUs: React.FC = () => {
 };
 
 const Testimonials: React.FC = () => {
-    const { language, t } = useLanguage();
+    const { t } = useLanguage();
+    const { reviews, isLoading, error } = useBusinessInfo();
+    const fiveStarReviews = reviews.filter(r => r.starRating === 'FIVE');
+
     return (
         <section className="py-16 lg:py-24 bg-brand-dark text-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,10 +114,29 @@ const Testimonials: React.FC = () => {
                     <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-300">{t.home.testimonials.subtitle}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {testimonials.slice(0, 3).map((testimonial, index) => (
+                    {isLoading && Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="bg-gray-800 p-8 rounded-lg shadow-lg animate-pulse">
+                            <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+                            <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+                            <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+                            <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                            <div className="flex items-center mt-6">
+                                <div className="h-10 w-10 bg-gray-700 rounded-full mr-4"></div>
+                                <div className="h-4 bg-gray-700 rounded w-1/4"></div>
+                            </div>
+                        </div>
+                    ))}
+                    {error && <div className="col-span-full text-center text-red-400">{error}</div>}
+                    {!isLoading && !error && fiveStarReviews.slice(0, 3).map((review, index) => (
                         <div key={index} className="bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col">
-                            <p className="text-gray-300 flex-grow">"{testimonial.quote[language]}"</p>
-                            <p className="mt-6 font-bold text-orange-500">- {testimonial.name}</p>
+                             <div className="flex items-center mb-4">
+                                {Array.from({ length: 5 }).map((_, i) => <StarIcon key={i} className="h-5 w-5 text-yellow-400" />)}
+                            </div>
+                            <p className="text-gray-300 flex-grow italic">"{review.comment}"</p>
+                            <div className="flex items-center mt-6">
+                                <img src={review.reviewer.profilePhotoUrl} alt={review.reviewer.displayName} className="h-10 w-10 rounded-full mr-4" />
+                                <p className="font-bold text-orange-500">- {review.reviewer.displayName}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -122,8 +145,10 @@ const Testimonials: React.FC = () => {
     );
 };
 
+
 const BookingAndMapSection: React.FC = () => {
     const { language, t } = useLanguage();
+    const { address, googleMapsUrl, operatingHours, isLoading } = useBusinessInfo();
     return (
         <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,15 +165,17 @@ const BookingAndMapSection: React.FC = () => {
                     <div className="lg:col-span-2 space-y-8">
                         <div className="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
                             <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.home.contactMap.visitTitle}</h3>
-                            <p className="text-lg font-semibold">{CONTACT_INFO.address}</p>
-                             <a 
-                                href={CONTACT_INFO.googleMapsUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="mt-2 inline-block font-bold text-orange-500 hover:text-orange-600 transition duration-300"
-                            >
-                                {t.home.contactMap.cta} &rarr;
-                            </a>
+                            {isLoading ? <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"></div> : <>
+                                <p className="text-lg font-semibold">{address}</p>
+                                <a 
+                                    href={googleMapsUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="mt-2 inline-block font-bold text-orange-500 hover:text-orange-600 transition duration-300"
+                                >
+                                    {t.home.contactMap.cta} &rarr;
+                                </a>
+                            </>}
                             <div className="h-64 mt-4 rounded-lg shadow-md overflow-hidden">
                                 <iframe 
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2780.820251817549!2d-73.6190136844309!3d45.71633597910488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc6a782a201206b%3A0x6e8a0f2b3e5a5c7c!2sMGC%20R%C3%A9paration%20inc.!5e0!3m2!1sen!2sca!4v1684351042730!5m2!1sen!2sca" 
@@ -163,12 +190,14 @@ const BookingAndMapSection: React.FC = () => {
                             </div>
                         </div>
                         <div className="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
-                            <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">{OPERATING_HOURS.title[language]}</h3>
-                            <ul className="space-y-1 text-gray-600 dark:text-gray-300">
-                                {OPERATING_HOURS.hours.map((line, index) => (
-                                    <li key={index}>{line[language]}</li>
-                                ))}
-                            </ul>
+                            <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">{t.footer.operatingHours}</h3>
+                             {isLoading ? Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-5 bg-gray-200 dark:bg-slate-700 rounded w-3/4 my-2 animate-pulse"></div>) :
+                                <ul className="space-y-1 text-gray-600 dark:text-gray-300">
+                                    {operatingHours.map((line, index) => (
+                                        <li key={index}>{line[language]}</li>
+                                    ))}
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>

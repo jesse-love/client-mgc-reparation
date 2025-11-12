@@ -1,8 +1,8 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useQuoteWizard, initialWizardData } from '../contexts/QuoteWizardContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/solid';
+import { createGoogleCalendarLink } from '../utils/calendar';
 
 const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, total }) => {
     const { t } = useLanguage();
@@ -46,6 +46,8 @@ const QuoteWizard: React.FC = () => {
         
         const webhookUrl = 'https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA';
         
+        const calendarLink = createGoogleCalendarLink(wizardData);
+
         const messageBody = `*New Quote Request from MGC Wizard*
 
 *Vehicle Type:* ${wizardData.vehicleType}
@@ -59,6 +61,8 @@ const QuoteWizard: React.FC = () => {
 ${wizardData.description}
 ---
 *Requested Appointment:* ${wizardData.appointmentDate}${wizardData.appointmentTime ? ` at ${wizardData.appointmentTime}` : ' (No time selected)'}
+
+*<${calendarLink}|Click here to add to Google Calendar>*
         `.trim();
         
         const payload = { text: messageBody };
@@ -302,7 +306,7 @@ ${wizardData.description}
                                             ))}
                                         </select>
                                     ) : (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
                                     )}
                                 </div>
                             </div>

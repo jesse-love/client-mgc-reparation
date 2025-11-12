@@ -1,11 +1,12 @@
-
 import React from 'react';
-import { CONTACT_INFO, OPERATING_HOURS, NAV_LINKS } from '../i18n';
+import { NAV_LINKS } from '../i18n';
 import { PhoneIcon, MapPinIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 const Footer: React.FC = () => {
   const { language, t } = useLanguage();
+  const { name, address, phone, googleMapsUrl, operatingHours, isLoading } = useBusinessInfo();
 
   return (
     <footer className="bg-brand-dark text-white">
@@ -22,30 +23,34 @@ const Footer: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-orange-500">{t.footer.contactUs}</h3>
+            {isLoading ? <div className="text-gray-400">Loading...</div> :
             <ul className="space-y-2 text-gray-300">
               <li className="flex items-start">
                 <MapPinIcon className="h-5 w-5 mt-1 mr-3 flex-shrink-0 text-orange-500" />
-                <a href={CONTACT_INFO.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white">{CONTACT_INFO.address}</a>
+                <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white">{address}</a>
               </li>
               <li className="flex items-center">
                 <PhoneIcon className="h-5 w-5 mr-3 text-orange-500" />
-                <a href={CONTACT_INFO.phoneHref} className="hover:text-white">{CONTACT_INFO.phone}</a>
+                <a href={`tel:${phone}`} className="hover:text-white">{phone}</a>
               </li>
                <li className="flex items-center">
                 <EnvelopeIcon className="h-5 w-5 mr-3 text-orange-500" />
-                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-white">{CONTACT_INFO.email}</a>
+                <a href={`mailto:info@mgcreparation.com`} className="hover:text-white">info@mgcreparation.com</a>
               </li>
             </ul>
+            }
           </div>
 
           {/* Operating Hours */}
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-orange-500">{OPERATING_HOURS.title[language]}</h3>
+            <h3 className="text-lg font-bold text-orange-500">{t.footer.operatingHours}</h3>
+             {isLoading ? <div className="text-gray-400">Loading...</div> :
             <ul className="space-y-1 text-gray-300">
-              {OPERATING_HOURS.hours.map((line, index) => (
+              {operatingHours.map((line, index) => (
                 <li key={index}>{line[language]}</li>
               ))}
             </ul>
+            }
           </div>
 
           {/* Quick Links */}
@@ -70,7 +75,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} {CONTACT_INFO.name}. {t.footer.rights}</p>
+          <p>&copy; {new Date().getFullYear()} {name}. {t.footer.rights}</p>
         </div>
       </div>
     </footer>
