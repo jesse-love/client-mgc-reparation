@@ -69,13 +69,50 @@ const ContactForm: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // In a real app, you would handle form submission here (e.g., API call)
-    console.log('Form Submitted:', formData);
-    setIsSubmitted(true);
-    // We don't reset the form here to allow the user to see their data
-    // It will be reset if they choose to submit another request.
+    
+    const webhookUrl = 'https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA';
+    
+    const messageBody = `*New Service Request from MGC Website*
+
+*Full Name:* ${formData.fullName}
+*Phone:* ${formData.phone}
+*Email:* ${formData.email}
+*Preferred Contact:* ${formData.contactMethod}
+
+*Vehicle Type:* ${formData.vehicleType}
+*Vehicle Details:* ${formData.vehicleDetails || 'Not Provided'}
+*Services Needed:* ${formData.serviceNeeded.length > 0 ? formData.serviceNeeded.join(', ') : 'Not Specified'}
+*Preferred Date:* ${formData.appointmentDate || 'Not Specified'}
+
+*Description:*
+${formData.description}
+    `.trim();
+    
+    const payload = {
+        text: messageBody
+    };
+
+    try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Webhook failed with status ${response.status}`);
+        }
+        
+        console.log('Form successfully submitted to webhook.');
+        setIsSubmitted(true);
+    } catch (error) {
+        console.error('Failed to submit form to webhook:', error);
+        alert('There was an error submitting your request. Please try again or call us directly.');
+    }
   };
 
   if (isSubmitted) {
