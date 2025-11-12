@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import type { FormData } from '../types';
 import { services } from '../i18n';
@@ -67,10 +68,6 @@ const ContactForm: React.FC = () => {
         : prev.serviceNeeded.filter(service => service !== value);
       return { ...prev, serviceNeeded: newServices };
     });
-  };
-
-  const handleTimeSelect = (time: string) => {
-    setFormData(prev => ({ ...prev, appointmentTime: time }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -338,24 +335,18 @@ ${formData.description}
               {!formData.appointmentDate ? (
                   <div className="text-sm p-3 bg-gray-50 dark:bg-slate-800 rounded-md text-gray-500 dark:text-gray-400">{t.contactForm.selectDateFirst}</div>
               ) : availableSlots.length > 0 ? (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {availableSlots.map(time => (
-                          <button
-                              type="button"
-                              key={time}
-                              onClick={() => handleTimeSelect(time)}
-                              className={`
-                                  px-3 py-2 rounded-md text-sm font-semibold transition-colors duration-200
-                                  ${formData.appointmentTime === time
-                                      ? 'bg-orange-500 text-brand-dark shadow'
-                                      : 'bg-gray-100 text-gray-700 hover:bg-orange-200 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-orange-500/20'
-                                  }
-                              `}
-                          >
-                              {time}
-                          </button>
-                      ))}
-                  </div>
+                  <select 
+                    id="appointmentTime" 
+                    name="appointmentTime" 
+                    value={formData.appointmentTime} 
+                    onChange={handleChange} 
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white"
+                  >
+                    <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
+                    {availableSlots.map(time => (
+                      <option key={time} value={time}>{time}</option>
+                    ))}
+                  </select>
               ) : (
                   <div className="text-sm p-3 bg-red-50 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
               )}

@@ -102,7 +102,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <a href="/" className="flex-shrink-0" onClick={closeMenu}>
-            <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500 [text-shadow:0_0_8px_rgba(249,115,22,0.5)]"> Réparation</span></span>
+            <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500"> Réparation</span></span>
           </a>
           <nav className="hidden lg:flex items-center space-x-8">
             {NAV_LINKS.map((link) => (

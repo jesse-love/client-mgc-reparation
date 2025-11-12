@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -9,7 +10,7 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import { services } from './i18n';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { QuoteWizardProvider } from './contexts/QuoteWizardContext';
+import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
 import QuoteWizard from './components/QuoteWizard';
 
 type Theme = 'light' | 'dark';
@@ -67,7 +68,6 @@ export const useTheme = (): ThemeContextType => {
   return context;
 };
 
-// Helper to normalize the pathname for consistent routing
 const cleanPath = (path: string): string => {
   if (path.endsWith('/index.html')) {
     path = path.substring(0, path.length - 'index.html'.length);
@@ -80,6 +80,56 @@ const cleanPath = (path: string): string => {
   }
   return path;
 };
+
+const MainLayout: React.FC<{ route: string }> = ({ route }) => {
+  const { openWizard, isOpen } = useQuoteWizard();
+
+  useEffect(() => {
+    const handleMouseOut = (event: MouseEvent) => {
+      if (event.clientY <= 0 && route !== '/' && !isOpen && !sessionStorage.getItem('exitIntentShown')) {
+        openWizard();
+        sessionStorage.setItem('exitIntentShown', 'true');
+      }
+    };
+    document.addEventListener('mouseout', handleMouseOut);
+    return () => {
+      document.removeEventListener('mouseout', handleMouseOut);
+    };
+  }, [route, isOpen, openWizard]);
+
+  const renderContent = () => {
+    if (route.startsWith('/services/')) {
+      const slug = route.split('/services/')[1];
+      const service = services.find((s: Service) => s.slug === slug);
+      return service ? <ServiceDetailPage service={service} /> : <HomePage />;
+    }
+
+    switch (route) {
+      case '/about':
+        return <AboutPage />;
+      case '/contact':
+        return <ContactPage />;
+      case '/services':
+        return <ServicesPage />;
+      case '/':
+        return <HomePage />;
+      default:
+        return <HomePage />;
+    }
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-200">
+      <Header />
+      <main className="flex-grow pt-20">
+        {renderContent()}
+      </main>
+      <Footer />
+      <QuoteWizard />
+    </div>
+  );
+};
+
 
 const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
@@ -123,39 +173,11 @@ const App: React.FC = () => {
     };
   }, [route]);
 
-  const renderContent = () => {
-    if (route.startsWith('/services/')) {
-      const slug = route.split('/services/')[1];
-      const service = services.find((s: Service) => s.slug === slug);
-      return service ? <ServiceDetailPage service={service} /> : <HomePage />;
-    }
-
-    switch (route) {
-      case '/about':
-        return <AboutPage />;
-      case '/contact':
-        return <ContactPage />;
-      case '/services':
-        return <ServicesPage />;
-      case '/':
-        return <HomePage />;
-      default:
-        return <HomePage />;
-    }
-  };
-
   return (
     <ThemeProvider>
       <LanguageProvider>
         <QuoteWizardProvider>
-          <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-200">
-            <Header />
-            <main className="flex-grow pt-20">
-              {renderContent()}
-            </main>
-            <Footer />
-            <QuoteWizard />
-          </div>
+          <MainLayout route={route} />
         </QuoteWizardProvider>
       </LanguageProvider>
     </ThemeProvider>

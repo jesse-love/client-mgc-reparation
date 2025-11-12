@@ -1,6 +1,6 @@
 
 import React from 'react';
-import ContactForm from '../components/ContactForm';
+import InlineQuoteWizard from '../components/InlineQuoteWizard';
 import { CONTACT_INFO, OPERATING_HOURS } from '../i18n';
 import { PhoneIcon, MapPinIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -48,7 +48,7 @@ const ContactPage: React.FC = () => {
             {/* Form */}
             <div className="lg:col-span-3 bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg">
               <h2 className="text-2xl font-bold text-brand-dark dark:text-white mb-6">{t.contact.formTitle}</h2>
-              <ContactForm />
+              <InlineQuoteWizard />
             </div>
             
             {/* Contact Info */}

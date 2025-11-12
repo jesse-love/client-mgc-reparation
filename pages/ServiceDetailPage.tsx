@@ -4,6 +4,7 @@ import type { Service } from '../types';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
+import InlineQuoteWizard from '../components/InlineQuoteWizard';
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -112,6 +113,16 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
           </div>
         </div>
       </div>
+      <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
+                <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white text-center mb-8">
+                    {t.contact.formTitle}
+                </h2>
+                <InlineQuoteWizard />
+            </div>
+        </div>
+      </section>
     </div>
   );
 };

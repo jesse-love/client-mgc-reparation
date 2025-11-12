@@ -4,6 +4,7 @@ import { services, testimonials, WHY_CHOOSE_US_POINTS, CONTACT_INFO, OPERATING_H
 import { CheckCircleIcon, UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
+import InlineQuoteWizard from '../components/InlineQuoteWizard';
 
 // Helper to map icon names to actual icon components
 const iconMap: { [key: string]: React.ElementType } = {
@@ -121,41 +122,54 @@ const Testimonials: React.FC = () => {
     );
 };
 
-const ContactMapSection: React.FC = () => {
+const BookingAndMapSection: React.FC = () => {
     const { language, t } = useLanguage();
-    const { openWizard } = useQuoteWizard();
     return (
-        <section className="py-16 lg:py-24">
+        <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.contactMap.title}</h2>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-md">
-                        <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.home.contactMap.visitTitle}</h3>
-                        <p className="text-lg font-semibold">{CONTACT_INFO.address}</p>
-                        <p className="text-gray-600 dark:text-gray-300 mb-4">{t.home.contactMap.visitSubtitle}</p>
-                        <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2 mt-6">{OPERATING_HOURS.title[language]}</h3>
-                        <ul className="space-y-1 text-gray-600 dark:text-gray-300">
-                            {OPERATING_HOURS.hours.map((line, index) => (
-                                <li key={index}>{line[language]}</li>
-                            ))}
-                        </ul>
-                        <button onClick={() => openWizard()} className="mt-6 inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300">
-                            {t.home.hero.ctaBook}
-                        </button>
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                    {/* Form */}
+                    <div className="lg:col-span-3 bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
+                        <h2 className="text-2xl font-bold text-brand-dark dark:text-white mb-6 text-center">{t.contact.formTitle}</h2>
+                        <InlineQuoteWizard />
                     </div>
-                    <div className="h-96 lg:h-full rounded-lg shadow-md overflow-hidden">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2780.820251817549!2d-73.6190136844309!3d45.71633597910488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc6a782a201206b%3A0x6e8a0f2b3e5a5c7c!2sMGC%20R%C3%A9paration%20inc.!5e0!3m2!1sen!2sca!4v1684351042730!5m2!1sen!2sca" 
-                            width="100%" 
-                            height="100%" 
-                            style={{ border: 0 }} 
-                            allowFullScreen={true} 
-                            loading="lazy" 
-                            referrerPolicy="no-referrer-when-downgrade"
-                            className="dark:grayscale dark:invert dark:hue-rotate-180"
-                        ></iframe>
+                    {/* Map and Info */}
+                    <div className="lg:col-span-2 space-y-8">
+                        <div className="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
+                            <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-4">{t.home.contactMap.visitTitle}</h3>
+                            <p className="text-lg font-semibold">{CONTACT_INFO.address}</p>
+                             <a 
+                                href={CONTACT_INFO.googleMapsUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="mt-2 inline-block font-bold text-orange-500 hover:text-orange-600 transition duration-300"
+                            >
+                                {t.home.contactMap.cta} &rarr;
+                            </a>
+                            <div className="h-64 mt-4 rounded-lg shadow-md overflow-hidden">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2780.820251817549!2d-73.6190136844309!3d45.71633597910488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc6a782a201206b%3A0x6e8a0f2b3e5a5c7c!2sMGC%20R%C3%A9paration%20inc.!5e0!3m2!1sen!2sca!4v1684351042730!5m2!1sen!2sca" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style={{ border: 0 }} 
+                                    allowFullScreen={true} 
+                                    loading="lazy" 
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    className="dark:grayscale dark:invert dark:hue-rotate-180"
+                                ></iframe>
+                            </div>
+                        </div>
+                        <div className="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
+                            <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">{OPERATING_HOURS.title[language]}</h3>
+                            <ul className="space-y-1 text-gray-600 dark:text-gray-300">
+                                {OPERATING_HOURS.hours.map((line, index) => (
+                                    <li key={index}>{line[language]}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,7 +185,7 @@ const HomePage: React.FC = () => {
       <ServicesOverview />
       <WhyChooseUs />
       <Testimonials />
-      <ContactMapSection />
+      <BookingAndMapSection />
     </>
   );
 };

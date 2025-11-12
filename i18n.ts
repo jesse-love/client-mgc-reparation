@@ -1,3 +1,4 @@
+
 import type { Service, Testimonial, NavLink, BilingualText } from './types';
 import { WrenchScrewdriverIcon, TruckIcon, CogIcon, FireIcon, BoltIcon, SunIcon } from '@heroicons/react/24/outline';
 
@@ -247,7 +248,7 @@ const en = {
       subtitle: 'Rated 4.8 Stars on Google by 43+ Customers!'
     },
     contactMap: {
-      title: 'Find MGC Réparation Inc. in Mascouche',
+      title: 'Book an Appointment & Visit Us',
       visitTitle: 'Visit Our Shop',
       visitSubtitle: 'We\'re ready to serve you.',
       cta: 'Get Directions'
@@ -294,6 +295,7 @@ const en = {
     appointmentDate: 'Preferred Appointment Date',
     appointmentDatePlaceholder: 'Select a date',
     appointmentTime: 'Preferred Time',
+    appointmentTimePlaceholder: 'Select a time slot',
     selectDateFirst: 'Please select a date to see available times.',
     noSlotsAvailable: 'No appointments available on this day. Please select another.',
     submitButton: 'Get My Free Quote',
@@ -390,7 +392,7 @@ const fr: typeof en = {
       subtitle: 'Noté 4.8 étoiles sur Google par plus de 43 clients!'
     },
     contactMap: {
-      title: 'Trouvez MGC Réparation Inc. à Mascouche',
+      title: 'Prenez RDV et Visitez-Nous',
       visitTitle: 'Visitez notre Garage',
       visitSubtitle: 'On est prêt à vous servir.',
       cta: 'Obtenir l\'itinéraire'
@@ -437,6 +439,7 @@ const fr: typeof en = {
     appointmentDate: 'Date de rendez-vous souhaitée',
     appointmentDatePlaceholder: 'Sélectionnez une date',
     appointmentTime: 'Heure souhaitée',
+    appointmentTimePlaceholder: 'Sélectionnez un créneau horaire',
     selectDateFirst: 'Veuillez sélectionner une date pour voir les heures disponibles.',
     noSlotsAvailable: 'Aucun rendez-vous disponible ce jour-là. Veuillez en sélectionner un autre.',
     submitButton: 'Obtenir ma soumission gratuite',

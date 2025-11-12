@@ -2,6 +2,7 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
+import InlineQuoteWizard from '../components/InlineQuoteWizard';
 
 const AboutPage: React.FC = () => {
   const { t } = useLanguage();
@@ -54,14 +55,19 @@ const AboutPage: React.FC = () => {
               <p>{t.about.p4}</p>
               <p>{t.about.p5}</p>
             </div>
-            <div className="mt-12 text-center">
-              <button onClick={() => openWizard()} className="inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
-                {t.about.cta}
-              </button>
-            </div>
           </div>
         </div>
       </div>
+      <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
+                <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white text-center mb-8">
+                    {t.contact.formTitle}
+                </h2>
+                <InlineQuoteWizard />
+            </div>
+        </div>
+      </section>
     </>
   );
 };
