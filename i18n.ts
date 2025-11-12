@@ -314,6 +314,46 @@ const en = {
     ctaTitle: 'Ready for Service?',
     ctaSubtitle: 'Let our experts take care of your vehicle. Get a reliable, transparent quote today.',
     ctaButton: 'Request a Quote'
+  },
+  quoteWizard: {
+    brandTitle: 'Get a Precise Quote in Minutes',
+    brandSubtitle: 'Our smart wizard guides you to the right service. Just a few clicks to book your appointment.',
+    progress: 'Step {current} of {total}',
+    steps: {
+      1: {
+        title: "What type of vehicle needs service?",
+        options: {
+          car: "Car / SUV / Light Truck",
+          heavy: "Heavy Truck",
+          trailer: "Trailer / Other Equipment"
+        }
+      },
+      2: {
+        title: "What kind of service do you need?",
+        options: {
+          maintenance: "Maintenance / Inspection",
+          repair: "Specific Repair",
+          diagnostics: "Diagnostics / Not Sure"
+        }
+      },
+      3: {
+        title: "Tell us about your needs & book a time.",
+        descriptionPlaceholder: "Describe the issue or the service you need...",
+        fullName: "Full Name",
+        phone: "Phone",
+        email: "Email"
+      }
+    },
+    buttons: {
+      next: "Next",
+      back: "Back",
+      submit: "Book My Appointment"
+    },
+    success: {
+        title: "Appointment Request Sent!",
+        message: "Thank you! We've received your request and will contact you shortly to confirm your booking.",
+        button: "Start a New Request"
+    }
   }
 };
 
@@ -417,6 +457,46 @@ const fr: typeof en = {
     ctaTitle: 'Prêt pour un service?',
     ctaSubtitle: 'Laissez nos experts s\'occuper de votre véhicule. Obtenez une soumission fiable et transparente aujourd\'hui.',
     ctaButton: 'Demander une soumission'
+  },
+  quoteWizard: {
+    brandTitle: 'Obtenez une soumission précise en quelques minutes',
+    brandSubtitle: "Notre assistant intelligent vous guide vers le bon service. Quelques clics suffisent pour prendre votre rendez-vous.",
+    progress: 'Étape {current} sur {total}',
+    steps: {
+        1: {
+            title: "Quel type de véhicule a besoin d'un service?",
+            options: {
+                car: "Voiture / VUS / Camion léger",
+                heavy: "Camion lourd",
+                trailer: "Remorque / Autre équipement"
+            }
+        },
+        2: {
+            title: "Quel genre de service avez-vous besoin?",
+            options: {
+                maintenance: "Entretien / Inspection",
+                repair: "Réparation spécifique",
+                diagnostics: "Diagnostic / Je ne suis pas sûr"
+            }
+        },
+        3: {
+            title: "Parlez-nous de vos besoins et réservez une heure.",
+            descriptionPlaceholder: "Décrivez le problème ou le service dont vous avez besoin...",
+            fullName: "Nom complet",
+            phone: "Téléphone",
+            email: "Courriel"
+        }
+    },
+    buttons: {
+        next: "Suivant",
+        back: "Retour",
+        submit: "Réserver mon rendez-vous"
+    },
+    success: {
+        title: "Demande de rendez-vous envoyée!",
+        message: "Merci! Nous avons bien reçu votre demande et nous vous contacterons sous peu pour confirmer votre réservation.",
+        button: "Commencer une nouvelle demande"
+    }
   }
 };
 

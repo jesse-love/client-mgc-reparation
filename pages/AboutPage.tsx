@@ -1,9 +1,12 @@
 
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 
 const AboutPage: React.FC = () => {
   const { t } = useLanguage();
+  const { openWizard } = useQuoteWizard();
+
   return (
     <>
       <nav aria-label="Breadcrumb" className="bg-gray-50 dark:bg-slate-800">
@@ -52,9 +55,9 @@ const AboutPage: React.FC = () => {
               <p>{t.about.p5}</p>
             </div>
             <div className="mt-12 text-center">
-              <a href="/contact" className="inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
+              <button onClick={() => openWizard()} className="inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
                 {t.about.cta}
-              </a>
+              </button>
             </div>
           </div>
         </div>

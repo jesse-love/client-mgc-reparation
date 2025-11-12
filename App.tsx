@@ -9,6 +9,8 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import { services } from './i18n';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { QuoteWizardProvider } from './contexts/QuoteWizardContext';
+import QuoteWizard from './components/QuoteWizard';
 
 type Theme = 'light' | 'dark';
 
@@ -145,13 +147,16 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-200">
-          <Header />
-          <main className="flex-grow pt-20">
-            {renderContent()}
-          </main>
-          <Footer />
-        </div>
+        <QuoteWizardProvider>
+          <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-200">
+            <Header />
+            <main className="flex-grow pt-20">
+              {renderContent()}
+            </main>
+            <Footer />
+            <QuoteWizard />
+          </div>
+        </QuoteWizardProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

@@ -3,6 +3,7 @@ import React from 'react';
 import type { Service } from '../types';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -10,6 +11,7 @@ interface ServiceDetailPageProps {
 
 const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
   const { language, t } = useLanguage();
+  const { openWizard } = useQuoteWizard();
 
   return (
     <div className="bg-white dark:bg-slate-900">
@@ -102,9 +104,9 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
               <div className="bg-orange-500 p-8 rounded-lg text-center">
                 <h3 className="text-2xl font-bold text-brand-dark">{t.serviceDetail.ctaTitle}</h3>
                 <p className="mt-2 text-brand-dark">{t.serviceDetail.ctaSubtitle}</p>
-                <a href="/contact" className="mt-6 inline-block bg-brand-dark text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition duration-300">
+                <button onClick={() => openWizard()} className="mt-6 inline-block bg-brand-dark text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition duration-300">
                   {t.serviceDetail.ctaButton}
-                </a>
+                </button>
               </div>
             </aside>
           </div>

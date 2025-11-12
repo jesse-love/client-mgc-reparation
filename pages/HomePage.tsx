@@ -3,6 +3,7 @@ import React from 'react';
 import { services, testimonials, WHY_CHOOSE_US_POINTS, CONTACT_INFO, OPERATING_HOURS } from '../i18n';
 import { CheckCircleIcon, UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 
 // Helper to map icon names to actual icon components
 const iconMap: { [key: string]: React.ElementType } = {
@@ -15,6 +16,7 @@ const iconMap: { [key: string]: React.ElementType } = {
 
 const Hero: React.FC = () => {
     const { language, t } = useLanguage();
+    const { openWizard } = useQuoteWizard();
     return (
         <section className="relative h-[60vh] md:h-[80vh] flex items-center justify-center text-white bg-brand-dark">
             <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: "url('https://picsum.photos/1920/1080?grayscale&blur=2')" }}></div>
@@ -26,9 +28,9 @@ const Hero: React.FC = () => {
                     {t.home.hero.subtitle}
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="/contact" className="bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
+                    <button onClick={() => openWizard()} className="bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
                         {t.home.hero.ctaBook}
-                    </a>
+                    </button>
                     <a href={CONTACT_INFO.phoneHref} className="border-2 border-orange-500 text-white font-bold py-3 px-8 rounded-md hover:bg-orange-500 hover:text-brand-dark transition duration-300 text-lg">
                         {t.home.hero.ctaCall} {CONTACT_INFO.phone}
                     </a>
@@ -121,6 +123,7 @@ const Testimonials: React.FC = () => {
 
 const ContactMapSection: React.FC = () => {
     const { language, t } = useLanguage();
+    const { openWizard } = useQuoteWizard();
     return (
         <section className="py-16 lg:py-24">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,9 +141,9 @@ const ContactMapSection: React.FC = () => {
                                 <li key={index}>{line[language]}</li>
                             ))}
                         </ul>
-                        <a href={CONTACT_INFO.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300">
-                            {t.home.contactMap.cta}
-                        </a>
+                        <button onClick={() => openWizard()} className="mt-6 inline-block bg-orange-500 text-brand-dark font-bold py-3 px-8 rounded-md hover:bg-orange-600 transition duration-300">
+                            {t.home.hero.ctaBook}
+                        </button>
                     </div>
                     <div className="h-96 lg:h-full rounded-lg shadow-md overflow-hidden">
                         <iframe 

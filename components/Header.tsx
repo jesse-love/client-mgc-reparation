@@ -5,6 +5,7 @@ import { NAV_LINKS } from '../i18n';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon, SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../App';
+import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 
 const cleanPath = (path: string): string => {
   if (path.endsWith('/index.html')) {
@@ -67,6 +68,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { language, t } = useLanguage();
+  const { openWizard } = useQuoteWizard();
   
   const isHomePage = cleanPath(window.location.pathname) === '/';
 
@@ -83,6 +85,12 @@ const Header: React.FC = () => {
 
   const toggleDropdown = (name: string) => {
     setOpenDropdown(openDropdown === name ? null : name);
+  };
+
+  const handleBookServiceClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    closeMenu();
+    openWizard();
   };
 
   const headerDynamicClass = (isScrolled || !isHomePage) 
@@ -119,9 +127,9 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <ThemeToggle />
             <LanguageSwitcher />
-            <a href="/contact" className="inline-block bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-md hover:from-orange-400 hover:to-red-500 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/40">
+            <button onClick={handleBookServiceClick} className="inline-block bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-md hover:from-orange-400 hover:to-red-500 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/40">
               {t.header.bookService}
-            </a>
+            </button>
           </div>
           <div className="lg:hidden flex items-center gap-2">
             <ThemeToggle />
@@ -157,9 +165,9 @@ const Header: React.FC = () => {
             </div>
           ))}
           <div className="pt-4 px-3 pb-2">
-            <a href="/contact" onClick={closeMenu} className="block w-full text-center bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-md hover:from-orange-400 hover:to-red-500 transition duration-300 text-lg">
+            <button onClick={handleBookServiceClick} className="block w-full text-center bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-6 rounded-md hover:from-orange-400 hover:to-red-500 transition duration-300 text-lg">
               {t.header.bookService}
-            </a>
+            </button>
           </div>
         </div>
       </div>

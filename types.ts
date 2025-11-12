@@ -43,3 +43,15 @@ export interface FormData {
   appointmentTime: string;
   referralSource: string;
 }
+
+export interface QuoteWizardData {
+  step: number;
+  vehicleType: string;
+  serviceCategory: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  description: string;
+  appointmentDate: string;
+  appointmentTime: string;
+}
