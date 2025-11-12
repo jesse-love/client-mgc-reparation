@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useQuoteWizard } from '../contexts/QuoteWizardContext';
-import InlineQuoteWizard from '../components/InlineQuoteWizard';
+import CallToActionSection from '../components/CallToActionSection';
 
 const AboutPage: React.FC = () => {
   const { t } = useLanguage();
-  const { openWizard } = useQuoteWizard();
 
   return (
     <>
@@ -50,7 +47,7 @@ const AboutPage: React.FC = () => {
             <div className="mt-12 text-lg text-gray-700 dark:text-gray-300 space-y-6 leading-relaxed">
               <p>{t.about.p1}</p>
               <p>{t.about.p2}</p>
-              <img src="https://picsum.photos/1200/600?random=2" alt="MGC Réparation shop interior" className="rounded-lg shadow-xl my-8"/>
+              <img src="https://images.unsplash.com/photo-1579629423951-b0d575345d2d?q=80&w=2574&auto=format&fit=crop" alt="MGC Réparation shop interior" className="rounded-lg shadow-xl my-8"/>
               <p>{t.about.p3}</p>
               <p>{t.about.p4}</p>
               <p>{t.about.p5}</p>
@@ -58,16 +55,10 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <section className="py-16 lg:py-24 bg-gray-50 dark:bg-slate-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg">
-                <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white text-center mb-8">
-                    {t.contact.formTitle}
-                </h2>
-                <InlineQuoteWizard />
-            </div>
-        </div>
-      </section>
+      <CallToActionSection 
+        title={t.about.ctaTitle}
+        subtitle={t.about.ctaSubtitle}
+      />
     </>
   );
 };

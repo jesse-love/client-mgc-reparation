@@ -109,7 +109,7 @@ export const services: Service[] = [
       { en: "Structural Welding & Frame Repair", fr: "Soudure structurale & réparation de châssis" }
     ],
     whyChoosePoints: [
-        { title: { en: 'All Trailer Types', fr: 'Tous les Types de Remorques' }, description: { en: 'We service everything from small utility trailers to large commercial flatbeds and RVs.', fr: 'On s\'occupe de tout, des petites remorques utilitaires aux grands flatbeds commerciaux et VR.' } },
+        { title: { en: 'All Trailer Types', fr: 'Tous les Types de Remorques' }, description: { en: 'We service everything from a small utility trailers to large commercial flatbeds and RVs.', fr: 'On s\'occupe de tout, des petites remorques utilitaires aux grands flatbeds commerciaux et VR.' } },
         { title: { en: 'Safety Focused', fr: 'Axé sur la Sécurité' }, description: { en: 'Our primary goal is to ensure your trailer is safe and compliant with all regulations.', fr: 'Notre but principal est de s\'assurer que votre remorque est sécuritaire et conforme à toutes les réglementations.' } },
         { title: { en: 'Durable Repairs', fr: 'Réparations Durables' }, description: { en: 'We use quality parts and expert techniques for repairs that last.', fr: 'On utilise des pièces de qualité et des techniques expertes pour des réparations qui durent longtemps.' } },
     ]
@@ -240,7 +240,8 @@ const en = {
     p3: 'Our team, handpicked for their skill and integrity, shares Maxime’s vision. We’re not just mechanics; we’re problem-solvers who take pride in diagnosing intricate issues and delivering efficient, professional repairs. We believe in transparent communication, providing clear explanations and fair estimates before any work begins.',
     p4: 'Over the years, MGC Réparation Inc. has expanded its capabilities to include specialized services like heavy vehicle mechanics, trailer repair, generator maintenance, and expert welding and assembly. This growth reflects our continuous pursuit of excellence and our dedication to meeting the diverse needs of our clients in Mascouche and the surrounding regions.',
     p5: 'When you choose MGC Réparation Inc., you\'re choosing a partner dedicated to keeping you and your equipment moving forward safely and reliably. We look forward to welcoming you to our family.',
-    cta: 'Contact Us for Service'
+    ctaTitle: 'Ready to Get Started?',
+    ctaSubtitle: 'Get a precise, no-obligation quote from our experts in just a few clicks.',
   },
   contact: {
     title: 'Get in Touch',
@@ -290,8 +291,8 @@ const en = {
     ctaButton: 'Request a Quote'
   },
   quoteWizard: {
-    brandTitle: 'Get a Precise Quote',
-    brandSubtitle: 'Our smart wizard makes booking easy. Just a few clicks to get started.',
+    brandTitle: 'Get a Precise Quote in Minutes',
+    brandSubtitle: "Our smart assistant guides you to the right service. A few clicks are all it takes to book your appointment.",
     progress: 'Step {current} of {total}',
     steps: {
       1: {
@@ -386,7 +387,8 @@ const fr: typeof en = {
     p3: 'Notre équipe, choisie pour ses compétences et son intégrité, partage la vision de Maxime. On n\'est pas juste des mécanos; on est des solutionneurs de problèmes qui sont fiers de diagnostiquer des problèmes complexes et de livrer des réparations efficaces et professionnelles. On croit en la communication transparente, en fournissant des explications claires et des estimations justes avant de commencer le travail.',
     p4: 'Au fil des ans, MGC Réparation Inc. a élargi ses capacités pour inclure des services spécialisés comme la mécanique de véhicules lourds, la réparation de remorques, l\'entretien de génératrices, et la soudure et l\'assemblage experts. Cette croissance reflète notre quête continue de l\'excellence et notre dévouement à répondre aux divers besoins de nos clients à Mascouche et dans les régions avoisinantes.',
     p5: 'Quand vous choisissez MGC Réparation Inc., vous choisissez un partenaire dédié à vous garder, vous et votre équipement, en mouvement de manière sécuritaire et fiable. On a hâte de vous accueillir dans notre famille.',
-    cta: 'Contactez-nous pour un service'
+    ctaTitle: 'Prêt à commencer?',
+    ctaSubtitle: 'Obtenez une soumission précise et sans obligation de nos experts en quelques clics.',
   },
   contact: {
     title: 'Contactez-nous',
@@ -436,8 +438,8 @@ const fr: typeof en = {
     ctaButton: 'Demander une soumission'
   },
   quoteWizard: {
-    brandTitle: 'Obtenez une soumission précise',
-    brandSubtitle: "Notre assistant intelligent facilite la réservation. Quelques clics suffisent pour commencer.",
+    brandTitle: 'Obtenez une soumission précise en quelques minutes',
+    brandSubtitle: "Notre assistant intelligent vous guide vers le bon service. Quelques clics suffisent pour prendre votre rendez-vous.",
     progress: 'Étape {current} sur {total}',
     steps: {
         1: {

@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useQuoteWizard, initialWizardData } from '../contexts/QuoteWizardContext';
+import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import { createGoogleCalendarLink } from '../utils/calendar';
@@ -27,6 +26,7 @@ const QuoteWizard: React.FC = () => {
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const dateInputRef = useRef<HTMLInputElement>(null);
 
     const handleNext = () => setWizardData(prev => ({ ...prev, step: prev.step + 1 }));
     const handleBack = () => setWizardData(prev => ({ ...prev, step: prev.step - 1 }));
@@ -92,6 +92,28 @@ ${wizardData.description}
         closeWizard();
     }
 
+     const [calendarPosition, setCalendarPosition] = useState<'top' | 'bottom'>('bottom');
+
+    const calculateDatePickerPosition = useCallback(() => {
+        if (dateInputRef.current) {
+            const inputRect = dateInputRef.current.getBoundingClientRect();
+            const spaceBelow = window.innerHeight - inputRect.bottom;
+            // 350px is an approximation of the calendar height
+            if (spaceBelow < 350 && inputRect.top > 350) {
+                setCalendarPosition('top');
+            } else {
+                setCalendarPosition('bottom');
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isDatePickerOpen) {
+            calculateDatePickerPosition();
+        }
+    }, [isDatePickerOpen, calculateDatePickerPosition]);
+
+
     const renderCalendar = useCallback(() => {
     const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
@@ -150,7 +172,7 @@ ${wizardData.description}
     });
 
     return (
-        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-slate-300 rounded-lg shadow-lg p-4 z-20 dark:bg-slate-800 dark:border-slate-600">
+        <div className={`absolute left-0 w-full max-w-xs bg-white border border-slate-300 rounded-lg shadow-lg p-4 z-20 dark:bg-slate-800 dark:border-slate-600 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
             <div className="flex justify-between items-center mb-4">
                 <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                     <ChevronLeftIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
@@ -169,7 +191,7 @@ ${wizardData.description}
             </div>
         </div>
     );
-  }, [viewDate, wizardData.appointmentDate, language, setWizardData]);
+  }, [viewDate, wizardData.appointmentDate, language, setWizardData, calendarPosition]);
 
     const generateTimeSlots = useCallback((selectedDateString: string): string[] => {
         if (!selectedDateString) return [];
@@ -289,7 +311,7 @@ ${wizardData.description}
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>
                                     <div className="relative">
-                                    <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full text-lg pl-12 pr-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-slate-600 dark:text-white" />
+                                    <input ref={dateInputRef} type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full text-lg pl-12 pr-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-slate-600 dark:text-white" />
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
                                     </div>
                                     {isDatePickerOpen && renderCalendar()}
@@ -336,11 +358,13 @@ ${wizardData.description}
                     <XMarkIcon className="h-8 w-8" />
                 </button>
                 <div className="grid md:grid-cols-2 flex-1 md:overflow-hidden">
-                    <div className="hidden md:flex flex-col justify-center p-12 bg-brand-dark text-white" style={{backgroundImage: "url('https://images.unsplash.com/photo-1548695604-94ab0a3a5f33?q=80&w=2940&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
-                         <div className="relative z-10 bg-brand-dark/60 p-8 rounded-lg">
-                            <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500"> RÉPARATION</span></span>
-                            <h2 className="text-4xl font-oswald font-bold mt-6">{t.quoteWizard.brandTitle}</h2>
-                            <p className="mt-4 text-slate-300 text-lg">{t.quoteWizard.brandSubtitle}</p>
+                    <div className="hidden md:flex flex-col justify-center p-12 bg-blue-600 text-white relative overflow-hidden">
+                         <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-700/50 rounded-full"></div>
+                         <div className="absolute -top-12 -left-16 w-48 h-48 bg-blue-700/50 rounded-full"></div>
+                         <div className="relative z-10">
+                            <CheckCircleIcon className="w-16 h-16 text-white/80 mb-6"/>
+                            <h2 className="text-4xl font-oswald font-bold">{t.quoteWizard.brandTitle}</h2>
+                            <p className="mt-4 text-blue-200 text-lg leading-relaxed">{t.quoteWizard.brandSubtitle}</p>
                         </div>
                     </div>
                     <div className="p-8 sm:p-12 overflow-y-auto">
