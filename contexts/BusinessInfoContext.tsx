@@ -1,9 +1,8 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import type { BusinessInfo } from '../types';
 
-// The Google Place ID for MGC Réparation Inc. This is required by the Places API.
-const PLACE_ID = 'ChIJMeqEvlfbyEwRcwObeP5z2SA';
+// The GMB Location ID provided by the user. Note: The Places API uses the numeric ID.
+const GMB_LOCATION_ID = '18440859230127958809'; 
 // The API key is assumed to be in the environment variables
 const API_KEY = 'AIzaSyCGujd97_lW9TAK4Q4Z9ces06wk5MvMupg';
 
@@ -63,7 +62,7 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
 
       // Using the v1 Places API format with field mask
       const fields = 'displayName,formattedAddress,internationalPhoneNumber,regularOpeningHours,googleMapsUri,reviews';
-      const url = `https://places.googleapis.com/v1/places/${PLACE_ID}?fields=${fields}&key=${API_KEY}&languageCode=fr`;
+      const url = `https://places.googleapis.com/v1/places/${GMB_LOCATION_ID}?fields=${fields}&key=${API_KEY}&languageCode=fr`;
       
       try {
         const response = await fetch(url);

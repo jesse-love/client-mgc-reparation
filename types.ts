@@ -9,6 +9,7 @@ export interface Service {
   slug: string;
   title: BilingualText;
   shortDescription: BilingualText;
+  // FIX: Use React.ComponentType to correctly type heroicons components, which are ForwardRefExoticComponent.
   icon: React.ComponentType<React.ComponentProps<'svg'>>;
   metaDescription: BilingualText;
   headline: BilingualText;
@@ -46,6 +47,20 @@ export interface NavLink {
   subLinks?: NavLink[];
 }
 
+export interface FormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  contactMethod: 'Email' | 'Phone';
+  vehicleType: string;
+  vehicleDetails: string;
+  serviceNeeded: string[];
+  description: string;
+  appointmentDate: string;
+  appointmentTime: string;
+  referralSource: string;
+}
+
 export interface QuoteWizardData {
   step: number;
   vehicleType: string;
@@ -56,9 +71,4 @@ export interface QuoteWizardData {
   description: string;
   appointmentDate: string;
   appointmentTime: string;
-}
-
-export interface PPLTestimonial {
-    quote: BilingualText;
-    author: BilingualText;
 }

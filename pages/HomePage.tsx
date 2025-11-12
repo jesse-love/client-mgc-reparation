@@ -1,5 +1,5 @@
 import React from 'react';
-import { services, WHY_CHOOSE_US_POINTS } from '../data';
+import { services } from '../i18n';
 import { CheckCircleIcon, UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon, StarIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
@@ -76,7 +76,7 @@ const WhyChooseUs: React.FC = () => {
                         <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark dark:text-white">{t.home.whyUs.title}</h2>
                         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">{t.home.whyUs.subtitle}</p>
                         <div className="mt-8 space-y-6">
-                            {WHY_CHOOSE_US_POINTS.map((point, index) => {
+                            {t.home.whyUs.points.map((point, index) => {
                                 const IconComponent = iconMap[point.icon];
                                 return (
                                     <div key={index} className="flex items-start">
