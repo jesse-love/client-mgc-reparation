@@ -17,26 +17,27 @@ const iconMap: { [key:string]: React.ElementType } = {
 const Hero: React.FC = () => {
     const { t } = useLanguage();
     const { openWizard } = useQuoteWizard();
-    const { phone, isLoading } = useBusinessInfo();
     return (
-        <section className="relative h-[80vh] md:h-screen flex items-center justify-center text-white bg-slate-900">
+        <section className="relative h-screen flex flex-col justify-center text-white bg-slate-900">
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1621996346565-e30d1ca7c549?q=80&w=2670&auto=format&fit=crop')" }}></div>
             <div className="absolute inset-0 bg-brand-dark/70 from-brand-dark/90 to-transparent bg-gradient-to-t"></div>
-            <div className="relative z-10 text-center px-4">
+            
+            <div className="relative z-10 text-center px-4 flex-grow flex flex-col justify-center">
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-oswald font-bold uppercase tracking-wider text-shadow-lg">
                     {t.home.hero.title1} <span className="text-orange-500">{t.home.hero.title2}</span>
                 </h1>
                 <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-200">
                     {t.home.hero.subtitle}
                 </p>
-                <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onClick={() => openWizard()} className="w-full sm:w-auto bg-orange-500 text-slate-900 font-bold py-4 px-10 rounded-md hover:bg-orange-400 transition-all duration-300 text-lg transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-orange-500/30">
+                <div className="mt-12">
+                    <button onClick={() => openWizard()} className="bg-orange-500 text-slate-900 font-bold py-4 px-10 rounded-md hover:bg-orange-400 transition-all duration-300 text-lg transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-orange-500/30">
                         {t.home.hero.ctaBook}
                     </button>
-                    <a href={`tel:${phone}`} className="w-full sm:w-auto border-2 border-slate-500 bg-slate-900/50 text-white font-bold py-4 px-10 rounded-md hover:bg-slate-800 hover:border-slate-400 transition duration-300 text-lg">
-                        {t.home.hero.ctaCall} {isLoading ? '...' : phone}
-                    </a>
                 </div>
+            </div>
+
+            <div className="relative z-10 w-full pb-10">
+                <TestimonialMarquee />
             </div>
         </section>
     );
@@ -107,7 +108,6 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
-      <TestimonialMarquee />
       <ServicesOverview />
       <WhyChooseUs />
       <LocationInfo />

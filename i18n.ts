@@ -276,6 +276,11 @@ const en = {
       title: 'Thank You!',
       message: 'Your request has been sent successfully. We will contact you shortly.',
       button: 'Submit Another Request'
+    },
+    validation: {
+      required: 'This field is required',
+      email: 'Please enter a valid email address',
+      phone: 'Please enter a valid phone number'
     }
   },
   services: {
@@ -287,7 +292,7 @@ const en = {
     includesTitle: 'Our {service} Services Include:',
     whyTrustTitle: 'Why Trust MGC for {service}?',
     ctaTitle: 'Ready for Service?',
-    ctaSubtitle: 'Let our experts take care of your vehicle. Get a reliable, transparent quote today.',
+    subtitle: 'Let our experts take care of your vehicle. Get a reliable, transparent quote today.',
     ctaButton: 'Request a Quote'
   },
   quoteWizard: {
@@ -423,6 +428,11 @@ const fr: typeof en = {
       title: 'Merci!',
       message: 'Votre demande a été envoyée avec succès. On vous contacte bientôt.',
       button: 'Faire une autre demande'
+    },
+    validation: {
+      required: 'Ce champ est requis',
+      email: 'Veuillez entrer une adresse courriel valide',
+      phone: 'Veuillez entrer un numéro de téléphone valide'
     }
   },
   services: {
@@ -434,7 +444,7 @@ const fr: typeof en = {
     includesTitle: 'Nos services de {service} incluent:',
     whyTrustTitle: 'Pourquoi faire confiance à MGC pour {service}?',
     ctaTitle: 'Prêt pour un service?',
-    ctaSubtitle: 'Laissez nos experts s\'occuper de votre véhicule. Obtenez une soumission fiable et transparente aujourd\'hui.',
+    subtitle: 'Laissez nos experts s\'occuper de votre véhicule. Obtenez une soumission fiable et transparente aujourd\'hui.',
     ctaButton: 'Demander une soumission'
   },
   quoteWizard: {

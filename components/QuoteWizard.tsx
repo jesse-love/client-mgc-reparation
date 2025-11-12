@@ -3,6 +3,15 @@ import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import { createGoogleCalendarLink } from '../utils/calendar';
+import { useTheme } from '../App';
+
+type ValidationErrors = {
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    description?: string;
+};
+
 
 const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, total }) => {
     const { t } = useLanguage();
@@ -21,7 +30,9 @@ const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, to
 const QuoteWizard: React.FC = () => {
     const { isOpen, closeWizard, wizardData, setWizardData, resetWizard } = useQuoteWizard();
     const { language, t } = useLanguage();
+    const { theme } = useTheme();
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [errors, setErrors] = useState<ValidationErrors>({});
     
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
@@ -29,7 +40,10 @@ const QuoteWizard: React.FC = () => {
     const dateInputRef = useRef<HTMLInputElement>(null);
 
     const handleNext = () => setWizardData(prev => ({ ...prev, step: prev.step + 1 }));
-    const handleBack = () => setWizardData(prev => ({ ...prev, step: prev.step - 1 }));
+    const handleBack = () => {
+      setErrors({});
+      setWizardData(prev => ({ ...prev, step: prev.step - 1 }));
+    }
 
     const handleSelectOption = (field: keyof typeof wizardData, value: string) => {
         setWizardData(prev => ({ ...prev, [field]: value }));
@@ -39,12 +53,31 @@ const QuoteWizard: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setWizardData(prev => ({ ...prev, [name]: value }));
+        if (errors[name as keyof ValidationErrors]) {
+            setErrors(prev => ({ ...prev, [name]: undefined }));
+        }
+    };
+
+    const validateStep3 = () => {
+        const newErrors: ValidationErrors = {};
+        if (!wizardData.fullName.trim()) newErrors.fullName = t.contactForm.validation.required;
+        if (!wizardData.email.trim()) {
+            newErrors.email = t.contactForm.validation.required;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(wizardData.email)) {
+            newErrors.email = t.contactForm.validation.email;
+        }
+        if (!wizardData.phone.trim()) newErrors.phone = t.contactForm.validation.required;
+        if (!wizardData.description.trim()) newErrors.description = t.contactForm.validation.required;
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!validateStep3()) return;
         
-        const webhookUrl = process.env.GOOGLE_CHAT_WEBHOOK_URL;
+        const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
 
         if (!webhookUrl) {
           console.error('Google Chat Webhook URL is not configured.');
@@ -92,13 +125,12 @@ ${wizardData.description}
         closeWizard();
     }
 
-     const [calendarPosition, setCalendarPosition] = useState<'top' | 'bottom'>('bottom');
+    const [calendarPosition, setCalendarPosition] = useState<'top' | 'bottom'>('bottom');
 
     const calculateDatePickerPosition = useCallback(() => {
         if (dateInputRef.current) {
             const inputRect = dateInputRef.current.getBoundingClientRect();
             const spaceBelow = window.innerHeight - inputRect.bottom;
-            // 350px is an approximation of the calendar height
             if (spaceBelow < 350 && inputRect.top > 350) {
                 setCalendarPosition('top');
             } else {
@@ -112,7 +144,6 @@ ${wizardData.description}
             calculateDatePickerPosition();
         }
     }, [isDatePickerOpen, calculateDatePickerPosition]);
-
 
     const renderCalendar = useCallback(() => {
     const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
@@ -171,8 +202,11 @@ ${wizardData.description}
         );
     });
 
+    const calendarBgClass = theme === 'light' ? 'bg-white' : 'bg-slate-800';
+    const calendarBorderClass = theme === 'light' ? 'border-slate-300' : 'border-slate-600';
+
     return (
-        <div className={`absolute left-0 w-full max-w-xs bg-white border border-slate-300 rounded-lg shadow-lg p-4 z-20 dark:bg-slate-800 dark:border-slate-600 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
+        <div className={`absolute left-0 w-full max-w-xs ${calendarBgClass} border ${calendarBorderClass} rounded-lg shadow-2xl p-4 z-20 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
             <div className="flex justify-between items-center mb-4">
                 <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                     <ChevronLeftIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
@@ -191,7 +225,7 @@ ${wizardData.description}
             </div>
         </div>
     );
-  }, [viewDate, wizardData.appointmentDate, language, setWizardData, calendarPosition]);
+  }, [viewDate, wizardData.appointmentDate, language, setWizardData, calendarPosition, theme]);
 
     const generateTimeSlots = useCallback((selectedDateString: string): string[] => {
         if (!selectedDateString) return [];
@@ -301,12 +335,24 @@ ${wizardData.description}
                     <div>
                          <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[3].title}</h2>
                          <form onSubmit={handleSubmit} className="space-y-4">
-                            <textarea id="description" name="description" rows={3} required value={wizardData.description} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} required value={wizardData.fullName} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
-                                <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} required value={wizardData.phone} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
+                            <div>
+                                <textarea id="description" name="description" rows={3} value={wizardData.description} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.description ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
+                                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
                             </div>
-                            <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} required value={wizardData.email} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} value={wizardData.fullName} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.fullName ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                    {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                                </div>
+                                <div>
+                                    <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} value={wizardData.phone} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                                </div>
+                            </div>
+                            <div>
+                                <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} value={wizardData.email} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.email ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                            </div>
                             
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>

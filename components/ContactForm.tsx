@@ -5,6 +5,11 @@ import { services } from '../i18n';
 import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { useLanguage } from '../contexts/LanguageContext';
 
+type ValidationErrors = {
+    [K in keyof FormData]?: string;
+};
+
+
 const ContactForm: React.FC = () => {
   const { language, t } = useLanguage();
 
@@ -24,6 +29,7 @@ const ContactForm: React.FC = () => {
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
   // --- Date Picker State and Logic ---
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -33,14 +39,13 @@ const ContactForm: React.FC = () => {
   useEffect(() => {
     if (formData.appointmentDate) {
       const selected = new Date(formData.appointmentDate);
-      // Ensure date is valid and adjust for timezone by using UTC
       if (!isNaN(selected.getTime())) {
           setViewDate(new Date(selected.getUTCFullYear(), selected.getUTCMonth(), 1));
       }
     } else {
       setViewDate(new Date());
     }
-  }, [isDatePickerOpen]); // Reset view to today or selected date when opened
+  }, [isDatePickerOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,11 +58,13 @@ const ContactForm: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  // --- End Date Picker Logic ---
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name as keyof ValidationErrors]) {
+        setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,10 +77,26 @@ const ContactForm: React.FC = () => {
     });
   };
 
+  const validateForm = (): boolean => {
+      const newErrors: ValidationErrors = {};
+      if (!formData.fullName.trim()) newErrors.fullName = t.contactForm.validation.required;
+      if (!formData.phone.trim()) newErrors.phone = t.contactForm.validation.required;
+      if (!formData.email.trim()) {
+          newErrors.email = t.contactForm.validation.required;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          newErrors.email = t.contactForm.validation.email;
+      }
+      if (!formData.description.trim()) newErrors.description = t.contactForm.validation.required;
+      
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validateForm()) return;
     
-    const webhookUrl = process.env.GOOGLE_CHAT_WEBHOOK_URL;
+    const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
     
     if (!webhookUrl) {
       console.error('Google Chat Webhook URL is not configured.');
@@ -127,14 +150,13 @@ ${formData.description}
       <div className="text-center p-8 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/50 dark:border-green-700">
         <h3 className="text-2xl font-bold text-green-800 dark:text-green-300">{t.contactForm.success.title}</h3>
         <p className="mt-2 text-green-700 dark:text-green-400">{t.contactForm.success.message}</p>
-        <button onClick={() => { setIsSubmitted(false); setFormData(initialFormData); }} className="mt-4 bg-orange-500 text-brand-dark font-bold py-2 px-6 rounded-md hover:bg-orange-600 transition duration-300">
+        <button onClick={() => { setIsSubmitted(false); setFormData(initialFormData); setErrors({}); }} className="mt-4 bg-orange-500 text-brand-dark font-bold py-2 px-6 rounded-md hover:bg-orange-600 transition duration-300">
           {t.contactForm.success.button}
         </button>
       </div>
     );
   }
 
-  // --- Time Slot Generation ---
   const generateTimeSlots = (selectedDateString: string): string[] => {
       if (!selectedDateString) return [];
       
@@ -144,17 +166,15 @@ ${formData.description}
       const slots: string[] = [];
       let operatingHours: { start: number, end: number, lunch?: number } | null = null;
       
-      // Monday to Thursday (1-4)
       if (dayOfWeek >= 1 && dayOfWeek <= 4) {
           operatingHours = { start: 7.5, end: 16, lunch: 12 };
       } 
-      // Friday (5)
       else if (dayOfWeek === 5) {
           operatingHours = { start: 7.5, end: 12 };
       }
 
       if (operatingHours) {
-        for (let time = operatingHours.start; time < operatingHours.end; time += 1) { // 1-hour slots
+        for (let time = operatingHours.start; time < operatingHours.end; time += 1) {
             if (operatingHours.lunch && time >= operatingHours.lunch && time < operatingHours.lunch + 1) continue;
 
             const hour = Math.floor(time);
@@ -172,7 +192,6 @@ ${formData.description}
 
   const availableSlots = generateTimeSlots(formData.appointmentDate);
 
-  // --- Date Picker Render Function ---
   const renderCalendar = () => {
     const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
@@ -182,8 +201,8 @@ ${formData.description}
     
     const handleDateSelect = (day: number) => {
       const selectedDate = new Date(Date.UTC(viewDate.getFullYear(), viewDate.getMonth(), day));
-      const dateString = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
-      setFormData(prev => ({ ...prev, appointmentDate: dateString, appointmentTime: '' })); // Reset time on new date
+      const dateString = selectedDate.toISOString().split('T')[0];
+      setFormData(prev => ({ ...prev, appointmentDate: dateString, appointmentTime: '' }));
       setIsDatePickerOpen(false);
     };
   
@@ -251,23 +270,30 @@ ${formData.description}
         </div>
     );
   };
-  // --- End Date Picker Render Function ---
+
+  const getInputClass = (field: keyof ValidationErrors) =>
+    `mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white ${
+      errors[field] ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+    }`;
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* --- Personal & Vehicle Info --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         <div>
           <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.fullName}</label>
-          <input type="text" name="fullName" id="fullName" required value={formData.fullName} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+          <input type="text" name="fullName" id="fullName" value={formData.fullName} onChange={handleChange} className={getInputClass('fullName')} />
+          {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.phone}</label>
-          <input type="tel" name="phone" id="phone" required value={formData.phone} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+          <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={getInputClass('phone')} />
+          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.email}</label>
-          <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+          <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={getInputClass('email')} />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.contactMethod}</label>
@@ -290,11 +316,10 @@ ${formData.description}
         </div>
         <div>
           <label htmlFor="vehicleDetails" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.vehicleDetails}</label>
-          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400" placeholder={t.contactForm.vehicleDetailsPlaceholder} />
+          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className={getInputClass('vehicleDetails')} placeholder={t.contactForm.vehicleDetailsPlaceholder} />
         </div>
       </div>
       
-      {/* --- Service Selection --- */}
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.serviceNeeded}</label>
         <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -309,10 +334,10 @@ ${formData.description}
 
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.description}</label>
-        <textarea id="description" name="description" rows={4} required value={formData.description} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400" placeholder={t.contactForm.descriptionPlaceholder}></textarea>
+        <textarea id="description" name="description" rows={4} value={formData.description} onChange={handleChange} className={getInputClass('description')} placeholder={t.contactForm.descriptionPlaceholder}></textarea>
+        {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
       </div>
 
-      {/* --- Date & Time Picker --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="relative" ref={datePickerRef}>
           <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.appointmentDate}</label>
@@ -360,7 +385,6 @@ ${formData.description}
         </div>
       </div>
       
-      {/* --- Submission --- */}
       <div>
         <button type="submit" className="w-full bg-orange-500 text-brand-dark font-bold py-3 px-6 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
           {t.contactForm.submitButton}

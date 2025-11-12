@@ -13,50 +13,51 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
   return (
     <div className="bg-white dark:bg-slate-900">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="bg-slate-100 dark:bg-brand-dark">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <ol role="list" className="flex items-center space-x-2 py-4">
-              <li>
-                <div className="flex items-center">
-                  <a href="/" className="mr-2 text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
-                    {t.breadcrumbs.home}
-                  </a>
-                  <svg
-                    width="16"
-                    height="20"
-                    viewBox="0 0 16 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="h-5 w-4 text-slate-400 dark:text-slate-600"
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
-                </div>
-              </li>
-              <li>
-                <div className="flex items-center">
-                  <a href="/services" className="mr-2 text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
-                    {t.breadcrumbs.services}
-                  </a>
-                  <svg
-                    width="16"
-                    height="20"
-                    viewBox="0 0 16 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="h-5 w-4 text-slate-400 dark:text-slate-600"
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
-                </div>
-              </li>
-              <li>
-                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{service.title[language]}</span>
-              </li>
-            </ol>
+       <div className="bg-white dark:bg-slate-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <nav aria-label="Breadcrumb">
+              <ol role="list" className="flex items-center space-x-2">
+                <li>
+                  <div className="flex items-center">
+                    <a href="/" className="mr-2 text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                      {t.breadcrumbs.home}
+                    </a>
+                    <svg
+                      width="16"
+                      height="20"
+                      viewBox="0 0 16 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="h-5 w-4 text-slate-400 dark:text-slate-600"
+                    >
+                      <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                    </svg>
+                  </div>
+                </li>
+                <li>
+                  <div className="flex items-center">
+                    <a href="/services" className="mr-2 text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                      {t.breadcrumbs.services}
+                    </a>
+                    <svg
+                      width="16"
+                      height="20"
+                      viewBox="0 0 16 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="h-5 w-4 text-slate-400 dark:text-slate-600"
+                    >
+                      <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                    </svg>
+                  </div>
+                </li>
+                <li>
+                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{service.title[language]}</span>
+                </li>
+              </ol>
+            </nav>
         </div>
-      </nav>
+       </div>
       {/* Hero Section */}
       <div className="bg-brand-dark py-20 lg:py-28 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -104,7 +105,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
       </div>
       <CallToActionSection 
         title={t.serviceDetail.ctaTitle}
-        subtitle={t.serviceDetail.ctaSubtitle}
+        subtitle={t.serviceDetail.subtitle}
       />
     </div>
   );
