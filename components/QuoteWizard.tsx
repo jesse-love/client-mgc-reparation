@@ -1,18 +1,19 @@
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useQuoteWizard, initialWizardData } from '../contexts/QuoteWizardContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import { createGoogleCalendarLink } from '../utils/calendar';
 
 const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, total }) => {
     const { t } = useLanguage();
     return (
         <div>
-            <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">
                 {t.quoteWizard.progress.replace('{current}', String(current)).replace('{total}', String(total))}
             </p>
-            <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
-                <div className="bg-orange-500 h-2 rounded-full transition-all duration-500" style={{ width: `${(current / total) * 100}%` }}></div>
+            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+                <div className="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${(current / total) * 100}%` }}></div>
             </div>
         </div>
     );
@@ -23,7 +24,6 @@ const QuoteWizard: React.FC = () => {
     const { language, t } = useLanguage();
     const [isSubmitted, setIsSubmitted] = useState(false);
     
-    // Date Picker State
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
     const datePickerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +44,13 @@ const QuoteWizard: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        const webhookUrl = 'https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA';
+        const webhookUrl = process.env.GOOGLE_CHAT_WEBHOOK_URL;
+
+        if (!webhookUrl) {
+          console.error('Google Chat Webhook URL is not configured.');
+          alert('This form is currently unavailable. Please call us directly.');
+          return;
+        }
         
         const calendarLink = createGoogleCalendarLink(wizardData);
 
@@ -131,10 +137,10 @@ ${wizardData.description}
                     disabled={isDisabled}
                     className={`
                         w-10 h-10 rounded-full transition-colors duration-200
-                        ${isSelected ? 'bg-orange-500 text-brand-dark font-bold' : ''}
+                        ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''}
                         ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
                         ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}
-                        ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed line-through' : 'text-gray-700 dark:text-gray-200'}
+                        ${isDisabled ? 'text-slate-400 dark:text-slate-500 cursor-not-allowed line-through' : 'text-slate-700 dark:text-slate-200'}
                     `}
                 >
                     {day}
@@ -144,17 +150,17 @@ ${wizardData.description}
     });
 
     return (
-        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-20 dark:bg-slate-800 dark:border-gray-600">
+        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-slate-300 rounded-lg shadow-lg p-4 z-20 dark:bg-slate-800 dark:border-slate-600">
             <div className="flex justify-between items-center mb-4">
-                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <ChevronLeftIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                 </button>
-                <div className="font-bold text-gray-800 dark:text-gray-100">{monthName} {year}</div>
-                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                <div className="font-bold text-slate-800 dark:text-slate-100">{monthName} {year}</div>
+                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <ChevronRightIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                 </button>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-gray-400 mb-2">
+            <div className="grid grid-cols-7 gap-1 text-sm text-center text-slate-500 dark:text-slate-400 mb-2">
                 {weekDays.map(d => <div key={d}>{d}</div>)}
             </div>
             <div className="grid grid-cols-7 gap-y-1">
@@ -202,11 +208,10 @@ ${wizardData.description}
 
     useEffect(() => {
         if (!isOpen) {
-            // Reset state when modal closes
             setTimeout(() => {
                 setIsSubmitted(false);
                 resetWizard();
-            }, 300); // delay to allow for closing animation
+            }, 300);
         }
     }, [isOpen, resetWizard]);
 
@@ -216,10 +221,10 @@ ${wizardData.description}
         if (isSubmitted) {
             return (
                 <div className="text-center p-4">
-                    <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{t.quoteWizard.success.title}</h2>
-                    <p className="mt-2 text-gray-600 dark:text-gray-300">{t.quoteWizard.success.message}</p>
-                    <button onClick={handleResetAndClose} className="mt-6 bg-orange-500 text-brand-dark font-bold py-2 px-6 rounded-md hover:bg-orange-600 transition duration-300">
+                    <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-6" />
+                    <h2 className="text-3xl font-bold font-oswald text-slate-800 dark:text-white">{t.quoteWizard.success.title}</h2>
+                    <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">{t.quoteWizard.success.message}</p>
+                    <button onClick={handleResetAndClose} className="mt-8 bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition duration-300">
                         {t.quoteWizard.success.button}
                     </button>
                 </div>
@@ -229,25 +234,19 @@ ${wizardData.description}
             case 1:
                 return (
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{t.quoteWizard.steps[1].title}</h2>
+                        <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[1].title}</h2>
                         <div className="space-y-4">
-                            <button onClick={() => handleSelectOption('vehicleType', 'Car/SUV/Light Truck')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center">
-                                <WrenchScrewdriverIcon className="h-8 w-8 text-orange-500 mr-4"/>
-                                <div>
-                                    <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[1].options.car}</span>
-                                </div>
+                             <button onClick={() => handleSelectOption('vehicleType', 'Car/SUV/Light Truck')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <WrenchScrewdriverIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.car}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('vehicleType', 'Heavy Truck')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center">
-                                <TruckIcon className="h-8 w-8 text-orange-500 mr-4"/>
-                                <div>
-                                    <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[1].options.heavy}</span>
-                                </div>
+                            <button onClick={() => handleSelectOption('vehicleType', 'Heavy Truck')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <TruckIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.heavy}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('vehicleType', 'Trailer/Other')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center">
-                                <CogIcon className="h-8 w-8 text-orange-500 mr-4"/>
-                                <div>
-                                    <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[1].options.trailer}</span>
-                                </div>
+                             <button onClick={() => handleSelectOption('vehicleType', 'Trailer/Other')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <CogIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.trailer}</span>
                             </button>
                         </div>
                     </div>
@@ -255,50 +254,56 @@ ${wizardData.description}
             case 2:
                 return (
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{t.quoteWizard.steps[2].title}</h2>
+                        <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[2].title}</h2>
                         <div className="space-y-4">
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Maintenance/Inspection')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all">
-                                <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[2].options.maintenance}</span>
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Maintenance/Inspection')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <SquaresPlusIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.maintenance}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Specific Repair')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all">
-                                <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[2].options.repair}</span>
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Specific Repair')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <BugAntIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.repair}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Diagnostics/Not Sure')} className="w-full text-left p-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all">
-                                <span className="font-semibold text-gray-800 dark:text-gray-100">{t.quoteWizard.steps[2].options.diagnostics}</span>
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Diagnostics/Not Sure')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                                <DocumentMagnifyingGlassIcon className="h-10 w-10 text-orange-500 mr-5"/>
+                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.diagnostics}</span>
                             </button>
                         </div>
+                         <div className="mt-8 text-center">
+                            <button type="button" onClick={handleBack} className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500">{t.quoteWizard.buttons.back}</button>
+                         </div>
                     </div>
                 );
             case 3:
                 return (
                     <div>
-                         <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{t.quoteWizard.steps[3].title}</h2>
+                         <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[3].title}</h2>
                          <form onSubmit={handleSubmit} className="space-y-4">
-                            <textarea id="description" name="description" rows={3} required value={wizardData.description} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
+                            <textarea id="description" name="description" rows={3} required value={wizardData.description} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} required value={wizardData.fullName} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
-                                <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} required value={wizardData.phone} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+                                <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} required value={wizardData.fullName} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
+                                <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} required value={wizardData.phone} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
                             </div>
-                            <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} required value={wizardData.email} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
+                            <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} required value={wizardData.email} onChange={handleChange} className="w-full px-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white text-lg" />
                             
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>
                                     <div className="relative">
-                                    <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white" />
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><CalendarIcon className="h-5 w-5 text-gray-400" /></div>
+                                    <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full text-lg pl-12 pr-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-slate-600 dark:text-white" />
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
                                     </div>
                                     {isDatePickerOpen && renderCalendar()}
                                 </div>
                                 <div>
                                     {!wizardData.appointmentDate ? (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-gray-50 dark:bg-slate-700 rounded-md text-gray-500 dark:text-gray-400">{t.contactForm.selectDateFirst}</div>
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 dark:text-slate-400">{t.contactForm.selectDateFirst}</div>
                                     ) : availableSlots.length > 0 ? (
                                         <select 
                                             id="appointmentTime" 
                                             name="appointmentTime" 
                                             value={wizardData.appointmentTime} 
                                             onChange={handleChange} 
-                                            className="h-full block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white"
+                                            className="h-full block w-full pl-3 pr-10 py-3 text-lg border-2 border-slate-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 rounded-md dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                         >
                                             <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
                                             {availableSlots.map(time => (
@@ -311,9 +316,9 @@ ${wizardData.description}
                                 </div>
                             </div>
 
-                            <div className="pt-2 flex justify-between items-center">
-                                <button type="button" onClick={handleBack} className="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-orange-500">{t.quoteWizard.buttons.back}</button>
-                                <button type="submit" className="bg-orange-500 text-brand-dark font-bold py-2 px-6 rounded-md hover:bg-orange-600 transition duration-300">{t.quoteWizard.buttons.submit}</button>
+                            <div className="pt-4 flex justify-between items-center">
+                                <button type="button" onClick={handleBack} className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500">{t.quoteWizard.buttons.back}</button>
+                                <button type="submit" className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.quoteWizard.buttons.submit}</button>
                             </div>
                          </form>
                     </div>
@@ -324,21 +329,23 @@ ${wizardData.description}
     }
     
     return (
-        <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={closeWizard}></div>
-            <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden transition-all duration-300">
-                <button onClick={closeWizard} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10">
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={closeWizard}></div>
+            <div className={`relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                <button onClick={closeWizard} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 z-10 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                     <XMarkIcon className="h-8 w-8" />
                 </button>
                 <div className="grid md:grid-cols-2">
-                    <div className="hidden md:flex flex-col justify-center p-8 bg-blue-600 text-white">
-                        <CheckCircleIcon className="w-12 h-12 mb-4 opacity-80" />
-                        <h2 className="text-3xl font-bold">{t.quoteWizard.brandTitle}</h2>
-                        <p className="mt-2 text-blue-100">{t.quoteWizard.brandSubtitle}</p>
+                    <div className="hidden md:flex flex-col justify-center p-12 bg-brand-dark text-white" style={{backgroundImage: "url('https://images.unsplash.com/photo-1548695604-94ab0a3a5f33?q=80&w=2940&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
+                         <div className="relative z-10 bg-brand-dark/60 p-8 rounded-lg">
+                            <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500"> RÉPARATION</span></span>
+                            <h2 className="text-4xl font-oswald font-bold mt-6">{t.quoteWizard.brandTitle}</h2>
+                            <p className="mt-4 text-slate-300 text-lg">{t.quoteWizard.brandSubtitle}</p>
+                        </div>
                     </div>
-                    <div className="p-8">
+                    <div className="p-8 sm:p-12">
                         {!isSubmitted && <ProgressBar current={wizardData.step} total={3} />}
-                        <div className="mt-6 min-h-[300px] flex flex-col justify-center">
+                        <div className="mt-8 min-h-[450px] flex flex-col justify-center">
                             {renderContent()}
                         </div>
                     </div>

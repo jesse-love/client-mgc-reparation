@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MGC Réparation Inc. | Mascouche, QC</title>
+    <title>MGC Réparation | Honest & Guaranteed Auto Repair in Mascouche</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔧</text></svg>">
     <script>
@@ -13,8 +13,24 @@
           extend: {
             colors: {
               'brand-blue': '#1a3a6d',
-              'brand-dark': '#1e293b',
-              'brand-light': '#f1f5f9',
+              'brand-dark': '#0f172a',
+              'slate': {
+                '50': '#f8fafc',
+                '100': '#f1f5f9',
+                '200': '#e2e8f0',
+                '300': '#cbd5e1',
+                '400': '#94a3b8',
+                '500': '#64748b',
+                '600': '#475569',
+                '700': '#334155',
+                '800': '#1e293b',
+                '900': '#0f172a',
+              },
+              'orange': {
+                '400': '#fb923c',
+                '500': '#f97316',
+                '600': '#ea580c',
+              }
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
@@ -26,7 +42,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <script type="importmap">
 {
   "imports": {
@@ -38,7 +54,7 @@
 }
 </script>
 </head>
-  <body class="font-sans">
+  <body class="font-sans bg-slate-100 dark:bg-slate-900">
     <div id="root"></div>
     <script type="module" src="index.tsx"></script>
   </body>

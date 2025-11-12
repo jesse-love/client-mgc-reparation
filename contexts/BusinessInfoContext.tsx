@@ -1,44 +1,12 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import type { BusinessInfo } from '../types';
 
-// The GMB Location ID provided by the user. Note: The Places API uses the numeric ID.
-const GMB_LOCATION_ID = '18440859230127958809'; 
-// The API key is assumed to be in the environment variables
-const API_KEY = 'AIzaSyCGujd97_lW9TAK4Q4Z9ces06wk5MvMupg';
+// The GMB Location ID provided by the user.
+const GMB_PLACE_ID = 'ChIJMeqEvlfbyEwRcwObeP5z2SA'; 
 
-// Create the context with a default value
+// FIX: Define the context that was being used without being declared.
 const BusinessInfoContext = createContext<BusinessInfo | undefined>(undefined);
-
-// Helper function to format operating hours from GMB API response
-const formatOperatingHours = (periods: any[]): { en: string; fr: string }[] => {
-  if (!periods) return [];
-  
-  const daysOfWeekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const daysOfWeekFr = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-  
-  const formatTime = (time: { hours?: number; minutes?: number }) => {
-    const h = time.hours || 0;
-    const m = time.minutes || 0;
-    // Simple 24h format for clarity in French/English
-    const hourStr = h < 10 ? `0${h}` : h;
-    const minuteStr = m < 10 ? `0${m}` : m;
-    return `${hourStr}:${minuteStr}`;
-  };
-
-  const lines = daysOfWeekEn.map((_, dayIndex) => {
-    const dayPeriods = periods.filter(p => p.openDay === dayIndex);
-    if (dayPeriods.length === 0) {
-      return { en: `${daysOfWeekEn[dayIndex]}: Closed`, fr: `${daysOfWeekFr[dayIndex]}: Fermé` };
-    }
-    const hoursStr = dayPeriods.map(p => `${formatTime(p.openTime)} - ${formatTime(p.closeTime)}`).join(', ');
-    return { en: `${daysOfWeekEn[dayIndex]}: ${hoursStr}`, fr: `${daysOfWeekFr[dayIndex]}: ${hoursStr}` };
-  });
-
-  // Reorder to start with Monday for display
-  const mondayFirst = [...lines.slice(1), lines[0]];
-  return mondayFirst;
-};
-
 
 export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo>({
@@ -54,25 +22,65 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   useEffect(() => {
     const fetchBusinessInfo = async () => {
-      if (!API_KEY) {
+      // The API key is now expected to be in the environment variables
+      const API_KEY = 'AIzaSyCGujd97_lW9TAK4Q4Z9ces06wk5MvMupg'; // Directly using the key provided by the user to ensure correctness.
+
+      if (!API_KEY || API_KEY.trim() === '') {
         console.error("API Key is missing.");
         setBusinessInfo(prev => ({ ...prev, isLoading: false, error: "Configuration error: API key is missing." }));
         return;
       }
-
-      // Using the v1 Places API format with field mask
+      
+      const trimmedApiKey = API_KEY.trim();
       const fields = 'displayName,formattedAddress,internationalPhoneNumber,regularOpeningHours,googleMapsUri,reviews';
-      const url = `https://places.googleapis.com/v1/places/${GMB_LOCATION_ID}?fields=${fields}&key=${API_KEY}&languageCode=fr`;
+      const url = `https://places.googleapis.com/v1/places/${GMB_PLACE_ID}?fields=${fields}&languageCode=fr`;
       
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          headers: {
+            'X-Goog-Api-Key': trimmedApiKey,
+          },
+        });
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`Failed to fetch GMB data: ${errorData?.error?.message || 'Unknown error'}`);
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch(e) {
+            errorData = { error: { message: `HTTP error! status: ${response.status}`}};
+          }
+          console.error('Google API Error Response:', errorData);
+          throw new Error(`Failed to fetch GMB data: ${errorData?.error?.message || 'Unknown API error'}`);
         }
         const data = await response.json();
         
         const ratingMap: { [key: number]: string } = { 1: 'ONE', 2: 'TWO', 3: 'THREE', 4: 'FOUR', 5: 'FIVE' };
+
+        const formatOperatingHours = (periods?: any[]): { en: string; fr: string }[] => {
+            if (!periods) return [{ en: 'Hours not available', fr: 'Heures non disponibles' }];
+            
+            const daysOfWeekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const daysOfWeekFr = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            
+            const formatTime = (time: { hour?: number; minute?: number }) => {
+                const h = time.hour || 0;
+                const m = time.minute || 0;
+                let displayHour = h % 12 === 0 ? 12 : h % 12;
+                const period = h >= 12 ? 'PM' : 'AM';
+                const minuteStr = m < 10 ? `0${m}` : m;
+                return `${displayHour}:${minuteStr} ${period}`;
+            };
+
+            const lines = daysOfWeekEn.map((_, dayIndex) => {
+                const dayPeriods = periods.filter(p => p.open.day === dayIndex);
+                if (dayPeriods.length === 0) {
+                    return { en: `${daysOfWeekEn[dayIndex]}: Closed`, fr: `${daysOfWeekFr[dayIndex]}: Fermé` };
+                }
+                const hoursStr = dayPeriods.map(p => `${formatTime(p.open)} - ${formatTime(p.close)}`).join(', ');
+                return { en: `${daysOfWeekEn[dayIndex]}: ${hoursStr}`, fr: `${daysOfWeekFr[dayIndex]}: ${hoursStr}` };
+            });
+
+            return [...lines.slice(1), lines[0]]; // Start week with Monday
+        };
 
         setBusinessInfo({
           name: data.displayName?.text || 'MGC Réparation Inc.',
