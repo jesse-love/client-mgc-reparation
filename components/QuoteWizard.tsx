@@ -7,11 +7,13 @@ import { createGoogleCalendarLink } from '../utils/calendar';
 import { useTheme } from '../App';
 import { trackConversion } from '../utils/googleTag';
 
+// FIX: Add appointmentDate to ValidationErrors to resolve TypeScript error.
 type ValidationErrors = {
     fullName?: string;
     email?: string;
     phone?: string;
     description?: string;
+    appointmentDate?: string;
 };
 
 

@@ -27,19 +27,19 @@ const LandingOfferPage: React.FC = () => {
         <div className="flex-grow flex items-center justify-center">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center py-12">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-oswald font-bold text-white leading-tight">
-                Bruit de freins suspect? Obtenez votre inspection <span className="text-orange-500">100% GRATUITE</span> à Terrebonne.
+                Bruit de freins suspect? Obtenez votre inspection des freins <span className="text-orange-500">100% GRATUITE</span> à Mascouche (valeur 99$). Réponse en 5 minutes!
               </h1>
               <h3 className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-300">
-                "Les concessionnaires vous facturent 150$ juste pour regarder. Oubliez ça. Sachez <span className="font-bold text-white">exactement</span> ce qui ne va pas avant de payer un sou."
+                "Les concessionnaires vous facturent 150$ juste pour regarder vos freins. Oubliez ça. Sachez <span className='font-bold text-white'>exactement</span> ce qui ne va pas, comme un mécanicien honnête, avant de payer un sou. Diagnostic rapide et fiable."
               </h3>
               <div className="mt-10">
                 <button 
                   onClick={handleOpenForm}
                   className="bg-orange-500 text-slate-900 font-bold py-4 px-10 rounded-md hover:bg-orange-400 transition duration-300 text-xl shadow-lg hover:shadow-orange-500/40 transform hover:scale-105"
                 >
-                  OUI! JE VEUX MON INSPECTION GRATUITE!
+                  OUI! JE VEUX MON DIAGNOSTIC FREINS GRATUIT MAINTENANT!
                 </button>
-                <p className="text-center text-sm text-slate-400 mt-4">Garanti 100% gratuit. Sans obligation. Réponse rapide assurée.</p>
+                <p className="text-center text-sm text-slate-400 mt-4">Garanti 100% gratuit. Sans obligation. Diagnostic rapide. Mécanicien de confiance Mascouche.</p>
               </div>
             </div>
         </div>

@@ -28,8 +28,8 @@ const ThankYouPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-[80vh]">
         <div className="text-center p-8 max-w-2xl mx-auto">
           <CheckCircleIcon className="w-24 h-24 text-green-500 mx-auto mb-6" />
-          <h1 className="text-4xl md:text-5xl font-oswald font-bold text-white">Merci! Votre demande a été envoyée.</h1>
-          <p className="mt-4 text-xl text-slate-300">Un expert de notre équipe vous appellera d'ici 5 minutes pour confirmer votre rendez-vous.</p>
+          <h1 className="text-4xl md:text-5xl font-oswald font-bold text-white">Merci! Votre demande de service a été envoyée avec succès à MGC Réparation.</h1>
+          <p className="mt-4 text-xl text-slate-300">Un expert mécanicien de notre équipe vous appellera d'ici 5 minutes pour discuter de votre demande et confirmer votre rendez-vous à Mascouche.</p>
           <p className="mt-2 text-slate-400">Gardez votre téléphone à portée de main!</p>
         </div>
       </div>

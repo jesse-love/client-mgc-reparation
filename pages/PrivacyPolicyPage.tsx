@@ -1,11 +1,13 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import SchemaManager from '../components/SchemaManager';
 
 const PrivacyPolicyPage: React.FC = () => {
   const { t } = useLanguage();
 
   return (
     <>
+      <SchemaManager pageType="Generic" />
       <div className="bg-white dark:bg-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <nav aria-label="Breadcrumb">

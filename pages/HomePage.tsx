@@ -1,6 +1,6 @@
 import React from 'react';
 import { services } from '../i18n';
-import { UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon } from '@heroicons/react/24/solid';
+import { UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';
@@ -8,6 +8,7 @@ import TestimonialMarquee from '../components/TestimonialMarquee';
 import LocationInfo from '../components/LocationInfo';
 import HeroBackground from '../components/HeroBackground';
 import MechanicIllustration from '../components/MechanicIllustration';
+import SchemaManager from '../components/SchemaManager';
 
 const iconMap: { [key:string]: React.ElementType } = {
     UsersIcon,
@@ -106,12 +107,41 @@ const WhyChooseUs: React.FC = () => {
     );
 };
 
+const FAQ: React.FC = () => {
+    const { language, t } = useLanguage();
+    return (
+        <section className="py-20 lg:py-32 bg-slate-100 dark:bg-slate-900">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <div className="text-center mb-16">
+                    <h2 className="text-5xl lg:text-6xl font-oswald font-bold text-slate-900 dark:text-white">{t.home.faq.title}</h2>
+                    <p className="mt-6 max-w-2xl mx-auto text-xl text-slate-600 dark:text-slate-300">{t.home.faq.subtitle}</p>
+                </div>
+                <div className="space-y-6">
+                    {t.home.faq.questions.map((item, index) => (
+                        <details key={index} className="group bg-white dark:bg-brand-dark p-6 rounded-lg shadow-md border border-slate-200 dark:border-slate-800" name="faq-accordion">
+                            <summary className="flex justify-between items-center cursor-pointer font-oswald font-bold text-xl text-slate-900 dark:text-white list-none">
+                                {item.question[language]}
+                                <ChevronDownIcon className="h-6 w-6 text-orange-500 transition-transform duration-300 group-open:rotate-180" />
+                            </summary>
+                            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-lg">
+                                {item.answer[language]}
+                            </div>
+                        </details>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
 const HomePage: React.FC = () => {
   return (
     <>
+      <SchemaManager pageType="HomePage" />
       <Hero />
       <ServicesOverview />
       <WhyChooseUs />
+      <FAQ />
       <LocationInfo />
     </>
   );

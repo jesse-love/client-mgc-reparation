@@ -109,10 +109,14 @@ const Header: React.FC = () => {
             {NAV_LINKS.map((link) => (
               <div key={link.name.en} className="relative group/nav">
                 <a href={link.href} className="relative text-slate-100 group transition-colors duration-300 font-semibold uppercase tracking-wider text-sm hover:text-orange-400">
-                  <span className="flex items-center">
-                    {link.name[language]}
-                    {link.subLinks && <ChevronDownIcon className="h-4 w-4 ml-1.5 transition-transform group-hover/nav:rotate-180" />}
-                  </span>
+                  {link.subLinks ? (
+                    <span className="flex items-center">
+                      {link.name[language]}
+                      <ChevronDownIcon className="h-4 w-4 ml-1.5 transition-transform group-hover/nav:rotate-180" />
+                    </span>
+                  ) : (
+                    link.name[language]
+                  )}
                   {!link.subLinks && <span className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center duration-300"></span>}
                 </a>
                 {link.subLinks && (
@@ -130,7 +134,7 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <LanguageSwitcher />
             <ThemeToggle />
-            <button onClick={handleBookServiceClick} className="inline-block bg-orange-500 text-slate-900 font-bold py-3 px-6 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/40">
+            <button onClick={handleBookServiceClick} className="inline-block bg-orange-500 text-slate-900 font-bold py-3 px-6 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/40 whitespace-nowrap">
               {t.header.bookService}
             </button>
           </div>
