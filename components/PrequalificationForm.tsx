@@ -157,7 +157,14 @@ ${problemDescription}
                 headers: { 'Content-Type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(payload),
             });
-            window.location.href = `/merci?avatar=${avatarType}`;
+            const params = new URLSearchParams({
+                avatar: avatarType || '',
+                name: encodeURIComponent(formData.fullName),
+                email: encodeURIComponent(formData.email),
+                phone: encodeURIComponent(formData.phone),
+                vehicleType: encodeURIComponent(formData.vehicleType),
+            });
+            window.location.href = `/merci?${params.toString()}`;
         } catch (error) {
             console.error('Failed to submit form to webhook:', error);
             alert('Une erreur est survenue. Veuillez nous appeler directement.');

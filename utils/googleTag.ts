@@ -6,10 +6,11 @@ import {
   GTM_GENERATE_LEAD_EVENT,
 } from '../constants';
 
-// Add this to allow TypeScript to recognize window.dataLayer
+// Add this to allow TypeScript to recognize window.dataLayer and window.fbq
 declare global {
   interface Window {
     dataLayer: any[];
+    fbq: (...args: any[]) => void;
   }
 }
 
@@ -41,17 +42,43 @@ export const trackLandingPageView = (path: string) => {
   console.log(`GTM Event: ${GTM_VIEW_LANDING_PAGE_EVENT} for ${path}`);
 };
 
+interface UserData {
+    name?: string;
+    email?: string;
+    phone?: string;
+}
+
+interface LeadGenerationParams {
+    avatarType: string;
+    userData: UserData;
+    vehicleType?: string;
+}
+
 /**
- * Pushes a lead generation event from a landing page.
- * @param avatarType - The type of avatar associated with the lead.
+ * Pushes an enriched lead generation event from a landing page.
+ * Includes user data for Enhanced Conversions and custom parameters for Facebook.
+ * @param params - The lead generation data.
  */
-export const trackLeadGeneration = (avatarType: string) => {
+export const trackLeadGeneration = ({ avatarType, userData, vehicleType }: LeadGenerationParams) => {
   window.dataLayer = window.dataLayer || [];
+
+  const [firstName, ...lastNameParts] = (userData.name || '').split(' ');
+  const lastName = lastNameParts.join(' ');
+
   window.dataLayer.push({
     event: GTM_GENERATE_LEAD_EVENT,
     avatar_type: avatarType,
+    vehicle_type: vehicleType,
+    user_data: {
+      email: userData.email,
+      phone_number: userData.phone,
+      address: {
+        first_name: firstName,
+        last_name: lastName,
+      },
+    },
   });
-  console.log(`GTM Event: ${GTM_GENERATE_LEAD_EVENT} with avatar_type: ${avatarType}`);
+  console.log(`GTM Event: ${GTM_GENERATE_LEAD_EVENT} with enriched data for avatar: ${avatarType}`);
 };
 
 

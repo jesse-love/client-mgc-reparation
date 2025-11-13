@@ -8,7 +8,18 @@ const ThankYouPage: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const avatarType = params.get('avatar');
     if (avatarType) {
-      trackLeadGeneration(avatarType);
+      const userData = {
+        name: params.get('name') || undefined,
+        email: params.get('email') || undefined,
+        phone: params.get('phone') || undefined,
+      };
+      const vehicleType = params.get('vehicleType') || undefined;
+
+      trackLeadGeneration({ 
+        avatarType, 
+        userData,
+        vehicleType,
+      });
     }
   }, []);
 
