@@ -12,3 +12,7 @@ export const GTM_ID = 'GT-K46JFRM8';
 export const GTM_CONTACT_FORM_EVENT = 'generate_lead_contact';
 export const GTM_WIZARD_FORM_EVENT = 'generate_lead_wizard';
 export const GTM_CLICK_TO_CALL_EVENT = 'click_to_call';
+
+// --- PPL Campaign Events from Marketing Plan ---
+export const GTM_VIEW_LANDING_PAGE_EVENT = 'view_landing_page';
+export const GTM_GENERATE_LEAD_EVENT = 'generate_lead';

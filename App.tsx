@@ -6,13 +6,18 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ServicesPage from './pages/ServicesPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
+import LandingOfferPage from './pages/LandingOfferPage';
+import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
+import LandingTiresPage from './pages/LandingTiresPage';
+import ThankYouPage from './pages/ThankYouPage';
+
 import { services } from './i18n';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
 import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
 import QuoteWizard from './components/QuoteWizard';
-import { trackPageView, trackClickToCall } from './utils/googleTag';
+import { trackPageView, trackClickToCall, trackLandingPageView } from './utils/googleTag';
 
 type Theme = 'light' | 'dark';
 
@@ -115,6 +120,7 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
       case '/':
         return <HomePage />;
       default:
+        // For any unknown paths, show the home page.
         return <HomePage />;
     }
   };
@@ -134,18 +140,27 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
 
 const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
-
+  const landingPages = ['/offre', '/bilan', '/pneus'];
+  
   // Track initial page view
   useEffect(() => {
-    trackPageView(route);
-  }, []);
+    if (landingPages.includes(route) || route === '/merci') {
+      trackLandingPageView(route);
+    } else {
+      trackPageView(route);
+    }
+  }, []); // Only runs once on initial load
 
   useEffect(() => {
     const handlePopState = () => {
       const newPath = cleanPath(window.location.pathname);
       setRoute(newPath);
       window.scrollTo(0, 0);
-      trackPageView(newPath); // Track on back/forward
+      if (landingPages.includes(newPath) || newPath === '/merci') {
+        trackLandingPageView(newPath);
+      } else {
+        trackPageView(newPath);
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -154,7 +169,6 @@ const App: React.FC = () => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a');
 
-      // Handle call tracking
       if (anchor?.href.startsWith('tel:')) {
         trackClickToCall();
       }
@@ -174,7 +188,11 @@ const App: React.FC = () => {
             window.history.pushState({}, '', newPath);
             setRoute(newPath);
             window.scrollTo(0, 0);
-            trackPageView(newPath); // Track on internal navigation
+             if (landingPages.includes(newPath) || newPath === '/merci') {
+                trackLandingPageView(newPath);
+            } else {
+                trackPageView(newPath);
+            }
           }
         }
       }
@@ -185,15 +203,32 @@ const App: React.FC = () => {
       window.removeEventListener('popstate', handlePopState);
       document.removeEventListener('click', handleLinkClick);
     };
-  }, [route]);
+  }, [route]); // Reruns if route changes
+
+  const renderAppContent = () => {
+    switch (route) {
+      case '/offre':
+        return <LandingOfferPage />;
+      case '/bilan':
+        return <LandingHealthCheckPage />;
+      case '/pneus':
+        return <LandingTiresPage />;
+      case '/merci':
+        return <ThankYouPage />;
+      default:
+        return (
+          <QuoteWizardProvider>
+            <MainLayout route={route} />
+          </QuoteWizardProvider>
+        );
+    }
+  };
 
   return (
     <ThemeProvider>
       <LanguageProvider>
         <BusinessInfoProvider>
-          <QuoteWizardProvider>
-            <MainLayout route={route} />
-          </QuoteWizardProvider>
+          {renderAppContent()}
         </BusinessInfoProvider>
       </LanguageProvider>
     </ThemeProvider>
