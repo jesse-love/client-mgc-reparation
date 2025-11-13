@@ -1,7 +1,7 @@
 // This is your Google Tag Manager (GTM) Container ID.
 // All other tracking tags (Google Analytics, Google Ads, Facebook Pixel, etc.)
 // should be configured inside your GTM container on the GTM website.
-export const GTM_ID = 'GT-K46JFRM8';
+export const GTM_ID = 'GTM-N7LN5XBL';
 
 /**
  * These are example event names for conversion tracking.
