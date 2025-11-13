@@ -229,9 +229,8 @@ ${formData.description}
         const dayOfWeek = currentDate.getDay();
         const isToday = today.toDateString() === currentDate.toDateString();
         const isSelected = selectedDateObj && selectedDateObj.getUTCDate() === day && selectedDateObj.getUTCMonth() === month && selectedDateObj.getUTCFullYear() === year;
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
         const isPast = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const isDisabled = isPast || isWeekend;
+        const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
 
         return (
             <div key={day} className="text-center">
@@ -244,7 +243,8 @@ ${formData.description}
                         ${isSelected ? 'bg-orange-500 text-brand-dark font-bold' : ''}
                         ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
                         ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}
-                        ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed line-through' : 'text-gray-700 dark:text-gray-200'}
+                        ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'text-gray-700 dark:text-gray-200'}
+                        ${isPast ? 'line-through' : ''}
                     `}
                 >
                     {day}
@@ -275,7 +275,8 @@ ${formData.description}
     );
   };
 
-  const getInputClass = (field: keyof ValidationErrors) =>
+  // Common input class for consistency
+  const commonInputClass = (field: keyof ValidationErrors) =>
     `mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white ${
       errors[field] ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
     }`;
@@ -286,17 +287,17 @@ ${formData.description}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         <div>
           <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.fullName}</label>
-          <input type="text" name="fullName" id="fullName" value={formData.fullName} onChange={handleChange} className={getInputClass('fullName')} />
+          <input type="text" name="fullName" id="fullName" value={formData.fullName} onChange={handleChange} className={commonInputClass('fullName')} />
           {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.phone}</label>
-          <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={getInputClass('phone')} />
+          <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={commonInputClass('phone')} />
           {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.email}</label>
-          <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={getInputClass('email')} />
+          <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={commonInputClass('email')} />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
         <div>
@@ -320,7 +321,7 @@ ${formData.description}
         </div>
         <div>
           <label htmlFor="vehicleDetails" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.vehicleDetails}</label>
-          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className={getInputClass('vehicleDetails')} placeholder={t.contactForm.vehicleDetailsPlaceholder} />
+          <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className={commonInputClass('vehicleDetails')} placeholder={t.contactForm.vehicleDetailsPlaceholder} />
         </div>
       </div>
       
@@ -338,7 +339,7 @@ ${formData.description}
 
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.description}</label>
-        <textarea id="description" name="description" rows={4} value={formData.description} onChange={handleChange} className={getInputClass('description')} placeholder={t.contactForm.descriptionPlaceholder}></textarea>
+        <textarea id="description" name="description" rows={4} value={formData.description} onChange={handleChange} className={commonInputClass('description')} placeholder={t.contactForm.descriptionPlaceholder}></textarea>
         {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
       </div>
 
@@ -354,7 +355,9 @@ ${formData.description}
                 value={formData.appointmentDate}
                 onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                 placeholder={t.contactForm.appointmentDatePlaceholder}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                className={`w-full pl-10 pr-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ${
+                  errors.appointmentDate ? 'border-red-500' : 'border-gray-300'
+                }`}
                 aria-haspopup="true"
                 aria-expanded={isDatePickerOpen}
             />

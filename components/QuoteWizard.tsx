@@ -184,9 +184,9 @@ ${wizardData.description}
         const dayOfWeek = currentDate.getDay();
         const isToday = today.toDateString() === currentDate.toDateString();
         const isSelected = selectedDateObj && selectedDateObj.getUTCDate() === day && selectedDateObj.getUTCMonth() === month && selectedDateObj.getUTCFullYear() === year;
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
         const isPast = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const isDisabled = isPast || isWeekend;
+        // Weekends are disabled based on generateTimeSlots logic.
+        const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
 
         return (
             <div key={day} className="text-center">
@@ -199,7 +199,8 @@ ${wizardData.description}
                         ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''}
                         ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
                         ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}
-                        ${isDisabled ? 'text-slate-400 dark:text-slate-500 cursor-not-allowed line-through' : 'text-slate-700 dark:text-slate-200'}
+                        ${isDisabled ? 'text-slate-400 dark:text-slate-500 cursor-not-allowed' : 'text-slate-700 dark:text-slate-200'}
+                        ${isPast ? 'line-through' : ''}
                     `}
                 >
                     {day}
@@ -212,7 +213,7 @@ ${wizardData.description}
     const calendarBorderClass = theme === 'light' ? 'border-slate-300' : 'border-slate-600';
 
     return (
-        <div className={`absolute left-0 w-full max-w-xs ${calendarBgClass} border ${calendarBorderClass} rounded-lg shadow-2xl p-4 z-20 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
+        <div className={`absolute left-1/2 -translate-x-1/2 w-full max-w-sm ${calendarBgClass} border ${calendarBorderClass} rounded-lg shadow-2xl p-4 z-20 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
             <div className="flex justify-between items-center mb-4">
                 <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                     <ChevronLeftIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
@@ -279,6 +280,9 @@ ${wizardData.description}
 
     if (!isOpen) return null;
 
+    // Common input styling for consistency
+    const commonInputClass = `w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg`;
+
     const renderContent = () => {
         if (isSubmitted) {
             return (
@@ -342,42 +346,42 @@ ${wizardData.description}
                          <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[3].title}</h2>
                          <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <textarea id="description" name="description" rows={3} value={wizardData.description} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.description ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
+                                <textarea id="description" name="description" rows={3} value={wizardData.description} onChange={handleChange} className={`${commonInputClass} ${errors.description ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} value={wizardData.fullName} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.fullName ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                    <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} value={wizardData.fullName} onChange={handleChange} className={`${commonInputClass} ${errors.fullName ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
                                     {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
                                 </div>
                                 <div>
-                                    <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} value={wizardData.phone} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                    <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} value={wizardData.phone} onChange={handleChange} className={`${commonInputClass} ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
                                     {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                                 </div>
                             </div>
                             <div>
-                                <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} value={wizardData.email} onChange={handleChange} className={`w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg ${errors.email ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} value={wizardData.email} onChange={handleChange} className={`${commonInputClass} ${errors.email ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
                                 {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                             </div>
                             
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>
                                     <div className="relative">
-                                    <input ref={dateInputRef} type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className="w-full text-lg pl-12 pr-4 py-3 border-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-slate-600 dark:text-white" />
+                                    <input ref={dateInputRef} type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className={`${commonInputClass} pl-12 cursor-pointer`} />
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
                                     </div>
                                     {isDatePickerOpen && renderCalendar()}
                                 </div>
                                 <div>
                                     {!wizardData.appointmentDate ? (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 dark:text-slate-400">{t.contactForm.selectDateFirst}</div>
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 dark:text-slate-400 text-center">{t.contactForm.selectDateFirst}</div>
                                     ) : availableSlots.length > 0 ? (
                                         <select 
                                             id="appointmentTime" 
                                             name="appointmentTime" 
                                             value={wizardData.appointmentTime} 
                                             onChange={handleChange} 
-                                            className="h-full block w-full pl-3 pr-10 py-3 text-lg border-2 border-slate-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 rounded-md dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                            className={`${commonInputClass} h-full`}
                                         >
                                             <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
                                             {availableSlots.map(time => (
@@ -385,7 +389,7 @@ ${wizardData.description}
                                             ))}
                                         </select>
                                     ) : (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
+                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300 text-center">{t.contactForm.noSlotsAvailable}</div>
                                     )}
                                 </div>
                             </div>

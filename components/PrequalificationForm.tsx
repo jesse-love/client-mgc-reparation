@@ -261,10 +261,11 @@ ${problemDescription}
                         const dayOfWeek = currentDate.getDay();
                         const isToday = today.toDateString() === currentDate.toDateString();
                         const isSelected = selectedDateObj && selectedDateObj.getUTCDate() === day && selectedDateObj.getUTCMonth() === month && selectedDateObj.getUTCFullYear() === year;
-                        const isDisabled = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate()) || dayOfWeek === 0 || dayOfWeek === 6;
+                        const isPast = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
                         return (
                             <div key={day} className="text-center">
-                                <button type="button" onClick={() => !isDisabled && handleDateSelect(day)} disabled={isDisabled} className={`w-10 h-10 rounded-full transition-colors duration-200 ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''} ${!isSelected && !isDisabled ? 'hover:bg-slate-700' : ''} ${isToday && !isSelected ? 'text-orange-400 font-bold' : ''} ${isDisabled ? 'text-slate-500 cursor-not-allowed line-through' : 'text-white'}`}>{day}</button>
+                                <button type="button" onClick={() => !isDisabled && handleDateSelect(day)} disabled={isDisabled} className={`w-10 h-10 rounded-full transition-colors duration-200 ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''} ${!isSelected && !isDisabled ? 'hover:bg-slate-700' : ''} ${isToday && !isSelected ? 'text-orange-400 font-bold' : ''} ${isDisabled ? 'text-slate-500 cursor-not-allowed' : 'text-white'} ${isPast ? 'line-through' : ''}`}>{day}</button>
                             </div>
                         );
                     })}
@@ -274,6 +275,7 @@ ${problemDescription}
     }, [viewDate, formData.appointmentDate, language, setFormData]);
 
     const renderStepContent = () => {
+        // Common input props for consistency
         const commonInputProps = {
             className: `w-full p-4 bg-white rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`,
             onChange: handleChange,

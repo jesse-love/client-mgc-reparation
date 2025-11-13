@@ -2,21 +2,21 @@ import type { Service, NavLink } from './types';
 import { WrenchScrewdriverIcon, TruckIcon, CogIcon, FireIcon, BoltIcon, SunIcon } from '@heroicons/react/24/outline';
 
 export const NAV_LINKS: NavLink[] = [
-  { name: { en: 'Home', fr: 'Accueil' }, href: '/' },
+  { name: { en: 'HOME', fr: 'ACCUEIL' }, href: '/' },
   { 
-    name: { en: 'Services', fr: 'Services' }, 
+    name: { en: 'SERVICES', fr: 'SERVICES' }, 
     href: '/services',
     subLinks: [
-      { name: { en: 'General Mechanics', fr: 'Mécanique Générale' }, href: '/services/general-mechanics' },
-      { name: { en: 'Air Conditioning', fr: 'Air Climatisé' }, href: '/services/ac-service' },
-      { name: { en: 'Heavy Vehicle Mechanics', fr: 'Mécanique de Véhicules Lourds' }, href: '/services/heavy-vehicle-mechanics' },
-      { name: { en: 'Trailer Repair', fr: 'Réparation de Remorque' }, href: '/services/trailer-repair' },
-      { name: { en: 'Generator Services', fr: 'Service de Génératrice' }, href: '/services/generator-services' },
-      { name: { en: 'Welding & Assembly', fr: 'Soudure & Assemblage' }, href: '/services/welding-assembly' },
+      { name: { en: 'GENERAL MECHANICS', fr: 'MÉCANIQUE GÉNÉRALE' }, href: '/services/general-mechanics' },
+      { name: { en: 'AIR CONDITIONING', fr: 'AIR CLIMATISÉ' }, href: '/services/ac-service' },
+      { name: { en: 'HEAVY VEHICLE MECHANICS', fr: 'MÉCANIQUE DE VÉHICULES LOURDS' }, href: '/services/heavy-vehicle-mechanics' },
+      { name: { en: 'TRAILER REPAIR', fr: 'RÉPARATION DE REMORQUE' }, href: '/services/trailer-repair' },
+      { name: { en: 'GENERATOR SERVICES', fr: 'SERVICE DE GÉNÉRATRICE' }, href: '/services/generator-services' },
+      { name: { en: 'WELDING & ASSEMBLY', fr: 'SOUDURE & ASSEMBLAGE' }, href: '/services/welding-assembly' },
     ]
   },
-  { name: { en: 'About Us', fr: 'À Propos' }, href: '/about' },
-  { name: { en: 'Contact', fr: 'Contact' }, href: '/contact' },
+  { name: { en: 'ABOUT US', fr: 'À PROPOS' }, href: '/about' },
+  { name: { en: 'CONTACT', fr: 'CONTACT' }, href: '/contact' },
 ];
 
 export const services: Service[] = [
