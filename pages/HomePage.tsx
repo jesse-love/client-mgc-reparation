@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
             <HeroBackground />
             <div className="absolute inset-0 bg-brand-dark/60 from-brand-dark/80 to-transparent bg-gradient-to-t"></div>
             
-            <div className="relative z-10 text-center px-4 flex-grow flex flex-col justify-center max-w-6xl mx-auto">
+            <div className="relative z-10 text-center px-4 flex-grow flex flex-col justify-center max-w-6xl mx-auto pt-20">
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-oswald font-bold uppercase tracking-wider text-shadow-lg">
                     {t.home.hero.title1} <span className="text-orange-500">{t.home.hero.title2}</span>
                 </h1>

@@ -133,7 +133,7 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
   return (
     <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-brand-dark text-slate-800 dark:text-slate-200">
       <Header />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow">
         {renderContent()}
       </main>
       <Footer />
