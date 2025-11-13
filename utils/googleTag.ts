@@ -1,69 +1,61 @@
 import {
-  AW_CONVERSION_ID,
-  ADS_CONTACT_FORM_CONVERSION_LABEL,
-  ADS_WIZARD_CONVERSION_LABEL,
-  ADS_CLICK_TO_CALL_CONVERSION_LABEL,
-  GA_MEASUREMENT_ID,
+  GTM_CONTACT_FORM_EVENT,
+  GTM_WIZARD_FORM_EVENT,
+  GTM_CLICK_TO_CALL_EVENT,
 } from '../constants';
 
-// Add this to allow TypeScript to recognize window.gtag
+// Add this to allow TypeScript to recognize window.dataLayer
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    dataLayer: any[];
   }
 }
 
-// Type guard wrapper for the gtag function
-const gtag = (...args: any[]) => {
-  if (typeof window.gtag === 'function') {
-    window.gtag(...args);
-  } else {
-    console.warn('gtag function not found. Google Analytics may be blocked or not initialized.');
-  }
-};
-
 /**
- * Tracks a page view for the given path.
+ * Pushes a page view event to the dataLayer for GTM to track.
  * Should be called on initial load and on route changes in a SPA.
  * @param path - The path of the page to track (e.g., '/about').
  */
 export const trackPageView = (path: string) => {
-  gtag('event', 'page_view', {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'page_view',
     page_path: path,
     page_location: window.location.origin + path,
-    send_to: GA_MEASUREMENT_ID,
   });
+  console.log(`GTM Event: page_view for ${path}`);
 };
 
 /**
- * Tracks a specific conversion event for Google Ads.
+ * Pushes a specific conversion event to the dataLayer for GTM.
  * @param type - The type of conversion to track.
  */
 export const trackConversion = (type: 'contact_form' | 'wizard_form') => {
-  let conversionLabel = '';
+  let eventName = '';
   if (type === 'contact_form') {
-    conversionLabel = ADS_CONTACT_FORM_CONVERSION_LABEL;
+    eventName = GTM_CONTACT_FORM_EVENT;
   } else if (type === 'wizard_form') {
-    conversionLabel = ADS_WIZARD_CONVERSION_LABEL;
+    eventName = GTM_WIZARD_FORM_EVENT;
   }
 
-  const send_to = `${AW_CONVERSION_ID}/${conversionLabel}`;
-
-  if (conversionLabel && conversionLabel.indexOf('Y') === -1) { // Basic check for placeholder
-    gtag('event', 'conversion', { 'send_to': send_to });
-    console.log(`Conversion event sent: ${type}`);
+  if (eventName) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      // You can add more data here if needed for GTM, e.g., form details
+      lead_source: type,
+    });
+    console.log(`GTM Event: ${eventName}`);
   }
 };
 
 /**
- * Tracks a click on a telephone link as a conversion for Google Ads.
+ * Pushes a click-to-call event to the dataLayer for GTM.
  */
 export const trackClickToCall = () => {
-  const conversionLabel = ADS_CLICK_TO_CALL_CONVERSION_LABEL;
-  const send_to = `${AW_CONVERSION_ID}/${conversionLabel}`;
-
-  if (conversionLabel && conversionLabel.indexOf('A') === -1) { // Basic check for placeholder
-     gtag('event', 'conversion', { 'send_to': send_to });
-     console.log('Click-to-call conversion event sent.');
-  }
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: GTM_CLICK_TO_CALL_EVENT,
+  });
+  console.log(`GTM Event: ${GTM_CLICK_TO_CALL_EVENT}`);
 };
