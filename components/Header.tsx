@@ -20,21 +20,17 @@ const cleanPath = (path: string): string => {
   return path;
 };
 
-const ThemeToggle: React.FC<{ isScrolledOrNotHome: boolean }> = ({ isScrolledOrNotHome }) => {
+const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
-
-  const iconColorClass = isScrolledOrNotHome
-    ? "text-slate-800 dark:text-slate-200"
-    : "text-slate-200";
 
   return (
     <button
       onClick={toggleTheme}
-      className={`p-2 rounded-full hover:bg-slate-200/70 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900 focus:ring-orange-500 transition-colors ${iconColorClass}`}
+      className="p-2 rounded-full text-slate-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-orange-500 transition-colors"
       aria-label="Toggle theme"
     >
       {theme === 'light' ? (
-        <MoonIcon className="h-6 w-6" />
+        <MoonIcon className="h-6 w-6 text-slate-100" />
       ) : (
         <SunIcon className="h-6 w-6" />
       )}
@@ -42,32 +38,24 @@ const ThemeToggle: React.FC<{ isScrolledOrNotHome: boolean }> = ({ isScrolledOrN
   );
 }
 
-const LanguageSwitcher: React.FC<{ isScrolledOrNotHome: boolean }> = ({ isScrolledOrNotHome }) => {
+const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   const switchLanguage = (lang: 'en' | 'fr') => {
     setLanguage(lang);
   };
 
-  const switcherClass = isScrolledOrNotHome
-    ? 'bg-slate-200/60 dark:bg-slate-900/50 border border-slate-300 dark:border-white/20'
-    : 'bg-slate-900/50 border border-white/20';
-
-  const inactiveButtonClass = isScrolledOrNotHome
-    ? 'text-slate-700 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-white/10'
-    : 'text-slate-300 hover:bg-white/10';
-
   return (
-    <div className={`flex items-center rounded-full p-0.5 transition-colors ${switcherClass}`}>
+    <div className="flex items-center bg-slate-900/50 border border-white/20 rounded-full p-0.5">
       <button 
         onClick={() => switchLanguage('fr')} 
-        className={`px-3 py-1 text-sm font-bold rounded-full transition-all duration-300 ${language === 'fr' ? 'bg-orange-500 text-slate-900' : inactiveButtonClass}`}
+        className={`px-3 py-1 text-sm font-bold rounded-full transition-all duration-300 ${language === 'fr' ? 'bg-orange-500 text-slate-900' : 'text-slate-300 hover:bg-white/10'}`}
       >
         FR
       </button>
       <button 
         onClick={() => switchLanguage('en')} 
-        className={`px-3 py-1 text-sm font-bold rounded-full transition-all duration-300 ${language === 'en' ? 'bg-orange-500 text-slate-900' : inactiveButtonClass}`}
+        className={`px-3 py-1 text-sm font-bold rounded-full transition-all duration-300 ${language === 'en' ? 'bg-orange-500 text-slate-900' : 'text-slate-300 hover:bg-white/10'}`}
       >
         EN
       </button>
@@ -105,28 +93,22 @@ const Header: React.FC = () => {
     closeMenu();
     openWizard();
   };
-  
-  const isScrolledOrNotHome = isScrolled || !isHomePage;
 
-  const headerDynamicClass = isScrolledOrNotHome
-    ? 'bg-white/80 dark:bg-brand-dark/80 backdrop-blur-sm shadow-lg border-b border-slate-200 dark:border-slate-700'
-    : 'bg-transparent border-b border-transparent';
-    
-  const contentColorClass = isScrolledOrNotHome
-    ? 'text-slate-900 dark:text-white'
-    : 'text-white';
+  const headerDynamicClass = (isScrolled || !isHomePage) 
+    ? 'bg-brand-dark/80 backdrop-blur-sm shadow-2xl border-b border-slate-700' 
+    : 'bg-transparent';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerDynamicClass}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <a href="/" className="flex-shrink-0" onClick={closeMenu}>
-            <span className={`text-3xl font-bold font-oswald tracking-wider drop-shadow-md transition-colors ${contentColorClass}`}>MGC<span className="text-orange-500"> RÉPARATION</span></span>
+            <span className="text-3xl font-bold font-oswald tracking-wider text-white drop-shadow-md">MGC<span className="text-orange-500"> RÉPARATION</span></span>
           </a>
           <nav className="hidden lg:flex items-center space-x-10">
             {NAV_LINKS.map((link) => (
               <div key={link.name.en} className="relative group/nav">
-                <a href={link.href} className={`relative group transition-colors duration-300 font-semibold uppercase tracking-wider text-sm hover:text-orange-400 ${contentColorClass}`}>
+                <a href={link.href} className="relative text-slate-100 group transition-colors duration-300 font-semibold uppercase tracking-wider text-sm hover:text-orange-400">
                   <span className="flex items-center">
                     {link.name[language]}
                     {link.subLinks && <ChevronDownIcon className="h-4 w-4 ml-1.5 transition-transform group-hover/nav:rotate-180" />}
@@ -146,16 +128,16 @@ const Header: React.FC = () => {
             ))}
           </nav>
           <div className="hidden lg:flex items-center space-x-4">
-            <LanguageSwitcher isScrolledOrNotHome={isScrolledOrNotHome} />
-            <ThemeToggle isScrolledOrNotHome={isScrolledOrNotHome} />
+            <LanguageSwitcher />
+            <ThemeToggle />
             <button onClick={handleBookServiceClick} className="inline-block bg-orange-500 text-slate-900 font-bold py-3 px-6 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/40">
               {t.header.bookService}
             </button>
           </div>
           <div className="lg:hidden flex items-center gap-2">
-             <LanguageSwitcher isScrolledOrNotHome={isScrolledOrNotHome} />
-             <ThemeToggle isScrolledOrNotHome={isScrolledOrNotHome} />
-            <button onClick={toggleMenu} className={`p-2 focus:outline-none ${contentColorClass}`}>
+            <LanguageSwitcher />
+            <ThemeToggle />
+            <button onClick={toggleMenu} className="text-white focus:outline-none p-2">
               {isOpen ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
             </button>
           </div>
