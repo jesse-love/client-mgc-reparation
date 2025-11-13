@@ -1,9 +1,9 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import type { FormData } from '../types';
 import { services } from '../i18n';
 import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackConversion } from '../utils/googleTag';
 
 type ValidationErrors = {
     [K in keyof FormData]?: string;
@@ -136,6 +136,10 @@ ${formData.description}
         if (!response.ok) {
             throw new Error(`Webhook failed with status ${response.status}`);
         }
+        
+        // --- Conversion Tracking ---
+        trackConversion('contact_form');
+        // -------------------------
         
         console.log('Form successfully submitted to webhook.');
         setIsSubmitted(true);

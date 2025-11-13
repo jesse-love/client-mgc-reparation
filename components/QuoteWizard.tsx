@@ -4,6 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import { createGoogleCalendarLink } from '../utils/calendar';
 import { useTheme } from '../App';
+import { trackConversion } from '../utils/googleTag';
 
 type ValidationErrors = {
     fullName?: string;
@@ -113,6 +114,11 @@ ${wizardData.description}
                 body: JSON.stringify(payload),
             });
             if (!response.ok) throw new Error(`Webhook failed with status ${response.status}`);
+            
+            // --- Conversion Tracking ---
+            trackConversion('wizard_form');
+            // -------------------------
+
             setIsSubmitted(true);
         } catch (error) {
             console.error('Failed to submit form to webhook:', error);

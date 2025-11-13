@@ -6,6 +6,8 @@ import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 import TestimonialMarquee from '../components/TestimonialMarquee';
 import LocationInfo from '../components/LocationInfo';
+import HeroBackground from '../components/HeroBackground';
+import MechanicIllustration from '../components/MechanicIllustration';
 
 const iconMap: { [key:string]: React.ElementType } = {
     UsersIcon,
@@ -18,9 +20,9 @@ const Hero: React.FC = () => {
     const { t } = useLanguage();
     const { openWizard } = useQuoteWizard();
     return (
-        <section className="relative h-screen flex flex-col justify-center text-white bg-slate-900">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1621996346565-e30d1ca7c549?q=80&w=2670&auto=format&fit=crop')" }}></div>
-            <div className="absolute inset-0 bg-brand-dark/70 from-brand-dark/90 to-transparent bg-gradient-to-t"></div>
+        <section className="relative h-screen flex flex-col justify-center text-white bg-brand-dark">
+            <HeroBackground />
+            <div className="absolute inset-0 bg-brand-dark/60 from-brand-dark/80 to-transparent bg-gradient-to-t"></div>
             
             <div className="relative z-10 text-center px-4 flex-grow flex flex-col justify-center">
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-oswald font-bold uppercase tracking-wider text-shadow-lg">
@@ -96,7 +98,7 @@ const WhyChooseUs: React.FC = () => {
                         </div>
                     </div>
                     <div className="hidden lg:block">
-                        <img src="https://images.unsplash.com/photo-1553859943-a0e8548375a5?q=80&w=2574&auto=format&fit=crop" alt="Professional mechanic working in a clean workshop" className="rounded-xl shadow-2xl object-cover h-full w-full" />
+                        <MechanicIllustration className="rounded-xl shadow-2xl h-full w-full" />
                     </div>
                 </div>
             </div>

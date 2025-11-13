@@ -12,6 +12,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
 import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
 import QuoteWizard from './components/QuoteWizard';
+import { trackPageView, trackClickToCall } from './utils/googleTag';
 
 type Theme = 'light' | 'dark';
 
@@ -134,10 +135,17 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
 const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
 
+  // Track initial page view
+  useEffect(() => {
+    trackPageView(route);
+  }, []);
+
   useEffect(() => {
     const handlePopState = () => {
-      setRoute(cleanPath(window.location.pathname));
+      const newPath = cleanPath(window.location.pathname);
+      setRoute(newPath);
       window.scrollTo(0, 0);
+      trackPageView(newPath); // Track on back/forward
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -145,6 +153,11 @@ const App: React.FC = () => {
     const handleLinkClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a');
+
+      // Handle call tracking
+      if (anchor?.href.startsWith('tel:')) {
+        trackClickToCall();
+      }
       
       if (
         anchor &&
@@ -161,6 +174,7 @@ const App: React.FC = () => {
             window.history.pushState({}, '', newPath);
             setRoute(newPath);
             window.scrollTo(0, 0);
+            trackPageView(newPath); // Track on internal navigation
           }
         }
       }

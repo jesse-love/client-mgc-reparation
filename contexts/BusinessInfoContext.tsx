@@ -1,6 +1,6 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import type { BusinessInfo } from '../types';
+import { GA_MEASUREMENT_ID, AW_CONVERSION_ID } from '../constants';
 
 // The GMB Location ID provided by the user.
 const GMB_PLACE_ID = 'ChIJMeqEvlfbyEwRcwObeP5z2SA'; 
@@ -19,6 +19,26 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
     isLoading: true,
     error: null,
   });
+
+  // This effect will initialize Google Analytics and Ads call tracking
+  // once the business phone number has been loaded.
+  useEffect(() => {
+    if (!businessInfo.isLoading && businessInfo.phone && businessInfo.phone !== 'Loading...') {
+      // Ensure gtag function is available
+      if (typeof window.gtag === 'function') {
+        // Initialize Google Analytics
+        window.gtag('config', GA_MEASUREMENT_ID);
+        
+        // Initialize Google Ads call tracking with the fetched phone number
+        window.gtag('config', AW_CONVERSION_ID, {
+          'phone_conversion_number': businessInfo.phone
+        });
+        
+        console.log('Google Analytics & Ads initialized. Call tracking configured for:', businessInfo.phone);
+      }
+    }
+  }, [businessInfo.isLoading, businessInfo.phone]);
+
 
   useEffect(() => {
     const fetchBusinessInfo = async () => {

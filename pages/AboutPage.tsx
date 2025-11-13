@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import CallToActionSection from '../components/CallToActionSection';
+import ShopIllustration from '../components/ShopIllustration';
 
 const AboutPage: React.FC = () => {
   const { t } = useLanguage();
@@ -49,7 +50,7 @@ const AboutPage: React.FC = () => {
             <div className="mt-12 text-lg text-slate-700 dark:text-slate-300 space-y-6 leading-relaxed">
               <p>{t.about.p1}</p>
               <p>{t.about.p2}</p>
-              <img src="https://images.unsplash.com/photo-1579629423951-b0d575345d2d?q=80&w=2574&auto=format&fit=crop" alt="MGC Réparation shop interior" className="rounded-lg shadow-xl my-8"/>
+              <ShopIllustration />
               <p>{t.about.p3}</p>
               <p>{t.about.p4}</p>
               <p>{t.about.p5}</p>
