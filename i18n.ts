@@ -27,7 +27,7 @@ export const services: Service[] = [
     icon: WrenchScrewdriverIcon,
     metaDescription: { en: "Comprehensive general mechanics in Mascouche: MGC Réparation Inc. offers expert oil changes, brake repair, diagnostic services, and vehicle tune-ups for all cars & light trucks. Book now!", fr: "Mécanique générale complète à Mascouche: MGC Réparation Inc. offre changements d'huile experts, réparation de freins, services de diagnostic et mises au point pour toutes autos & camions légers. Réservez maintenant!" },
     headline: { en: "Complete General Mechanics & Engine Diagnostics for All Vehicles in Mascouche", fr: "Mécanique Générale Complète & Diagnostic Moteur pour tous les Véhicules à Mascouche" },
-    subHeadline: { en: "From Routine Maintenance (brakes, tires, oil changes) to Complex Repairs, We Keep Your Car Running Smoothly.", fr: "De l'entretien de routine (freins, pneus, changement d'huile) aux réparations complexes, on s'assure que votre auto roule perfectly." },
+    subHeadline: { en: "From Routine Maintenance (brakes, tires, oil changes) to Complex Repairs, We Keep Your Car Running Smoothly.", fr: "De l'entretien de routine (freins, pneus, changement d'huile) aux réparations complexes, on s'assure que votre auto roule parfaitement." },
     pageContent: { en: "At MGC Réparation Inc., we are your one-stop shop for all general mechanic needs in Mascouche. Our certified technicians have the expertise and state-of-the-art diagnostic equipment to handle everything from a simple oil change to complex engine repairs. We believe in preventative maintenance to save you time and money, ensuring your vehicle remains reliable for years to come.", fr: "Chez MGC Réparation Inc., on est votre place de confiance pour tous vos besoins en mécanique générale à Mascouche. Nos techniciens certifiés ont l'expertise et l'équipement de diagnostic à la fine pointe pour s'occuper de tout, d'un simple changement d'huile à des réparations de moteur complexes. On croit à l'entretien préventif pour vous faire sauver du temps et de l'argent, en s'assurant que votre véhicule reste fiable pour des années." },
     servicePoints: [
       { en: "Oil Changes & Tune-ups", fr: "Changements d'huile & Mises au point" },
@@ -169,7 +169,7 @@ export const services: Service[] = [
 const FAQ_DATA = [
     {
         question: { en: "What types of vehicles do you service?", fr: "Quels types de véhicules réparez-vous ?" },
-        answer: { en: "We are a full-service shop equipped to handle everything from family cars, SUVs, and light trucks to heavy-duty trucks, commercial fleets, trailers, and even generators. If it has an engine, we can likely fix it.", fr: "Nous sommes un garage complet équipé pour tout gérer, des voitures familiales, VUS et camions légers aux camions lourds, flottes commerciales, remorques et même les génératrices. Si ça a un moteur, on peut probably le réparer." }
+        answer: { en: "We are a full-service shop equipped to handle everything from family cars, SUVs, and light trucks to heavy-duty trucks, commercial fleets, trailers, and even generators. If it has an engine, we can likely fix it.", fr: "Nous sommes un garage complet équipé pour tout gérer, des voitures familiales, VUS et camions légers aux camions lourds, flottes commerciales, remorques et même les génératrices. Si ça a un moteur, on peut probablement le réparer." }
     },
     {
         question: { en: "What are your operating hours?", fr: "Quelles sont vos heures d'ouverture ?" },
@@ -207,99 +207,6 @@ export const WHY_CHOOSE_US_POINTS = [
     icon: 'HeartIcon'
   },
 ];
-
-const QUICK_ACTIONS = {
-  en: [
-    { text: "URGENT Brake Inspection", href: "/offre", icon: "ExclamationTriangleIcon" },
-    { text: "FREE Health Check", href: "/bilan", icon: "CheckBadgeIcon" },
-    { text: "Tires + FREE Inspection", href: "/pneus", icon: "TruckIcon" },
-    { text: "My questions and answers", action: "openChat", icon: "QuestionMarkCircleIcon" }
-  ],
-  fr: [
-    { text: "Inspection Freins URGENTE", href: "/offre", icon: "ExclamationTriangleIcon" },
-    { text: "Bilan de Santé GRATUIT", href: "/bilan", icon: "CheckBadgeIcon" },
-    { text: "Pneus + Inspection GRATUITE", href: "/pneus", icon: "TruckIcon" },
-    { text: "Mes questions et réponses", action: "openChat", icon: "QuestionMarkCircleIcon" }
-  ]
-};
-
-const AI_CONVERSATION_FLOW = {
-  en: {
-    starters: {
-      question: "Hello! I'm the MGC AI assistant. To best help you, please select a category for your issue:",
-      options: [
-        { text: "I hear a noise", payload: "noise", description: "The vehicle is making an unusual noise." },
-        { text: "A warning light is on", payload: "light", description: "A warning light is on the dashboard." },
-        { text: "Performance issue", payload: "performance", description: "There is a performance issue." },
-        { text: "Something else", payload: "other", description: "" },
-      ]
-    },
-    ramifications: {
-      noise: {
-        question: "Okay, you're hearing a noise. What does it sound like?",
-        options: [
-          { text: "Grinding or Squealing", payload: "grinding", description: "The noise sounds like grinding or squealing." },
-          { text: "Clicking or Ticking", payload: "clicking", description: "The noise sounds like clicking or ticking." },
-          { text: "Rumbling or Humming", payload: "rumbling", description: "The noise sounds like rumbling or humming." },
-        ],
-      },
-      light: {
-        question: "Which warning light is on?",
-        options: [
-          { text: "Check Engine Light", payload: "check_engine", description: "The check engine light is on." },
-          { text: "Battery Light", payload: "battery_light", description: "The battery light is on." },
-          { text: "Brake Warning Light", payload: "brake_light", description: "The brake warning light is on." },
-        ],
-      },
-      performance: {
-        question: "What kind of performance issue are you noticing?",
-        options: [
-            { text: "Loss of Power", payload: "power_loss", description: "The vehicle has a loss of power." },
-            { text: "Shaking or Vibrating", payload: "shaking", description: "The vehicle is shaking or vibrating." },
-            { text: "Poor Fuel Economy", payload: "fuel_economy", description: "The vehicle has poor fuel economy." },
-        ]
-      }
-    },
-  },
-  fr: {
-    starters: {
-      question: "Bonjour! Je suis l'assistant IA de MGC. Pour mieux vous aider, veuillez sélectionner une catégorie pour votre problème :",
-      options: [
-        { text: "J'entends un bruit", payload: "noise", description: "Le véhicule fait un bruit inhabituel." },
-        { text: "Un voyant est allumé", payload: "light", description: "Un voyant est allumé sur le tableau de bord." },
-        { text: "Problème de performance", payload: "performance", description: "Il y a un problème de performance." },
-        { text: "Autre chose", payload: "other", description: "" },
-      ]
-    },
-    ramifications: {
-      noise: {
-        question: "D'accord, vous entendez un bruit. À quoi ressemble-t-il?",
-        options: [
-          { text: "Grincement ou Sifflement", payload: "grinding", description: "Le bruit ressemble à un grincement ou un sifflement." },
-          { text: "Cliquetis ou Tic-tac", payload: "clicking", description: "Le bruit ressemble à un cliquetis ou un tic-tac." },
-          { text: "Gargouillement ou Bourdonnement", payload: "rumbling", description: "Le bruit ressemble à un gargouillement ou un bourdonnement." },
-        ],
-      },
-      light: {
-        question: "Quel voyant est allumé?",
-        options: [
-          { text: "Voyant Moteur (Check Engine)", payload: "check_engine", description: "Le voyant moteur est allumé." },
-          { text: "Voyant de Batterie", payload: "battery_light", description: "Le voyant de la batterie est allumé." },
-          { text: "Voyant de Freins", payload: "brake_light", description: "Le voyant des freins est allumé." },
-        ],
-      },
-      performance: {
-        question: "Quel genre de problème de performance remarquez-vous?",
-        options: [
-            { text: "Perte de puissance", payload: "power_loss", description: "Le véhicule a une perte de puissance." },
-            { text: "Secousses ou Vibrations", payload: "shaking", description: "Le véhicule tremble ou vibre." },
-            { text: "Consommation excessive", payload: "fuel_economy", description: "Le véhicule consomme beaucoup de carburant." },
-        ]
-      }
-    },
-  }
-};
-
 
 const en = {
   header: {
@@ -487,20 +394,6 @@ const en = {
         back: "Back",
         submit: "Send My Request"
     }
-  },
-  localAdvantage: {
-    title: "Your Local Advantage in Mascouche",
-  },
-  aiAssistant: {
-      quickActionsTitle: "More options",
-      quickActionsSubtitle: "Tap to send a suggestion from mgcreparation",
-      buttonTooltip: "Quick Actions",
-      modalTitle: "AI Diagnostic Assistant",
-      greeting: "Hello! I'm the MGC AI assistant. To get started, please describe the problem you're experiencing with your vehicle.",
-      inputPlaceholder: "e.g., My car is making a clicking noise...",
-      error: "I'm sorry, I'm having trouble connecting right now. Please try again later or call us directly.",
-      conversationFlow: AI_CONVERSATION_FLOW.en,
-      quickActions: QUICK_ACTIONS.en,
   }
 };
 
@@ -690,20 +583,6 @@ const fr: typeof en = {
         back: "Retour",
         submit: "Envoyer ma demande"
     }
-  },
-  localAdvantage: {
-    title: "Votre Avantage Local à Mascouche",
-  },
-  aiAssistant: {
-      quickActionsTitle: "Plus d'options",
-      quickActionsSubtitle: "Appuyez pour envoyer une suggestion de mgcreparation",
-      buttonTooltip: "Actions Rapides",
-      modalTitle: "Assistant de Diagnostic IA",
-      greeting: "Bonjour! Je suis l'assistant IA de MGC. Veuillez choisir une option ci-dessous ou décrire le problème que vous rencontrez avec votre véhicule.",
-      inputPlaceholder: "ex: Mon auto fait un bruit de claquement...",
-      error: "Désolé, je rencontre un problème de connexion pour le moment. Veuillez réessayer plus tard ou nous appeler directement.",
-      conversationFlow: AI_CONVERSATION_FLOW.fr,
-      quickActions: QUICK_ACTIONS.fr,
   }
 };
 

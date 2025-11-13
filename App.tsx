@@ -21,7 +21,6 @@ import { PrequalificationFormProvider } from './contexts/PrequalificationFormCon
 import QuoteWizard from './components/QuoteWizard';
 import PrequalificationForm from './components/PrequalificationForm';
 import { trackPageView, trackClickToCall, trackLandingPageView } from './utils/googleTag';
-import QuickActionsWidget from './components/QuickActionsWidget';
 
 type Theme = 'light' | 'dark';
 
@@ -218,40 +217,40 @@ const App: React.FC = () => {
       '/pneus': LandingTiresPage,
     };
     
-    const LandingComponent = landingPageMap[route];
-    if (LandingComponent) {
-      return (
-        <>
-          <LandingComponent />
-          <PrequalificationForm />
-        </>
-      );
-    }
+    return (
+       <BusinessInfoProvider>
+          <PrequalificationFormProvider>
+            {(() => {
+              const LandingComponent = landingPageMap[route];
+              if (LandingComponent) {
+                return (
+                  <>
+                    <LandingComponent />
+                    <PrequalificationForm />
+                  </>
+                );
+              }
 
-    switch (route) {
-      case '/merci':
-        return <ThankYouPage />;
-      default:
-        // The main site layout which uses the Quote Wizard context
-        return (
-          <>
-            <MainLayout route={route} />
-            <QuickActionsWidget />
-          </>
-        );
-    }
+              switch (route) {
+                case '/merci':
+                  return <ThankYouPage />;
+                default:
+                  return (
+                    <QuoteWizardProvider>
+                      <MainLayout route={route} />
+                    </QuoteWizardProvider>
+                  );
+              }
+            })()}
+          </PrequalificationFormProvider>
+       </BusinessInfoProvider>
+    );
   };
 
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <BusinessInfoProvider>
-          <PrequalificationFormProvider>
-            <QuoteWizardProvider>
-              {renderAppContent()}
-            </QuoteWizardProvider>
-          </PrequalificationFormProvider>
-        </BusinessInfoProvider>
+        {renderAppContent()}
       </LanguageProvider>
     </ThemeProvider>
   );
