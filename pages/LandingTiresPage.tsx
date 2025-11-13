@@ -2,15 +2,24 @@ import React from 'react';
 import LandingLayout from '../components/LandingLayout';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import TestimonialMarquee from '../components/TestimonialMarquee';
-import InlineQuoteWizard from '../components/InlineQuoteWizard';
+import { usePrequalificationForm } from '../contexts/PrequalificationFormContext';
 
 const LandingTiresPage: React.FC = () => {
+  const { openForm } = usePrequalificationForm();
+
   const benefits = [
     { title: "Économisez du temps", description: "Faites tout en un seul rendez-vous. La solution la plus efficace." },
     { title: "C'est logique", description: "Les roues sont déjà enlevées. C'est le moment idéal pour une inspection." },
     { title: "Repartez en sécurité", description: "Les freins sont l'élément #1 à vérifier avant la saison." },
     { title: "Économisez 10% sur les pièces", description: "Si vos plaquettes sont usées, obtenez 10% de rabais." }
   ];
+
+  const handleOpenForm = () => {
+    openForm({
+      avatarType: 'martin_prevoyant',
+      webhookTitle: '❄️ NOUVEAU LEAD (Pneus)',
+    });
+  };
 
   return (
     <LandingLayout>
@@ -42,13 +51,19 @@ const LandingTiresPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Col 2: Form */}
-          <div className="w-full">
-            <InlineQuoteWizard 
-              avatarType="martin_prevoyant"
-              webhookTitle=" pneus NOUVEAU LEAD (Pneus)"
-              defaultServiceCategory="Maintenance/Inspection"
-            />
+          {/* Col 2: Form CTA */}
+          <div className="w-full flex items-center justify-center">
+            <div className="bg-slate-800 p-8 rounded-lg shadow-2xl border border-slate-700 w-full max-w-md text-center">
+                <h3 className="text-2xl font-bold text-white mb-4">Réservez votre "Combo" Pneus + Freins!</h3>
+                <p className="text-slate-300 mb-6">Soyez prêt pour la route en un seul rendez-vous intelligent.</p>
+                <button 
+                  onClick={handleOpenForm}
+                  className="w-full bg-orange-500 text-slate-900 font-bold py-4 px-6 rounded-md hover:bg-orange-400 transition duration-300 text-xl shadow-lg hover:shadow-orange-500/40 transform hover:scale-105"
+                >
+                  OUI! JE VEUX MON "COMBO" SAISONNIER!
+                </button>
+                <p className="text-center text-sm text-slate-400 mt-4">Inspection gratuite avec votre changement de pneus. Service rapide garanti.</p>
+             </div>
           </div>
         </div>
       </div>

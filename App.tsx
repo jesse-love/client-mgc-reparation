@@ -16,7 +16,9 @@ import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
 import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
+import { PrequalificationFormProvider } from './contexts/PrequalificationFormContext';
 import QuoteWizard from './components/QuoteWizard';
+import PrequalificationForm from './components/PrequalificationForm';
 import { trackPageView, trackClickToCall, trackLandingPageView } from './utils/googleTag';
 
 type Theme = 'light' | 'dark';
@@ -206,13 +208,23 @@ const App: React.FC = () => {
   }, [route]); // Reruns if route changes
 
   const renderAppContent = () => {
+    const landingPageMap: { [key: string]: React.ComponentType } = {
+      '/offre': LandingOfferPage,
+      '/bilan': LandingHealthCheckPage,
+      '/pneus': LandingTiresPage,
+    };
+    
+    if (landingPageMap[route]) {
+      const LandingComponent = landingPageMap[route];
+      return (
+        <PrequalificationFormProvider>
+          <LandingComponent />
+          <PrequalificationForm />
+        </PrequalificationFormProvider>
+      );
+    }
+  
     switch (route) {
-      case '/offre':
-        return <LandingOfferPage />;
-      case '/bilan':
-        return <LandingHealthCheckPage />;
-      case '/pneus':
-        return <LandingTiresPage />;
       case '/merci':
         return <ThankYouPage />;
       default:

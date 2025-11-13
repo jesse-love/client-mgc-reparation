@@ -2,15 +2,24 @@ import React from 'react';
 import LandingLayout from '../components/LandingLayout';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import TestimonialMarquee from '../components/TestimonialMarquee';
-import InlineQuoteWizard from '../components/InlineQuoteWizard';
+import { usePrequalificationForm } from '../contexts/PrequalificationFormContext';
 
 const LandingOfferPage: React.FC = () => {
+  const { openForm } = usePrequalificationForm();
+
   const benefits = [
     { title: "Sachez le vrai problème", description: "Recevez un diagnostic précis et honnête, sans jargon." },
     { title: "Économisez instantanément", description: "Obtenez 10% de rabais sur toutes les pièces si une réparation est requise." },
     { title: "Conduisez en sécurité", description: "Repartez en sachant que vos freins sont 100% sécuritaires." },
     { title: "Pas de surprises", description: "Nous ne faisons jamais de réparations sans votre approbation claire." }
   ];
+
+  const handleOpenForm = () => {
+    openForm({
+      avatarType: 'alex_anxieux',
+      webhookTitle: '🚨 LEAD URGENT (Freins)',
+    });
+  };
 
   return (
     <LandingLayout>
@@ -43,12 +52,18 @@ const LandingOfferPage: React.FC = () => {
           </div>
 
           {/* Col 2: Form */}
-          <div className="w-full">
-            <InlineQuoteWizard 
-              avatarType="alex_anxieux"
-              webhookTitle="🚨 LEAD URGENT (Freins)"
-              defaultServiceCategory="Specific Repair"
-            />
+          <div className="w-full flex items-center justify-center">
+             <div className="bg-slate-800 p-8 rounded-lg shadow-2xl border border-slate-700 w-full max-w-md text-center">
+                <h3 className="text-2xl font-bold text-white mb-4">OUI! Je veux mon inspection GRATUITE!</h3>
+                <p className="text-slate-300 mb-6">Cliquez ci-dessous pour confirmer vos informations en 30 secondes.</p>
+                <button 
+                  onClick={handleOpenForm}
+                  className="w-full bg-orange-500 text-slate-900 font-bold py-4 px-6 rounded-md hover:bg-orange-400 transition duration-300 text-xl shadow-lg hover:shadow-orange-500/40 transform hover:scale-105"
+                >
+                  OUI! JE VEUX MON INSPECTION GRATUITE!
+                </button>
+                <p className="text-center text-sm text-slate-400 mt-4">Garanti 100% gratuit. Sans obligation. Réponse rapide assurée.</p>
+             </div>
           </div>
         </div>
       </div>
