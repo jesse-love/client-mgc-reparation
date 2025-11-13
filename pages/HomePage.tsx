@@ -9,6 +9,7 @@ import LocationInfo from '../components/LocationInfo';
 import HeroBackground from '../components/HeroBackground';
 import MechanicIllustration from '../components/MechanicIllustration';
 import SchemaManager from '../components/SchemaManager';
+import LocalAdvantage from '../components/LocalAdvantage';
 
 const iconMap: { [key:string]: React.ElementType } = {
     UsersIcon,
@@ -141,6 +142,7 @@ const HomePage: React.FC = () => {
       <Hero />
       <ServicesOverview />
       <WhyChooseUs />
+      <LocalAdvantage />
       <FAQ />
       <LocationInfo />
     </>

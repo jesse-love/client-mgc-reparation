@@ -72,3 +72,18 @@ export interface QuoteWizardData {
   appointmentDate: string;
   appointmentTime: string;
 }
+
+export interface ChatMessage {
+  sender: 'user' | 'ai';
+  text: string;
+  action?: {
+    slug: string;
+    text: string;
+    userProblem: string;
+  };
+  options?: {
+    text: string;
+    payload: string;
+    description: string;
+  }[];
+}
