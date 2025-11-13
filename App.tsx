@@ -10,6 +10,7 @@ import LandingOfferPage from './pages/LandingOfferPage';
 import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
 import LandingTiresPage from './pages/LandingTiresPage';
 import ThankYouPage from './pages/ThankYouPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 import { services } from './i18n';
 import type { Service } from './types';
@@ -119,6 +120,8 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
         return <ContactPage />;
       case '/services':
         return <ServicesPage />;
+      case '/politique-de-confidentialite':
+        return <PrivacyPolicyPage />;
       case '/':
         return <HomePage />;
       default:
@@ -214,34 +217,40 @@ const App: React.FC = () => {
       '/pneus': LandingTiresPage,
     };
     
-    if (landingPageMap[route]) {
-      const LandingComponent = landingPageMap[route];
-      return (
-        <PrequalificationFormProvider>
-          <LandingComponent />
-          <PrequalificationForm />
-        </PrequalificationFormProvider>
-      );
-    }
-  
-    switch (route) {
-      case '/merci':
-        return <ThankYouPage />;
-      default:
-        return (
-          <QuoteWizardProvider>
-            <MainLayout route={route} />
-          </QuoteWizardProvider>
-        );
-    }
+    return (
+       <BusinessInfoProvider>
+          <PrequalificationFormProvider>
+            {(() => {
+              const LandingComponent = landingPageMap[route];
+              if (LandingComponent) {
+                return (
+                  <>
+                    <LandingComponent />
+                    <PrequalificationForm />
+                  </>
+                );
+              }
+
+              switch (route) {
+                case '/merci':
+                  return <ThankYouPage />;
+                default:
+                  return (
+                    <QuoteWizardProvider>
+                      <MainLayout route={route} />
+                    </QuoteWizardProvider>
+                  );
+              }
+            })()}
+          </PrequalificationFormProvider>
+       </BusinessInfoProvider>
+    );
   };
 
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <BusinessInfoProvider>
-          {renderAppContent()}
-        </BusinessInfoProvider>
+        {renderAppContent()}
       </LanguageProvider>
     </ThemeProvider>
   );

@@ -7,8 +7,9 @@ const LandingLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         {children}
       </main>
       <footer className="text-center py-6 text-slate-500 text-sm px-4 bg-brand-dark">
-        <p>&copy; {new Date().getFullYear()} garageterrebonne.ca | Tous droits réservés | Politique de confidentialité</p>
-        <p className="mt-1 opacity-75">Propulsé par [Votre Agence]</p>
+        <p>
+          &copy; {new Date().getFullYear()} MGCreparation.ca | Tous droits réservés | <a href="/politique-de-confidentialite" className="hover:text-slate-300 transition-colors">Politique de confidentialité</a>
+        </p>
       </footer>
     </div>
   );

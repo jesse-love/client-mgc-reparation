@@ -230,7 +230,8 @@ const en = {
     home: 'Home',
     about: 'About Us',
     contact: 'Contact',
-    services: 'Services'
+    services: 'Services',
+    privacyPolicy: 'Privacy Policy'
   },
   about: {
     title: 'A Family Legacy of Trust & Mechanical Excellence',
@@ -382,7 +383,8 @@ const fr: typeof en = {
     home: 'Accueil',
     about: 'À Propos',
     contact: 'Contact',
-    services: 'Services'
+    services: 'Services',
+    privacyPolicy: 'Politique de confidentialité'
   },
   about: {
     title: 'Un Héritage Familial de Confiance & d\'Excellence Mécanique',

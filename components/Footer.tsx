@@ -66,7 +66,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="mt-20 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} {name}. {t.footer.rights}</p>
+          <p>
+            &copy; {new Date().getFullYear()} MGCreparation.ca. {t.footer.rights} | <a href="/politique-de-confidentialite" className="hover:text-slate-300 transition-colors">Politique de confidentialité</a>
+          </p>
         </div>
       </div>
     </footer>
