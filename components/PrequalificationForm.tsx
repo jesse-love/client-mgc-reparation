@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { usePrequalificationForm } from '../contexts/PrequalificationFormContext';
 import { XMarkIcon, CheckCircleIcon, ArrowLeftIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -101,20 +102,20 @@ const PrequalificationForm: React.FC = () => {
         const newErrors: ValidationErrors = {};
         switch (formData.step) {
             case 1:
-                if (avatarType === 'alex_anxieux' && !formData.problem.trim()) newErrors.problem = "Veuillez décrire le problème.";
-                if (avatarType === 'sophie_sage' && !formData.problem.trim()) newErrors.problem = "Veuillez décrire votre besoin.";
-                if (avatarType === 'martin_prevoyant' && !formData.preferredDate.trim()) newErrors.preferredDate = "Veuillez suggérer une date.";
+                if (avatarType === 'alex_anxieux' && !formData.problem.trim()) newErrors.problem = t.contactForm.validation.required;
+                if (avatarType === 'sophie_sage' && !formData.problem.trim()) newErrors.problem = t.contactForm.validation.required;
+                if (avatarType === 'martin_prevoyant' && !formData.preferredDate.trim()) newErrors.preferredDate = t.contactForm.validation.required;
                 break;
             case 2:
-                if (!formData.vehicleType) newErrors.vehicleType = "Veuillez sélectionner un type de véhicule.";
-                if (!formData.vehicleYear) newErrors.vehicleYear = "Veuillez sélectionner une année.";
+                if (!formData.vehicleType) newErrors.vehicleType = t.contactForm.validation.required; // "Veuillez sélectionner un type de véhicule."
+                if (!formData.vehicleYear) newErrors.vehicleYear = t.contactForm.validation.required; // "Veuillez sélectionner une année."
                 break;
             case 3:
-                if (!formData.appointmentDate) newErrors.appointmentDate = "Veuillez sélectionner une date.";
+                if (!formData.appointmentDate) newErrors.appointmentDate = t.contactForm.validation.required; // "Veuillez sélectionner une date."
                 break;
             case 4:
-                if (!formData.fullName.trim()) newErrors.fullName = "Le nom est requis.";
-                if (!formData.phone.trim()) newErrors.phone = "Le téléphone est requis.";
+                if (!formData.fullName.trim()) newErrors.fullName = t.contactForm.validation.required; // "Le nom est requis."
+                if (!formData.phone.trim()) newErrors.phone = t.contactForm.validation.required; // "Le téléphone est requis."
                 if (!formData.email.trim()) {
                     newErrors.email = t.contactForm.validation.required;
                 } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -198,25 +199,25 @@ ${problemDescription}
 
     const firstStepContent = () => {
         const commonProps = {
-            className: `w-full p-4 bg-white rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`,
+            className: `w-full p-4 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white rounded-md placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`,
             onChange: handleChange,
         };
         switch(avatarType) {
             case 'alex_anxieux':
                 return {
-                    title: "Décrivez le problème",
+                    title: t.prequalificationForm.steps[1].alex_anxieux.title,
                     content: <textarea name="problem" value={formData.problem} rows={4} {...commonProps} placeholder="Ex: Bruit aigu au freinage, vibrations..."></textarea>,
                     error: errors.problem,
                 };
             case 'sophie_sage':
                  return {
-                    title: "Décrivez votre besoin",
+                    title: t.prequalificationForm.steps[1].sophie_sage.title,
                     content: <textarea name="problem" value={formData.problem} rows={4} {...commonProps} placeholder="Ex: Bilan avant un long voyage, 2e avis sur un devis..."></textarea>,
                     error: errors.problem,
                 };
             case 'martin_prevoyant':
                  return {
-                    title: "Date de rendez-vous souhaitée?",
+                    title: t.prequalificationForm.steps[1].martin_prevoyant.title,
                     content: <input type="text" name="preferredDate" value={formData.preferredDate} {...commonProps} placeholder="Ex: La semaine prochaine, mardi matin..." />,
                     error: errors.preferredDate,
                 };
@@ -246,13 +247,13 @@ ${problemDescription}
         const selectedDateObj = formData.appointmentDate ? new Date(formData.appointmentDate + 'T00:00:00Z') : null;
         
         return (
-            <div className="absolute top-full mt-2 w-full max-w-xs bg-slate-900 border border-slate-600 rounded-lg shadow-lg p-4 z-10">
+            <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10 dark:bg-slate-900 dark:border-slate-600">
                 <div className="flex justify-between items-center mb-4">
-                    <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-700"><ChevronLeftIcon className="h-5 w-5 text-slate-300" /></button>
-                    <div className="font-bold text-white">{monthName} {year}</div>
-                    <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-slate-700"><ChevronRightIcon className="h-5 w-5 text-slate-300" /></button>
+                    <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700"><ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-slate-300" /></button>
+                    <div className="font-bold text-gray-800 dark:text-white">{monthName} {year}</div>
+                    <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700"><ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-slate-300" /></button>
                 </div>
-                <div className="grid grid-cols-7 gap-1 text-sm text-center text-slate-400 mb-2">{weekDays.map(d => <div key={d}>{d}</div>)}</div>
+                <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-slate-400 mb-2">{weekDays.map(d => <div key={d}>{d}</div>)}</div>
                 <div className="grid grid-cols-7 gap-y-1">
                     {Array.from({ length: startDay }).map((_, i) => <div key={`blank-${i}`}></div>)}
                     {Array.from({ length: numDays }).map((_, i) => {
@@ -265,7 +266,7 @@ ${problemDescription}
                         const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
                         return (
                             <div key={day} className="text-center">
-                                <button type="button" onClick={() => !isDisabled && handleDateSelect(day)} disabled={isDisabled} className={`w-10 h-10 rounded-full transition-colors duration-200 ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''} ${!isSelected && !isDisabled ? 'hover:bg-slate-700' : ''} ${isToday && !isSelected ? 'text-orange-400 font-bold' : ''} ${isDisabled ? 'text-slate-500 cursor-not-allowed' : 'text-white'} ${isPast ? 'line-through' : ''}`}>{day}</button>
+                                <button type="button" onClick={() => !isDisabled && handleDateSelect(day)} disabled={isDisabled} className={`w-10 h-10 rounded-full transition-colors duration-200 ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''} ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-slate-700' : ''} ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''} ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'text-slate-900 dark:text-white'} ${isPast ? 'line-through' : ''}`}>{day}</button>
                             </div>
                         );
                     })}
@@ -277,7 +278,7 @@ ${problemDescription}
     const renderStepContent = () => {
         // Common input props for consistency
         const commonInputProps = {
-            className: `w-full p-4 bg-white rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`,
+            className: `w-full p-4 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white rounded-md placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 border border-slate-300 dark:border-slate-600`,
             onChange: handleChange,
         };
         const totalSteps = 4;
@@ -287,11 +288,11 @@ ${problemDescription}
                 const { title, content, error } = firstStepContent();
                 return (
                     <>
-                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center">{title}</h2>
+                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{title}</h2>
                         {content}
-                        {error && <p className="text-red-400 text-sm mt-2 text-center">{error}</p>}
+                        {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
                         <div className="mt-8 text-right">
-                            <button type="button" onClick={handleNext} className="w-full bg-slate-800 text-white font-bold py-4 px-8 rounded-md hover:bg-slate-700 transition">Continuer</button>
+                            <button type="button" onClick={handleNext} className="w-full bg-orange-500 text-slate-900 font-bold py-4 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.prequalificationForm.buttons.continue}</button>
                         </div>
                     </>
                 );
@@ -300,44 +301,46 @@ ${problemDescription}
                 const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
                  return (
                     <>
-                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center">Détails du véhicule</h2>
+                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[2].title}</h2>
                         <div className="space-y-4">
                             <select name="vehicleType" value={formData.vehicleType} {...commonInputProps}>
-                                <option value="">Type de véhicule...</option>
+                                <option value="">{t.contactForm.vehicleType}...</option>
                                 {t.contactForm.vehicleOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                             </select>
-                            {errors.vehicleType && <p className="text-red-400 text-sm mt-1">{errors.vehicleType}</p>}
+                            {errors.vehicleType && <p className="text-red-500 text-sm mt-1">{errors.vehicleType}</p>}
                             <select name="vehicleYear" value={formData.vehicleYear} {...commonInputProps}>
-                                <option value="">Année...</option>
+                                <option value="">{t.contactForm.vehicleDetailsPlaceholder.split(',')[0]}...</option>
                                 {years.map(year => <option key={year} value={year}>{year}</option>)}
                             </select>
-                            {errors.vehicleYear && <p className="text-red-400 text-sm mt-1">{errors.vehicleYear}</p>}
+                            {errors.vehicleYear && <p className="text-red-500 text-sm mt-1">{errors.vehicleYear}</p>}
                         </div>
                     </>
                 );
             case 3:
                 return (
                      <>
-                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center">Planifiez votre rendez-vous</h2>
+                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[3].title}</h2>
                          <div className="space-y-4">
                             <div className="relative" ref={datePickerRef}>
                                 <div className="relative">
-                                    <input type="text" readOnly value={formData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder="Sélectionnez une date" className={`${commonInputProps.className} pl-12 cursor-pointer`} />
+                                    <input type="text" readOnly value={formData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className={`${commonInputProps.className} pl-12 cursor-pointer`} />
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
                                 </div>
                                 {isDatePickerOpen && renderCalendar()}
                             </div>
-                             {errors.appointmentDate && <p className="text-red-400 text-sm mt-1">{errors.appointmentDate}</p>}
+                             {errors.appointmentDate && <p className="text-red-500 text-sm mt-1">{errors.appointmentDate}</p>}
                             
-                            {formData.appointmentDate && (
+                            {formData.appointmentDate ? (
                                 availableSlots.length > 0 ? (
                                     <select name="appointmentTime" value={formData.appointmentTime} {...commonInputProps}>
-                                        <option value="">Sélectionnez une heure...</option>
+                                        <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
                                         {availableSlots.map(time => <option key={time} value={time}>{time}</option>)}
                                     </select>
                                 ) : (
-                                    <div className="text-center text-sm p-3 bg-red-900/50 rounded-md text-red-300">Aucun créneau disponible ce jour-là.</div>
+                                    <div className="text-center text-sm p-3 bg-red-100 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
                                 )
+                            ) : (
+                                <div className="text-center text-sm p-3 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 dark:text-slate-400">{t.contactForm.selectDateFirst}</div>
                             )}
                         </div>
                     </>
@@ -345,17 +348,19 @@ ${problemDescription}
             case 4:
                 return (
                      <>
-                         <h2 className="text-3xl font-oswald font-bold mb-6 text-center">Presque terminé!</h2>
+                         <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[4].title}</h2>
                          <div className="space-y-4">
-                            <input type="text" name="fullName" placeholder="Nom complet" value={formData.fullName} {...commonInputProps} />
-                            {errors.fullName && <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>}
-                            <input type="tel" name="phone" placeholder="Téléphone (Requis)" value={formData.phone} {...commonInputProps} />
-                            {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
-                            <input type="email" name="email" placeholder="Courriel (Requis)" value={formData.email} {...commonInputProps} />
-                            {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+                            {/* FIX: Using common fullName translation from contactForm for consistency */}
+                            <input type="text" name="fullName" placeholder={t.contactForm.fullName} value={formData.fullName} {...commonInputProps} />
+                            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                            <input type="tel" name="phone" placeholder={t.contactForm.phone} value={formData.phone} {...commonInputProps} />
+                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                            <input type="email" name="email" placeholder={t.contactForm.email} value={formData.email} {...commonInputProps} />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                         </div>
                     </>
                 );
+            default: return null;
         }
     };
     
@@ -363,13 +368,22 @@ ${problemDescription}
 
     return (
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeForm}></div>
-            <div style={{ backgroundImage: "url('https://images.unsplash.com/photo-1553976468-dcd9082e7636?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80')", backgroundSize: 'cover', backgroundPosition: 'center' }} className={`relative w-full max-w-md h-[90vh] max-h-[700px] rounded-2xl shadow-2xl transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-                <div className="absolute inset-0 bg-blue-800/80 backdrop-brightness-50 rounded-2xl"></div>
-                
-                <div className="relative z-10 flex flex-col h-full text-white p-6 sm:p-8">
-                     <button onClick={closeForm} className="absolute top-4 right-4 text-white/70 hover:text-white z-20"><XMarkIcon className="h-8 w-8" /></button>
-                     <h2 className="text-3xl font-oswald font-bold text-center mb-4">FAIRE UNE DEMANDE</h2>
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={closeForm}></div>
+            
+            <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                {/* Left Info Panel (Hidden on small, visible on md+) */}
+                <div className="hidden md:flex flex-col justify-center items-start p-8 lg:p-12 text-white bg-blue-800 flex-shrink-0 md:w-1/2 lg:w-2/5 xl:w-1/3">
+                    <CheckCircleIcon className="w-16 h-16 text-white/90 mb-6" />
+                    <h2 className="text-4xl lg:text-5xl font-oswald font-bold leading-tight mb-4">{t.prequalificationForm.infoPanel.title}</h2>
+                    <p className="text-lg text-white/80">{t.prequalificationForm.infoPanel.subtitle}</p>
+                </div>
+
+                {/* Right Form Panel */}
+                <div className="relative flex-grow flex flex-col bg-white dark:bg-slate-800 text-slate-900 dark:text-white p-6 sm:p-8 md:w-1/2 lg:w-3/5 xl:w-2/3">
+                     <button onClick={closeForm} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-white/70 dark:hover:text-white z-20 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                         <XMarkIcon className="h-8 w-8" />
+                     </button>
+                     <h2 className="text-3xl font-oswald font-bold text-center mb-4">{t.prequalificationForm.formTitle}</h2>
                      <ProgressBar current={formData.step} total={4} />
                     
                     <form onSubmit={handleSubmit} className="flex flex-col flex-grow mt-6">
@@ -378,14 +392,14 @@ ${problemDescription}
                         </div>
                         <div className="mt-6 flex items-center">
                             {formData.step > 1 && (
-                                <button type="button" onClick={handleBack} className="flex items-center text-sm font-semibold text-white/80 hover:text-white"><ArrowLeftIcon className="h-4 w-4 mr-2" /> Retour</button>
+                                <button type="button" onClick={handleBack} className="flex items-center text-sm font-semibold text-slate-600 dark:text-white/80 hover:text-slate-900 dark:hover:text-white"><ArrowLeftIcon className="h-4 w-4 mr-2" /> {t.prequalificationForm.buttons.back}</button>
                             )}
                             <div className="flex-grow"></div>
                             {formData.step < 4 && formData.step > 0 &&
-                                <button type="button" onClick={handleNext} className="bg-slate-800 text-white font-bold py-3 px-8 rounded-md hover:bg-slate-700 transition">Continuer</button>
+                                <button type="button" onClick={handleNext} className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.prequalificationForm.buttons.continue}</button>
                             }
                             {formData.step === 4 &&
-                                <button type="submit" className="bg-slate-800 text-white font-bold py-3 px-8 rounded-md hover:bg-slate-700 transition">Envoyer ma demande</button>
+                                <button type="submit" className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.prequalificationForm.buttons.submit}</button>
                             }
                         </div>
                     </form>

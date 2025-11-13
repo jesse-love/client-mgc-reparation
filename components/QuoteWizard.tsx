@@ -1,7 +1,8 @@
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { XMarkIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon, CheckCircleIcon, ArrowLeftIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon, TruckIcon, CogIcon, WrenchScrewdriverIcon, DocumentMagnifyingGlassIcon, BugAntIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import { createGoogleCalendarLink } from '../utils/calendar';
 import { useTheme } from '../App';
 import { trackConversion } from '../utils/googleTag';
@@ -15,15 +16,9 @@ type ValidationErrors = {
 
 
 const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, total }) => {
-    const { t } = useLanguage();
     return (
-        <div>
-            <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                {t.quoteWizard.progress.replace('{current}', String(current)).replace('{total}', String(total))}
-            </p>
-            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
-                <div className="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${(current / total) * 100}%` }}></div>
-            </div>
+        <div className="w-full bg-white/10 rounded-full h-1.5">
+            <div className="bg-white h-1.5 rounded-full transition-all duration-500" style={{ width: `${(current / total) * 100}%` }}></div>
         </div>
     );
 };
@@ -31,14 +26,14 @@ const ProgressBar: React.FC<{ current: number, total: number }> = ({ current, to
 const QuoteWizard: React.FC = () => {
     const { isOpen, closeWizard, wizardData, setWizardData, resetWizard } = useQuoteWizard();
     const { language, t } = useLanguage();
-    const { theme } = useTheme();
+    const { theme } = useTheme(); 
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errors, setErrors] = useState<ValidationErrors>({});
     
+    // Date Picker State and Refs
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
     const datePickerRef = useRef<HTMLDivElement>(null);
-    const dateInputRef = useRef<HTMLInputElement>(null);
 
     const handleNext = () => setWizardData(prev => ({ ...prev, step: prev.step + 1 }));
     const handleBack = () => {
@@ -131,25 +126,32 @@ ${wizardData.description}
         closeWizard();
     }
 
-    const [calendarPosition, setCalendarPosition] = useState<'top' | 'bottom'>('bottom');
-
-    const calculateDatePickerPosition = useCallback(() => {
-        if (dateInputRef.current) {
-            const inputRect = dateInputRef.current.getBoundingClientRect();
-            const spaceBelow = window.innerHeight - inputRect.bottom;
-            if (spaceBelow < 350 && inputRect.top > 350) {
-                setCalendarPosition('top');
-            } else {
-                setCalendarPosition('bottom');
-            }
-        }
-    }, []);
-
+    // Set initial viewDate to current month when date picker opens
     useEffect(() => {
         if (isDatePickerOpen) {
-            calculateDatePickerPosition();
+          if (wizardData.appointmentDate) {
+            const selected = new Date(wizardData.appointmentDate);
+            if (!isNaN(selected.getTime())) {
+                setViewDate(new Date(selected.getUTCFullYear(), selected.getUTCMonth(), 1));
+            }
+          } else {
+            setViewDate(new Date());
+          }
         }
-    }, [isDatePickerOpen, calculateDatePickerPosition]);
+      }, [isDatePickerOpen, wizardData.appointmentDate]);
+    
+      // Close date picker when clicking outside
+      useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+          if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+            setIsDatePickerOpen(false);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
 
     const renderCalendar = useCallback(() => {
     const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
@@ -197,10 +199,9 @@ ${wizardData.description}
                     className={`
                         w-10 h-10 rounded-full transition-colors duration-200
                         ${isSelected ? 'bg-orange-500 text-slate-900 font-bold' : ''}
-                        ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
+                        ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-slate-700' : ''}
                         ${isToday && !isSelected ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}
-                        ${isDisabled ? 'text-slate-400 dark:text-slate-500 cursor-not-allowed' : 'text-slate-700 dark:text-slate-200'}
-                        ${isPast ? 'line-through' : ''}
+                        ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed line-through' : 'text-slate-900 dark:text-white'}
                     `}
                 >
                     {day}
@@ -209,21 +210,18 @@ ${wizardData.description}
         );
     });
 
-    const calendarBgClass = theme === 'light' ? 'bg-white' : 'bg-slate-800';
-    const calendarBorderClass = theme === 'light' ? 'border-slate-300' : 'border-slate-600';
-
     return (
-        <div className={`absolute left-1/2 -translate-x-1/2 w-full max-w-sm ${calendarBgClass} border ${calendarBorderClass} rounded-lg shadow-2xl p-4 z-20 ${calendarPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
+        <div className={`absolute left-1/2 -translate-x-1/2 w-full max-w-sm bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-20 top-full mt-2 dark:bg-slate-900 dark:border-slate-600`}>
             <div className="flex justify-between items-center mb-4">
-                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
-                    <ChevronLeftIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+                    <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-slate-300" />
                 </button>
-                <div className="font-bold text-slate-800 dark:text-slate-100">{monthName} {year}</div>
-                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
-                    <ChevronRightIcon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                <div className="font-bold text-gray-800 dark:text-white">{monthName} {year}</div>
+                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+                    <ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-slate-300" />
                 </button>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-sm text-center text-slate-500 dark:text-slate-400 mb-2">
+            <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-slate-400 mb-2">
                 {weekDays.map(d => <div key={d}>{d}</div>)}
             </div>
             <div className="grid grid-cols-7 gap-y-1">
@@ -232,7 +230,7 @@ ${wizardData.description}
             </div>
         </div>
     );
-  }, [viewDate, wizardData.appointmentDate, language, setWizardData, calendarPosition, theme]);
+  }, [viewDate, wizardData.appointmentDate, language, setWizardData, theme]);
 
     const generateTimeSlots = useCallback((selectedDateString: string): string[] => {
         if (!selectedDateString) return [];
@@ -260,16 +258,6 @@ ${wizardData.description}
     const availableSlots = generateTimeSlots(wizardData.appointmentDate);
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-                setIsDatePickerOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    useEffect(() => {
         if (!isOpen) {
             setTimeout(() => {
                 setIsSubmitted(false);
@@ -280,15 +268,15 @@ ${wizardData.description}
 
     if (!isOpen) return null;
 
-    // Common input styling for consistency
-    const commonInputClass = `w-full px-4 py-3 border-2 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white text-lg`;
+    // Common input styling for consistency (matching PrequalificationForm)
+    const commonInputClass = `w-full p-4 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white rounded-md placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`;
 
     const renderContent = () => {
         if (isSubmitted) {
             return (
                 <div className="text-center p-4 flex flex-col justify-center items-center h-full">
                     <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-6" />
-                    <h2 className="text-3xl font-bold font-oswald text-slate-800 dark:text-white">{t.quoteWizard.success.title}</h2>
+                    <h2 className="text-3xl font-bold font-oswald text-slate-900 dark:text-white">{t.quoteWizard.success.title}</h2>
                     <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">{t.quoteWizard.success.message}</p>
                     <button onClick={handleResetAndClose} className="mt-8 bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition duration-300">
                         {t.quoteWizard.success.button}
@@ -300,19 +288,19 @@ ${wizardData.description}
             case 1:
                 return (
                     <div>
-                        <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[1].title}</h2>
+                        <h2 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-8 text-center">{t.quoteWizard.steps[1].title}</h2>
                         <div className="space-y-4">
-                             <button onClick={() => handleSelectOption('vehicleType', 'Car/SUV/Light Truck')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                             <button onClick={() => handleSelectOption('vehicleType', 'Car/SUV/Light Truck')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <WrenchScrewdriverIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.car}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[1].options.car}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('vehicleType', 'Heavy Truck')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                            <button onClick={() => handleSelectOption('vehicleType', 'Heavy Truck')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <TruckIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.heavy}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[1].options.heavy}</span>
                             </button>
-                             <button onClick={() => handleSelectOption('vehicleType', 'Trailer/Other')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                             <button onClick={() => handleSelectOption('vehicleType', 'Trailer/Other')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <CogIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[1].options.trailer}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[1].options.trailer}</span>
                             </button>
                         </div>
                     </div>
@@ -320,68 +308,65 @@ ${wizardData.description}
             case 2:
                 return (
                     <div>
-                        <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[2].title}</h2>
+                        <h2 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-8 text-center">{t.quoteWizard.steps[2].title}</h2>
                         <div className="space-y-4">
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Maintenance/Inspection')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Maintenance/Inspection')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <SquaresPlusIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.maintenance}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[2].options.maintenance}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Specific Repair')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Specific Repair')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <BugAntIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.repair}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[2].options.repair}</span>
                             </button>
-                            <button onClick={() => handleSelectOption('serviceCategory', 'Diagnostics/Not Sure')} className="w-full text-left p-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all flex items-center text-lg">
+                            <button onClick={() => handleSelectOption('serviceCategory', 'Diagnostics/Not Sure')} className="w-full text-left p-6 border border-slate-300 dark:border-slate-600 rounded-lg hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all flex items-center text-lg bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <DocumentMagnifyingGlassIcon className="h-10 w-10 text-orange-500 mr-5"/>
-                                <span className="font-semibold text-slate-800 dark:text-slate-100">{t.quoteWizard.steps[2].options.diagnostics}</span>
+                                <span className="font-semibold">{t.quoteWizard.steps[2].options.diagnostics}</span>
                             </button>
                         </div>
-                         <div className="mt-8 text-center">
-                            <button type="button" onClick={handleBack} className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500">{t.quoteWizard.buttons.back}</button>
-                         </div>
                     </div>
                 );
             case 3:
                 return (
                     <div>
-                         <h2 className="text-3xl font-oswald font-bold text-slate-800 dark:text-white mb-8 text-center">{t.quoteWizard.steps[3].title}</h2>
+                         <h2 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-8 text-center">{t.quoteWizard.steps[3].title}</h2>
                          <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <textarea id="description" name="description" rows={3} value={wizardData.description} onChange={handleChange} className={`${commonInputClass} ${errors.description ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} placeholder={t.quoteWizard.steps[3].descriptionPlaceholder}></textarea>
-                                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+                                {errors.description && <p className="text-red-500 text-sm mt-1 text-center">{errors.description}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <input type="text" name="fullName" placeholder={t.quoteWizard.steps[3].fullName} value={wizardData.fullName} onChange={handleChange} className={`${commonInputClass} ${errors.fullName ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
-                                    {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                                    {errors.fullName && <p className="text-red-500 text-sm mt-1 text-center">{errors.fullName}</p>}
                                 </div>
                                 <div>
                                     <input type="tel" name="phone" placeholder={t.quoteWizard.steps[3].phone} value={wizardData.phone} onChange={handleChange} className={`${commonInputClass} ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
-                                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                                    {errors.phone && <p className="text-red-500 text-sm mt-1 text-center">{errors.phone}</p>}
                                 </div>
                             </div>
                             <div>
                                 <input type="email" name="email" placeholder={t.quoteWizard.steps[3].email} value={wizardData.email} onChange={handleChange} className={`${commonInputClass} ${errors.email ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
-                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                                {errors.email && <p className="text-red-500 text-sm mt-1 text-center">{errors.email}</p>}
                             </div>
                             
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="relative" ref={datePickerRef}>
                                     <div className="relative">
-                                    <input ref={dateInputRef} type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className={`${commonInputClass} pl-12 cursor-pointer`} />
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
+                                        <input type="text" id="appointmentDate" name="appointmentDate" readOnly value={wizardData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className={`${commonInputClass} pl-12 cursor-pointer ${errors.appointmentDate ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><CalendarIcon className="h-6 w-6 text-slate-400" /></div>
                                     </div>
                                     {isDatePickerOpen && renderCalendar()}
                                 </div>
                                 <div>
                                     {!wizardData.appointmentDate ? (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 dark:text-slate-400 text-center">{t.contactForm.selectDateFirst}</div>
+                                        <div className="h-full w-full p-4 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 text-center text-lg">{t.contactForm.selectDateFirst}</div>
                                     ) : availableSlots.length > 0 ? (
                                         <select 
                                             id="appointmentTime" 
                                             name="appointmentTime" 
                                             value={wizardData.appointmentTime} 
                                             onChange={handleChange} 
-                                            className={`${commonInputClass} h-full`}
+                                            className={`${commonInputClass} h-full border border-slate-300 dark:border-slate-600`}
                                         >
                                             <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
                                             {availableSlots.map(time => (
@@ -389,13 +374,13 @@ ${wizardData.description}
                                             ))}
                                         </select>
                                     ) : (
-                                        <div className="h-full text-sm p-2 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-md text-red-600 dark:text-red-300 text-center">{t.contactForm.noSlotsAvailable}</div>
+                                        <div className="h-full w-full p-4 flex items-center justify-center bg-red-100 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300 text-center text-lg">{t.contactForm.noSlotsAvailable}</div>
                                     )}
                                 </div>
                             </div>
 
                             <div className="pt-4 flex justify-between items-center">
-                                <button type="button" onClick={handleBack} className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-orange-500">{t.quoteWizard.buttons.back}</button>
+                                <button type="button" onClick={handleBack} className="flex items-center text-sm font-semibold text-slate-600 dark:text-white/80 hover:text-slate-900 dark:hover:text-white"><ArrowLeftIcon className="h-4 w-4 mr-2" /> {t.quoteWizard.buttons.back}</button>
                                 <button type="submit" className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.quoteWizard.buttons.submit}</button>
                             </div>
                          </form>
@@ -408,26 +393,38 @@ ${wizardData.description}
     
     return (
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={closeWizard}></div>
-            <div className={`relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[90vh] transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-                <button onClick={closeWizard} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 z-10 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
-                    <XMarkIcon className="h-8 w-8" />
-                </button>
-                <div className="grid md:grid-cols-2 flex-1 md:overflow-hidden">
-                    <div className="hidden md:flex flex-col justify-center p-12 bg-blue-600 text-white relative overflow-hidden">
-                         <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-700/50 rounded-full"></div>
-                         <div className="absolute -top-12 -left-16 w-48 h-48 bg-blue-700/50 rounded-full"></div>
-                         <div className="relative z-10">
-                            <CheckCircleIcon className="w-16 h-16 text-white/80 mb-6"/>
-                            <h2 className="text-4xl font-oswald font-bold">{t.quoteWizard.brandTitle}</h2>
-                            <p className="mt-4 text-blue-200 text-lg leading-relaxed">{t.quoteWizard.brandSubtitle}</p>
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={closeWizard}></div>
+            
+            <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                {/* Left Info Panel (Hidden on small, visible on md+) */}
+                <div className="hidden md:flex flex-col justify-center items-start p-8 lg:p-12 text-white bg-blue-800 flex-shrink-0 md:w-1/2 lg:w-2/5 xl:w-1/3">
+                    <CheckCircleIcon className="w-16 h-16 text-white/90 mb-6" />
+                    <h2 className="text-4xl lg:text-5xl font-oswald font-bold leading-tight mb-4">{t.quoteWizard.infoPanel.title}</h2>
+                    <p className="text-lg text-white/80">{t.quoteWizard.infoPanel.subtitle}</p>
+                </div>
+
+                {/* Right Form Panel */}
+                <div className="relative flex-grow flex flex-col bg-white dark:bg-slate-800 text-slate-900 dark:text-white p-6 sm:p-8 md:w-1/2 lg:w-3/5 xl:w-2/3">
+                    <button onClick={closeWizard} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-white/70 dark:hover:text-white z-20 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <XMarkIcon className="h-8 w-8" />
+                    </button>
+                    <h2 className="text-3xl font-oswald font-bold text-center mb-4">{t.quoteWizard.formTitle}</h2>
+                    {!isSubmitted && <ProgressBar current={wizardData.step} total={3} />}
+                    
+                    <div className="flex flex-col flex-grow mt-6">
+                        <div className="flex-grow">
+                             {renderContent()}
                         </div>
-                    </div>
-                    <div className="p-8 sm:p-12 overflow-y-auto">
-                        {!isSubmitted && <ProgressBar current={wizardData.step} total={3} />}
-                        <div className="mt-8">
-                            {renderContent()}
-                        </div>
+                        {wizardData.step < 3 && wizardData.step > 0 && (
+                            <div className="mt-6 flex justify-between items-center">
+                                {wizardData.step > 1 && (
+                                     <button type="button" onClick={handleBack} className="flex items-center text-sm font-semibold text-slate-600 dark:text-white/80 hover:text-slate-900 dark:hover:text-white"><ArrowLeftIcon className="h-4 w-4 mr-2" /> {t.quoteWizard.buttons.back}</button>
+                                )}
+                                <div className={`${wizardData.step === 1 ? 'w-full text-right' : 'flex-grow text-right'}`}>
+                                    <button type="button" onClick={handleNext} className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md hover:bg-orange-400 transition-all duration-300 transform hover:scale-105">{t.quoteWizard.buttons.next}</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

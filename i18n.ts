@@ -1,3 +1,4 @@
+
 import type { Service, NavLink } from './types';
 import { WrenchScrewdriverIcon, TruckIcon, CogIcon, FireIcon, BoltIcon, SunIcon } from '@heroicons/react/24/outline';
 
@@ -145,7 +146,7 @@ export const services: Service[] = [
     metaDescription: { en: "Expert welding and assembly services in Mascouche. MGC Réparation Inc. offers custom fabrication, frame repair, and structural welding for vehicles and equipment.", fr: "Services experts de soudure et d'assemblage à Mascouche. MGC Réparation Inc. offre la fabrication sur mesure, la réparation de châssis et la soudure structurale pour véhicules et équipements." },
     headline: { en: "Precision Welding & Custom Assembly", fr: "Soudure de Précision & Assemblage sur Mesure" },
     subHeadline: { en: "From Frame Repairs to Custom Fabrications, We Provide Strong and Durable Solutions.", fr: "Des réparations de châssis aux fabrications sur mesure, on fournit des solutions solides et durables." },
-    pageContent: { en: "MGC Réparation Inc. offers specialized welding and assembly services that go beyond typical auto repair. Our skilled welders can handle a variety of materials and projects, providing strong, reliable solutions for vehicles and equipment.", fr: "MGC Réparation Inc. offre des services spécialisés de soudure et d'assemblage qui vont au-delà de la réparation automobile typique. Nos soudeurs qualifiés peuvent travailler avec une variété de matériaux et de projets, fournissant des solutions solides et fiables pour les véhicules et l'équipement." },
+    pageContent: { en: "MGC Réparation Inc. offers specialized welding and assembly services that go beyond typical auto repair. Our skilled welders can handle a variety of materials and projects, providing strong, reliable solutions for vehicles and equipment.", fr: "MGC Réparation Inc. offers specialized welding and assembly services that go beyond typical auto repair. Nos soudeurs qualifiés peuvent travailler avec une variété de matériaux et de projets, fournissant des solutions solides et fiables pour les véhicules et l'équipement." },
     servicePoints: [
       { en: "Vehicle Frame & Chassis Repair", fr: "Réparation de cadre & châssis de véhicule" },
       { en: "Custom Exhaust System Welding", fr: "Soudure de système d'échappement sur mesure" },
@@ -297,8 +298,11 @@ const en = {
     ctaButton: 'Request a Quote'
   },
   quoteWizard: {
-    brandTitle: 'Get a Precise Quote in Minutes',
-    brandSubtitle: "Our smart assistant guides you to the right service. A few clicks are all it takes to book your appointment.",
+    formTitle: 'Get Your Free Quote',
+    infoPanel: {
+      title: 'Get a precise quote in just a few minutes.',
+      subtitle: 'Our smart assistant guides you to the right service. Just a few clicks to book your appointment.'
+    },
     progress: 'Step {current} of {total}',
     steps: {
       1: {
@@ -328,12 +332,40 @@ const en = {
     buttons: {
       next: "Next",
       back: "Back",
-      submit: "Book My Appointment"
+      submit: "Submit Request"
     },
     success: {
         title: "Appointment Request Sent!",
         message: "Thank you! We've received your request and will contact you shortly to confirm your booking.",
         button: "Start a New Request"
+    }
+  },
+  prequalificationForm: {
+    formTitle: 'GET YOUR CUSTOM QUOTE',
+    infoPanel: {
+      title: 'Find the perfect service for your needs.',
+      subtitle: 'Our quick form helps you get the best expert advice and pricing.'
+    },
+    steps: {
+        1: {
+            alex_anxieux: { title: "Describe the problem" },
+            sophie_sage: { title: "Describe your need" },
+            martin_prevoyant: { title: "Preferred appointment date?" }
+        },
+        2: {
+            title: "Vehicle Details"
+        },
+        3: {
+            title: "Schedule your appointment"
+        },
+        4: {
+            title: "Almost done!"
+        }
+    },
+    buttons: {
+        continue: "Continue",
+        back: "Back",
+        submit: "Send My Request"
     }
   }
 };
@@ -389,7 +421,7 @@ const fr: typeof en = {
   about: {
     title: 'Un Héritage Familial de Confiance & d\'Excellence Mécanique',
     subtitle: 'Au service de Mascouche depuis 2012 avec intégrité, expertise et passion pour les véhicules.',
-    p1: 'Bienvenue chez MGC Réparation Inc., où l\'expertise mécanique rencontre de vraies valeurs familiales. Fondé en 2012 par Maxime Caron, notre garage au 1287 Chemin de la Côte Georges sert fièrement la communauté de Mascouche depuis plus d\'une décennie.',
+    p1: 'Bienvenue chez MGC Réparation Inc., où l\'expertise mécanique rencontre de vraies valeurs familiales. Fondé en 2012 par Maxime Caron, notre garage au 1287 Chemin de la Côte Georges a fièrement servi la communauté de Mascouche depuis plus d\'une décennie.',
     p2: 'Maxime a imaginé un centre de réparation bâti sur l\'honnêteté, la précision et un engagement inébranlable envers la satisfaction du client. Parti d\'une passion pour les autos et d\'une volonté de maîtriser des défis mécaniques complexes, il a fait de MGC Réparation l\'établissement de confiance qu\'il est aujourd\'hui. En tant qu\'entreprise familiale, on comprend l\'importance de la fiabilité – que ce soit pour votre trajet quotidien, votre flotte commerciale ou vos génératrices essentielles. On traite chaque véhicule et équipement comme si c\'était le nôtre, en garantissant une attention méticuleuse aux détails et des solutions durables.',
     p3: 'Notre équipe, choisie pour ses compétences et son intégrité, partage la vision de Maxime. On n\'est pas juste des mécanos; on est des solutionneurs de problèmes qui sont fiers de diagnostiquer des problèmes complexes et de livrer des réparations efficaces et professionnelles. On croit en la communication transparente, en fournissant des explications claires et des estimations justes avant de commencer le travail.',
     p4: 'Au fil des ans, MGC Réparation Inc. a élargi ses capacités pour inclure des services spécialisés comme la mécanique de véhicules lourds, la réparation de remorques, l\'entretien de génératrices, et la soudure et l\'assemblage experts. Cette croissance reflète notre quête continue de l\'excellence et notre dévouement à répondre aux divers besoins de nos clients à Mascouche et dans les régions avoisinantes.',
@@ -450,8 +482,11 @@ const fr: typeof en = {
     ctaButton: 'Demander une soumission'
   },
   quoteWizard: {
-    brandTitle: 'Obtenez une soumission précise en quelques minutes',
-    brandSubtitle: "Notre assistant intelligent vous guide vers le bon service. Quelques clics suffisent pour prendre votre rendez-vous.",
+    formTitle: 'Demandez votre soumission gratuite',
+    infoPanel: {
+      title: 'Obtenez une soumission précise en quelques minutes.',
+      subtitle: 'Notre assistant intelligent vous guide vers le bon service. Quelques clics suffisent pour prendre votre rendez-vous.'
+    },
     progress: 'Étape {current} sur {total}',
     steps: {
         1: {
@@ -481,12 +516,40 @@ const fr: typeof en = {
     buttons: {
         next: "Suivant",
         back: "Retour",
-        submit: "Réserver mon rendez-vous"
+        submit: "Envoyer ma demande"
     },
     success: {
         title: "Rendez-vous demandé!",
         message: "Merci! Nous avons bien reçu votre demande et nous vous contacterons sous peu pour confirmer votre réservation.",
         button: "Nouvelle demande"
+    }
+  },
+  prequalificationForm: {
+    formTitle: 'OBTENEZ VOTRE SOUMISSION PERSONNALISÉE',
+    infoPanel: {
+      title: 'Trouvez le service parfait pour vos besoins.',
+      subtitle: 'Notre formulaire rapide vous aide à obtenir le meilleur expert et les meilleurs prix.'
+    },
+    steps: {
+        1: {
+            alex_anxieux: { title: "Décrivez le problème" },
+            sophie_sage: { title: "Décrivez votre besoin" },
+            martin_prevoyant: { title: "Date de rendez-vous souhaitée?" }
+        },
+        2: {
+            title: "Détails du véhicule"
+        },
+        3: {
+            title: "Planifiez votre rendez-vous"
+        },
+        4: {
+            title: "Presque terminé!"
+        }
+    },
+    buttons: {
+        continue: "Continuer",
+        back: "Retour",
+        submit: "Envoyer ma demande"
     }
   }
 };
