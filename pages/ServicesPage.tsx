@@ -36,7 +36,7 @@ const ServicesPage: React.FC = () => {
               <a 
                 key={service.slug} 
                 href={`/services/${service.slug}`} 
-                className="group block bg-white dark:bg-slate-900 p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-800"
+                className="group block bg-white dark:bg-slate-900 p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-800 hover:border-orange-400"
               >
                 <service.icon className="h-10 w-10 text-orange-500 mb-5" />
                 <h3 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white mb-3 group-hover:text-orange-500 transition-colors duration-300">

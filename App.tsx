@@ -230,11 +230,10 @@ const App: React.FC = () => {
               const LandingComponent = landingPageMap[route];
               if (LandingComponent) {
                 return (
-                  <QuoteWizardProvider>
+                  <>
                     <LandingComponent />
                     <PrequalificationForm />
-                    <QuoteWizard />
-                  </QuoteWizardProvider>
+                  </>
                 );
               }
               

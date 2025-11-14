@@ -149,7 +149,7 @@ const Header: React.FC = () => {
       </div>
       
       {/* Mobile Menu */}
-      <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'} bg-brand-dark absolute top-20 left-0 w-full shadow-2xl border-t border-slate-700`}>
+      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-brand-dark absolute top-20 left-0 w-full shadow-2xl border-t border-slate-700 ${isOpen ? 'max-h-screen' : 'max-h-0'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {NAV_LINKS.map((link) => (
             <div key={link.name.en}>

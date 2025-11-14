@@ -370,7 +370,7 @@ ${problemDescription}
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={closeForm}></div>
             
-            <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+            <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu md:rounded-2xl shadow-2xl ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                 {/* Left Info Panel (Hidden on small, visible on md+) */}
                 <div className="hidden md:flex flex-col justify-center items-start p-8 lg:p-12 text-white bg-blue-800 flex-shrink-0 md:w-1/2 lg:w-2/5 xl:w-1/3">
                     <CheckCircleIcon className="w-16 h-16 text-white/90 mb-6" />
@@ -387,7 +387,7 @@ ${problemDescription}
                      <ProgressBar current={formData.step} total={4} />
                     
                     <form onSubmit={handleSubmit} className="flex flex-col flex-grow mt-6">
-                        <div className="flex-grow">
+                        <div className="flex-grow overflow-y-auto">
                              {renderStepContent()}
                         </div>
                         <div className="mt-6 flex items-center">
