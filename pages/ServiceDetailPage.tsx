@@ -19,9 +19,8 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
         description={service.metaDescription[language]}
       />
       <SchemaManager pageType="ServiceDetailPage" service={service} />
-      <div className="bg-white dark:bg-slate-900">
-         <div className="bg-white dark:bg-slate-900">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-slate-100 dark:bg-brand-dark text-slate-800 dark:text-slate-200">
+         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <nav aria-label="Breadcrumb">
                 <ol role="list" className="flex items-center space-x-2">
                   <li>
@@ -64,7 +63,6 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
                 </ol>
               </nav>
           </div>
-         </div>
         {/* Hero Section */}
         <div className="bg-brand-dark py-20 lg:py-28 text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -95,7 +93,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
               {/* Right Column - Why Choose Us */}
               <aside className="lg:col-span-1">
-                <div className="bg-slate-100 dark:bg-brand-dark p-8 rounded-lg border border-slate-200 dark:border-slate-800 sticky top-28">
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-lg border border-slate-200 dark:border-slate-700 sticky top-28">
                   <h3 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-6">{t.serviceDetail.whyTrustTitle.replace('{service}', service.title[language])}</h3>
                   <div className="space-y-6">
                     {service.whyChoosePoints.map((point, index) => (

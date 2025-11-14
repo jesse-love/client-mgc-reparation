@@ -14,7 +14,7 @@ const ServicesPage: React.FC = () => {
         description={t.seo.services.description}
       />
       <SchemaManager pageType="Generic" />
-      <div className="bg-white dark:bg-slate-900">
+      <div className="bg-slate-100 dark:bg-brand-dark">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <nav aria-label="Breadcrumb">
               <ol role="list" className="flex items-center space-x-2">
@@ -41,45 +41,49 @@ const ServicesPage: React.FC = () => {
               </ol>
             </nav>
         </div>
-      </div>
-      <div className="bg-white dark:bg-slate-900 py-16 lg:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl lg:text-6xl font-oswald font-bold text-slate-900 dark:text-white">
+
+        {/* Hero Section */}
+        <div className="bg-brand-dark py-20 lg:py-28 text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-5xl lg:text-6xl font-oswald font-bold">
               {t.services.title}
             </h1>
-            <p className="mt-4 text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+            <p className="mt-4 text-xl text-slate-300 max-w-3xl mx-auto">
               {t.services.subtitle}
             </p>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <div key={service.slug} className="flex flex-col bg-slate-50 dark:bg-slate-800/50 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
-                <div className="p-8 flex-grow">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-orange-500/10 dark:bg-orange-500/20 p-3 rounded-full mr-5">
-                      <service.icon className="h-8 w-8 text-orange-500 flex-shrink-0" />
+        <div className="py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service) => (
+                <div key={service.slug} className="flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-slate-200 dark:border-slate-700">
+                  <div className="p-8 flex-grow">
+                    <div className="flex items-center mb-6">
+                      <div className="bg-orange-500/10 dark:bg-orange-500/20 p-3 rounded-full mr-5">
+                        <service.icon className="h-8 w-8 text-orange-500 flex-shrink-0" />
+                      </div>
+                      <h2 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white">{service.title[language]}</h2>
                     </div>
-                    <h2 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white">{service.title[language]}</h2>
+                    <p className="text-slate-600 dark:text-slate-300 mb-6 flex-grow">{service.shortDescription[language]}</p>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300 mb-6 flex-grow">{service.shortDescription[language]}</p>
+                  <div className="bg-slate-100 dark:bg-slate-800/50 p-5">
+                     <a href={`/services/${service.slug}`} className="font-bold text-orange-500 hover:text-orange-600 dark:hover:text-orange-400 transition duration-300 flex items-center justify-between group">
+                      <span>{t.services.viewDetails}</span>
+                      <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                  </div>
                 </div>
-                <div className="bg-slate-100 dark:bg-slate-800 p-5">
-                   <a href={`/services/${service.slug}`} className="font-bold text-orange-500 hover:text-orange-600 dark:hover:text-orange-400 transition duration-300 flex items-center justify-between group">
-                    <span>{t.services.viewDetails}</span>
-                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-                  </a>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
+        <CallToActionSection 
+          title={t.about.ctaTitle}
+          subtitle={t.about.ctaSubtitle}
+        />
       </div>
-      <CallToActionSection 
-        title={t.about.ctaTitle}
-        subtitle={t.about.ctaSubtitle}
-      />
     </>
   );
 };
