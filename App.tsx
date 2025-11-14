@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,7 +12,6 @@ import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
 import LandingTiresPage from './pages/LandingTiresPage';
 import ThankYouPage from './pages/ThankYouPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import LandingLayout from './components/LandingLayout';
 
 import { services } from './i18n';
 import type { Service } from './types';
@@ -108,7 +108,19 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
   }, [route, isOpen, openWizard]);
 
   const renderContent = () => {
-    // Service pages are now handled outside MainLayout
+    if (route.startsWith('/services')) {
+      const slug = route.startsWith('/services/') ? route.split('/services/')[1] : null;
+      if (slug) {
+        const service = services.find((s: Service) => s.slug === slug);
+        if (service) {
+          return <ServiceDetailPage service={service} />;
+        }
+        // Fallback to home page if slug is invalid
+        return <HomePage />;
+      }
+      return <ServicesPage />;
+    }
+
     switch (route) {
       case '/about':
         return <AboutPage />;
@@ -141,25 +153,25 @@ const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
   const landingPages = ['/offre', '/bilan', '/pneus'];
   
-  // Track initial page view
+  // Track page views on route change
   useEffect(() => {
-    if (landingPages.includes(route) || route === '/merci') {
-      trackLandingPageView(route);
-    } else {
-      trackPageView(route);
-    }
-  }, []); // Only runs once on initial load
+    // Use a timeout to ensure document.title has been updated by the page component's <Seo>
+    const timeoutId = setTimeout(() => {
+        if (landingPages.includes(route) || route === '/merci') {
+            trackLandingPageView(route);
+        } else {
+            trackPageView(route);
+        }
+    }, 50);
+    return () => clearTimeout(timeoutId);
+  }, [route]);
 
+  // Set up navigation listeners
   useEffect(() => {
     const handlePopState = () => {
       const newPath = cleanPath(window.location.pathname);
       setRoute(newPath);
       window.scrollTo(0, 0);
-      if (landingPages.includes(newPath) || newPath === '/merci') {
-        trackLandingPageView(newPath);
-      } else {
-        trackPageView(newPath);
-      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -187,11 +199,6 @@ const App: React.FC = () => {
             window.history.pushState({}, '', newPath);
             setRoute(newPath);
             window.scrollTo(0, 0);
-             if (landingPages.includes(newPath) || newPath === '/merci') {
-                trackLandingPageView(newPath);
-            } else {
-                trackPageView(newPath);
-            }
           }
         }
       }
@@ -202,7 +209,7 @@ const App: React.FC = () => {
       window.removeEventListener('popstate', handlePopState);
       document.removeEventListener('click', handleLinkClick);
     };
-  }, [route]); // Reruns if route changes
+  }, [route]);
 
   const renderAppContent = () => {
     const landingPageMap: { [key: string]: React.ComponentType } = {
@@ -218,10 +225,11 @@ const App: React.FC = () => {
               const LandingComponent = landingPageMap[route];
               if (LandingComponent) {
                 return (
-                  <>
+                  <QuoteWizardProvider>
                     <LandingComponent />
                     <PrequalificationForm />
-                  </>
+                    <QuoteWizard />
+                  </QuoteWizardProvider>
                 );
               }
               
@@ -229,39 +237,6 @@ const App: React.FC = () => {
                 return <ThankYouPage />;
               }
               
-              if (route.startsWith('/services')) {
-                 const slug = route.startsWith('/services/') ? route.split('/services/')[1] : null;
-
-                  if (slug) {
-                      const service = services.find((s: Service) => s.slug === slug);
-                      if (!service) {
-                          // Redirect to home if service not found
-                          return (
-                            <QuoteWizardProvider>
-                                <MainLayout route={'/'} />
-                            </QuoteWizardProvider>
-                          );
-                      }
-                      return (
-                         <QuoteWizardProvider>
-                            <LandingLayout>
-                                <ServiceDetailPage service={service} />
-                                <QuoteWizard />
-                            </LandingLayout>
-                         </QuoteWizardProvider>
-                      );
-                  }
-                  
-                  return (
-                      <QuoteWizardProvider>
-                          <LandingLayout>
-                              <ServicesPage />
-                              <QuoteWizard />
-                          </LandingLayout>
-                      </QuoteWizardProvider>
-                  );
-              }
-
               return (
                 <QuoteWizardProvider>
                   <MainLayout route={route} />

@@ -1,9 +1,12 @@
+
 import React, { ReactNode } from 'react';
+import Header from './Header';
 
 const LandingLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="bg-slate-900 text-white min-h-screen font-sans flex flex-col">
-      <main className="flex-grow flex flex-col">
+      <Header />
+      <main className="flex-grow flex flex-col pt-20">
         {children}
       </main>
       <footer className="text-center py-6 text-slate-500 text-sm px-4 bg-brand-dark">
