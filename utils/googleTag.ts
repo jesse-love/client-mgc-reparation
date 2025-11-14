@@ -1,4 +1,3 @@
-
 import {
   GTM_CONTACT_FORM_EVENT,
   GTM_WIZARD_FORM_EVENT,
@@ -25,10 +24,9 @@ export const trackPageView = (path: string) => {
   window.dataLayer.push({
     event: 'page_view',
     page_path: path,
-    page_title: document.title,
     page_location: window.location.origin + path,
   });
-  console.log(`GTM Event: page_view for ${path} with title "${document.title}"`);
+  console.log(`GTM Event: page_view for ${path}`);
 };
 
 /**
@@ -40,9 +38,8 @@ export const trackLandingPageView = (path: string) => {
   window.dataLayer.push({
     event: GTM_VIEW_LANDING_PAGE_EVENT,
     page_path: path,
-    page_title: document.title,
   });
-  console.log(`GTM Event: ${GTM_VIEW_LANDING_PAGE_EVENT} for ${path} with title "${document.title}"`);
+  console.log(`GTM Event: ${GTM_VIEW_LANDING_PAGE_EVENT} for ${path}`);
 };
 
 interface UserData {

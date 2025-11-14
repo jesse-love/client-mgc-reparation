@@ -153,25 +153,25 @@ const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
   const landingPages = ['/offre', '/bilan', '/pneus'];
   
-  // Track page views on route change
+  // Track initial page view
   useEffect(() => {
-    // Use a timeout to ensure document.title has been updated by the page component's <Seo>
-    const timeoutId = setTimeout(() => {
-        if (landingPages.includes(route) || route === '/merci') {
-            trackLandingPageView(route);
-        } else {
-            trackPageView(route);
-        }
-    }, 50);
-    return () => clearTimeout(timeoutId);
-  }, [route]);
+    if (landingPages.includes(route) || route === '/merci') {
+      trackLandingPageView(route);
+    } else {
+      trackPageView(route);
+    }
+  }, []); // Only runs once on initial load
 
-  // Set up navigation listeners
   useEffect(() => {
     const handlePopState = () => {
       const newPath = cleanPath(window.location.pathname);
       setRoute(newPath);
       window.scrollTo(0, 0);
+      if (landingPages.includes(newPath) || newPath === '/merci') {
+        trackLandingPageView(newPath);
+      } else {
+        trackPageView(newPath);
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -199,6 +199,11 @@ const App: React.FC = () => {
             window.history.pushState({}, '', newPath);
             setRoute(newPath);
             window.scrollTo(0, 0);
+             if (landingPages.includes(newPath) || newPath === '/merci') {
+                trackLandingPageView(newPath);
+            } else {
+                trackPageView(newPath);
+            }
           }
         }
       }
@@ -209,7 +214,7 @@ const App: React.FC = () => {
       window.removeEventListener('popstate', handlePopState);
       document.removeEventListener('click', handleLinkClick);
     };
-  }, [route]);
+  }, [route]); // Reruns if route changes
 
   const renderAppContent = () => {
     const landingPageMap: { [key: string]: React.ComponentType } = {
@@ -225,11 +230,10 @@ const App: React.FC = () => {
               const LandingComponent = landingPageMap[route];
               if (LandingComponent) {
                 return (
-                  <QuoteWizardProvider>
+                  <>
                     <LandingComponent />
                     <PrequalificationForm />
-                    <QuoteWizard />
-                  </QuoteWizardProvider>
+                  </>
                 );
               }
               
