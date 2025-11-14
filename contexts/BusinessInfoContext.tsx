@@ -36,7 +36,8 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   useEffect(() => {
     const fetchBusinessInfo = async () => {
-      // The API key is injected as a process environment variable by the platform.
+      // The API key is injected as an environment variable by the platform.
+      // FIX: Use process.env as import.meta.env is undefined in this environment.
       const API_KEY = process.env.VITE_GOOGLE_PLACES_API_KEY;
 
       if (!API_KEY || API_KEY.trim() === '') {
