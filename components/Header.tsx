@@ -120,7 +120,7 @@ const Header: React.FC = () => {
                   {!link.subLinks && <span className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center duration-300"></span>}
                 </a>
                 {link.subLinks && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-slate-800/90 backdrop-blur-md border border-slate-700 rounded-lg shadow-2xl opacity-0 group-hover/nav:opacity-100 transition-opacity duration-300 invisible group-hover/nav:visible">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-slate-800/90 backdrop-blur-md border border-slate-700 rounded-lg shadow-2xl opacity-0 invisible group-hover/nav:visible group-hover/nav:opacity-100 translate-y-2 group-hover/nav:translate-y-0 transition-all ease-in-out duration-300">
                     <div className="p-2">
                     {link.subLinks.map((subLink) => (
                       <a key={subLink.name.en} href={subLink.href} className="block px-4 py-3 text-sm text-slate-300 hover:bg-orange-500/10 hover:text-orange-400 font-semibold transition-colors duration-200 rounded-md">{subLink.name[language]}</a>

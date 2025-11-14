@@ -1,12 +1,16 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import SchemaManager from '../components/SchemaManager';
+import SchemaManager, { Seo } from '../components/SchemaManager';
 
 const PrivacyPolicyPage: React.FC = () => {
   const { t } = useLanguage();
 
   return (
     <>
+      <Seo
+        title={t.seo.privacy.title}
+        description={t.seo.privacy.description}
+      />
       <SchemaManager pageType="Generic" />
       <div className="bg-white dark:bg-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -41,7 +45,7 @@ const PrivacyPolicyPage: React.FC = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center">
                <h1 className="text-5xl lg:text-6xl font-oswald font-bold text-slate-900 dark:text-white">
-                Politique de Confidentialité
+                {t.seo.privacy.title}
               </h1>
               <p className="mt-4 text-lg text-slate-500 dark:text-slate-400">
                 Dernière mise à jour : {new Date().toLocaleDateString('fr-CA')}

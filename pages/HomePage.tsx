@@ -8,7 +8,7 @@ import TestimonialMarquee from '../components/TestimonialMarquee';
 import LocationInfo from '../components/LocationInfo';
 import HeroBackground from '../components/HeroBackground';
 import MechanicIllustration from '../components/MechanicIllustration';
-import SchemaManager from '../components/SchemaManager';
+import SchemaManager, { Seo } from '../components/SchemaManager';
 
 const iconMap: { [key:string]: React.ElementType } = {
     UsersIcon,
@@ -59,8 +59,8 @@ const ServicesOverview: React.FC = () => {
                     {services.map((service) => (
                         <a key={service.slug} href={`/services/${service.slug}`} className="group block bg-white dark:bg-brand-dark p-10 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-800">
                             <service.icon className="h-12 w-12 text-orange-500 mb-6" />
-                            <h3 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white mb-4 group-hover:text-orange-500 transition-colors duration-300 break-words">{service.title[language]}</h3>
-                            <p className="text-slate-600 dark:text-slate-300 mb-8 break-words">{service.shortDescription[language]}</p>
+                            <h3 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white mb-4 group-hover:text-orange-500 transition-colors duration-300">{service.title[language]}</h3>
+                            <p className="text-slate-600 dark:text-slate-300 mb-8">{service.shortDescription[language]}</p>
                             <span className="font-bold text-orange-500 group-hover:text-orange-600 transition-all duration-300">
                                 {t.home.services.learnMore} <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
                             </span>
@@ -137,6 +137,7 @@ const FAQ: React.FC = () => {
 const HomePage: React.FC = () => {
   return (
     <>
+      <Seo />
       <SchemaManager pageType="HomePage" />
       <Hero />
       <ServicesOverview />

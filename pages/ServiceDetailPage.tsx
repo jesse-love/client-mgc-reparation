@@ -3,7 +3,7 @@ import type { Service } from '../types';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import CallToActionSection from '../components/CallToActionSection';
-import SchemaManager from '../components/SchemaManager';
+import SchemaManager, { Seo } from '../components/SchemaManager';
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -14,6 +14,10 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
   return (
     <>
+      <Seo 
+        title={service.title[language]}
+        description={service.metaDescription[language]}
+      />
       <SchemaManager pageType="ServiceDetailPage" service={service} />
       <div className="bg-white dark:bg-slate-900">
          <div className="bg-white dark:bg-slate-900">

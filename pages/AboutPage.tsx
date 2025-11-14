@@ -2,13 +2,17 @@ import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import CallToActionSection from '../components/CallToActionSection';
 import ShopIllustration from '../components/ShopIllustration';
-import SchemaManager from '../components/SchemaManager';
+import SchemaManager, { Seo } from '../components/SchemaManager';
 
 const AboutPage: React.FC = () => {
   const { t } = useLanguage();
 
   return (
     <>
+      <Seo 
+        title={t.breadcrumbs.about}
+        description={t.seo.about.description}
+      />
       <SchemaManager pageType="Generic" />
       <div className="bg-white dark:bg-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">

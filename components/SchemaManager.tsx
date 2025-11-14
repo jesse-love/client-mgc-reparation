@@ -9,6 +9,33 @@ interface SchemaManagerProps {
     service?: Service;
 }
 
+// --- SEO Component for meta tags ---
+const defaultTitle = 'MGC Réparation | Auto & Camion Mascouche | Réparations Honnêtes & Garanties';
+const defaultDescription = "MGC Réparation Inc. à Mascouche, QC : Votre expert familial de confiance pour la réparation d'autos, camions lourds, remorques et génératrices. Diagnostics honnêtes, service garanti, de la mécanique générale à la soudure spécialisée. Demandez votre soumission gratuite!";
+
+interface SeoProps {
+  title?: string;
+  description?: string;
+}
+
+export const Seo: React.FC<SeoProps> = ({ title, description }) => {
+  useEffect(() => {
+    const newTitle = title ? `${title} | MGC Réparation` : defaultTitle;
+    const newDescription = description || defaultDescription;
+
+    document.title = newTitle;
+
+    const metaDescriptionTag = document.querySelector('meta[name="description"]');
+    if (metaDescriptionTag) {
+      metaDescriptionTag.setAttribute('content', newDescription);
+    }
+    
+  }, [title, description]);
+
+  return null;
+};
+// --- END SEO Component ---
+
 // --- Helper Functions ---
 
 const parseAddress = (fullAddress: string) => {

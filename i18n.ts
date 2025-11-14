@@ -394,6 +394,21 @@ const en = {
         back: "Back",
         submit: "Send My Request"
     }
+  },
+  seo: {
+    about: {
+        description: "Discover the history of MGC Réparation Inc., a trusted family-owned garage in Mascouche, QC. Learn about our commitment to honesty, expertise, and exceptional customer service since 2012."
+    },
+    contact: {
+        description: "Contact MGC Réparation Inc. in Mascouche, QC. Get directions to our shop, our business hours, or request a free quote for your car, heavy truck, or trailer repairs."
+    },
+    services: {
+        description: "Explore the full range of mechanical services offered by MGC Réparation Inc. in Mascouche: general mechanics, heavy truck repair, trailer service, welding, and more."
+    },
+    privacy: {
+        title: "Privacy Policy",
+        description: "Review the privacy policy of MGC Réparation Inc. to understand how we protect your personal information on our website."
+    }
   }
 };
 
@@ -582,6 +597,21 @@ const fr: typeof en = {
         continue: "Continuer",
         back: "Retour",
         submit: "Envoyer ma demande"
+    }
+  },
+  seo: {
+    about: {
+        description: "Découvrez l'histoire de MGC Réparation Inc., un garage familial de confiance à Mascouche, QC. Apprenez-en plus sur notre engagement envers l'honnêteté, l'expertise et le service client exceptionnel depuis 2012."
+    },
+    contact: {
+        description: "Contactez MGC Réparation Inc. à Mascouche, QC. Obtenez l'itinéraire vers notre garage, nos heures d'ouverture ou demandez une soumission gratuite pour vos réparations auto, camion lourd, ou remorque."
+    },
+    services: {
+        description: "Explorez la gamme complète de services de mécanique offerts par MGC Réparation Inc. à Mascouche: mécanique générale, réparation de camions lourds, service de remorques, soudure, et plus encore."
+    },
+    privacy: {
+        title: "Politique de Confidentialité",
+        description: "Consultez la politique de confidentialité de MGC Réparation Inc. pour comprendre comment nous protégeons vos renseignements personnels sur notre site web."
     }
   }
 };
