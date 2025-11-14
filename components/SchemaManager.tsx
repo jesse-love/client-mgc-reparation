@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+
+import React, { useEffect } from 'react';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Service } from '../types';
