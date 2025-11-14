@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { usePrequalificationForm } from '../contexts/PrequalificationFormContext';
 import { XMarkIcon, CheckCircleIcon, ArrowLeftIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -132,7 +131,7 @@ const PrequalificationForm: React.FC = () => {
         e.preventDefault();
         if (!validateStep()) return;
         
-        const webhookUrl = "/api/submit-form";
+        const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
         
         const problemDescription = avatarType === 'martin_prevoyant' 
             ? `Changement de pneus. Date approximative souhaitée: ${formData.preferredDate}.`
