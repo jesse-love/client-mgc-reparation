@@ -11,6 +11,7 @@ import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
 import LandingTiresPage from './pages/LandingTiresPage';
 import ThankYouPage from './pages/ThankYouPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import LandingLayout from './components/LandingLayout';
 
 import { services } from './i18n';
 import type { Service } from './types';
@@ -107,19 +108,12 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
   }, [route, isOpen, openWizard]);
 
   const renderContent = () => {
-    if (route.startsWith('/services/')) {
-      const slug = route.split('/services/')[1];
-      const service = services.find((s: Service) => s.slug === slug);
-      return service ? <ServiceDetailPage service={service} /> : <HomePage />;
-    }
-
+    // Service pages are now handled outside MainLayout
     switch (route) {
       case '/about':
         return <AboutPage />;
       case '/contact':
         return <ContactPage />;
-      case '/services':
-        return <ServicesPage />;
       case '/politique-de-confidentialite':
         return <PrivacyPolicyPage />;
       case '/':
@@ -230,17 +224,49 @@ const App: React.FC = () => {
                   </>
                 );
               }
+              
+              if (route === '/merci') {
+                return <ThankYouPage />;
+              }
+              
+              if (route.startsWith('/services')) {
+                 const slug = route.startsWith('/services/') ? route.split('/services/')[1] : null;
 
-              switch (route) {
-                case '/merci':
-                  return <ThankYouPage />;
-                default:
+                  if (slug) {
+                      const service = services.find((s: Service) => s.slug === slug);
+                      if (!service) {
+                          // Redirect to home if service not found
+                          return (
+                            <QuoteWizardProvider>
+                                <MainLayout route={'/'} />
+                            </QuoteWizardProvider>
+                          );
+                      }
+                      return (
+                         <QuoteWizardProvider>
+                            <LandingLayout>
+                                <ServiceDetailPage service={service} />
+                                <QuoteWizard />
+                            </LandingLayout>
+                         </QuoteWizardProvider>
+                      );
+                  }
+                  
                   return (
-                    <QuoteWizardProvider>
-                      <MainLayout route={route} />
-                    </QuoteWizardProvider>
+                      <QuoteWizardProvider>
+                          <LandingLayout>
+                              <ServicesPage />
+                              <QuoteWizard />
+                          </LandingLayout>
+                      </QuoteWizardProvider>
                   );
               }
+
+              return (
+                <QuoteWizardProvider>
+                  <MainLayout route={route} />
+                </QuoteWizardProvider>
+              );
             })()}
           </PrequalificationFormProvider>
        </BusinessInfoProvider>
