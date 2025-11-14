@@ -43,7 +43,7 @@ const ServicesPage: React.FC = () => {
         </div>
 
         {/* Hero Section */}
-        <div className="bg-brand-dark py-20 lg:py-28 text-white">
+        <div className="bg-brand-dark py-20 lg:py-28 text-white border-b border-slate-200 dark:border-slate-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-5xl lg:text-6xl font-oswald font-bold">
               {t.services.title}
@@ -58,23 +58,21 @@ const ServicesPage: React.FC = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service) => (
-                <div key={service.slug} className="flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-slate-200 dark:border-slate-700">
-                  <div className="p-8 flex-grow">
+                <a href={`/services/${service.slug}`} key={service.slug} className="group flex flex-col bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-700 hover:shadow-2xl hover:border-orange-500/50">
+                  <div className="p-8 flex-grow flex flex-col">
                     <div className="flex items-center mb-6">
-                      <div className="bg-orange-500/10 dark:bg-orange-500/20 p-3 rounded-full mr-5">
+                      <div className="bg-orange-500/10 dark:bg-orange-500/20 p-3 rounded-full mr-5 transition-colors group-hover:bg-orange-500/20 dark:group-hover:bg-orange-500/30">
                         <service.icon className="h-8 w-8 text-orange-500 flex-shrink-0" />
                       </div>
-                      <h2 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white">{service.title[language]}</h2>
+                      <h2 className="text-2xl font-oswald font-bold text-slate-900 dark:text-white transition-colors group-hover:text-orange-400">{service.title[language]}</h2>
                     </div>
                     <p className="text-slate-600 dark:text-slate-300 mb-6 flex-grow">{service.shortDescription[language]}</p>
-                  </div>
-                  <div className="bg-slate-100 dark:bg-slate-800/50 p-5">
-                     <a href={`/services/${service.slug}`} className="font-bold text-orange-500 hover:text-orange-600 dark:hover:text-orange-400 transition duration-300 flex items-center justify-between group">
+                     <div className="mt-auto font-bold text-orange-500 flex items-center justify-between">
                       <span>{t.services.viewDetails}</span>
                       <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-                    </a>
+                    </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </div>

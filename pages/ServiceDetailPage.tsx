@@ -93,7 +93,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
               {/* Right Column - Why Choose Us */}
               <aside className="lg:col-span-1">
-                <div className="bg-white dark:bg-slate-800 p-8 rounded-lg border border-slate-200 dark:border-slate-700 sticky top-28">
+                <div className="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-lg dark:ring-1 dark:ring-slate-800 sticky top-28">
                   <h3 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-6">{t.serviceDetail.whyTrustTitle.replace('{service}', service.title[language])}</h3>
                   <div className="space-y-6">
                     {service.whyChoosePoints.map((point, index) => (
