@@ -21,7 +21,7 @@ const LandingContactForm: React.FC<LandingContactFormProps> = ({ formTitle, ctaB
     }
     setError('');
 
-    const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
+    const webhookUrl = "/api/submit-form";
     
     const messageBody = `*${webhookTitle}*
 

@@ -1,3 +1,5 @@
+// FIX: Import React to resolve the "Cannot find namespace 'React'" error.
+import React from 'react';
 import { useEffect } from 'react';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 import { useLanguage } from '../contexts/LanguageContext';

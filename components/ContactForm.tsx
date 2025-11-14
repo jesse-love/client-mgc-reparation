@@ -96,13 +96,8 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
     if (!validateForm()) return;
     
-    const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
-    
-    if (!webhookUrl) {
-      console.error('Google Chat Webhook URL is not configured.');
-      alert('This form is currently unavailable. Please call us directly.');
-      return;
-    }
+    // Use the secure serverless function proxy
+    const webhookUrl = "/api/submit-form";
     
     const messageBody = `*New Service Request from MGC Website*
 
