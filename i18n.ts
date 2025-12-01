@@ -3,8 +3,8 @@ import { WrenchScrewdriverIcon, TruckIcon, CogIcon, FireIcon, BoltIcon, SunIcon 
 
 export const NAV_LINKS: NavLink[] = [
   { name: { en: 'HOME', fr: 'ACCUEIL' }, href: '/' },
-  { 
-    name: { en: 'SERVICES', fr: 'SERVICES' }, 
+  {
+    name: { en: 'SERVICES', fr: 'SERVICES' },
     href: '/services',
     subLinks: [
       { name: { en: 'GENERAL MECHANICS', fr: 'MÉCANIQUE GÉNÉRALE' }, href: '/services/general-mechanics' },
@@ -39,10 +39,60 @@ export const services: Service[] = [
       { en: "Battery & Electrical System Diagnostics", fr: "Diagnostics de batterie & système électrique" },
       { en: "Pre-purchase Inspections", fr: "Inspections avant achat" }
     ],
+    subServices: [
+      {
+        slug: 'oil-changes',
+        title: { en: 'Oil Changes & Tune-ups', fr: "Changements d'huile & Mises au point" },
+        shortDescription: { en: 'Regular maintenance to keep your engine running smoothly.', fr: 'Entretien régulier pour que votre moteur tourne rond.' },
+        pageContent: { en: 'Regular oil changes and tune-ups are the lifeblood of your vehicle. We use high-quality oils and filters to ensure maximum engine protection and performance.', fr: "Les changements d'huile réguliers et les mises au point sont essentiels. On utilise des huiles et filtres de haute qualité pour une protection et performance moteur maximales." }
+      },
+      {
+        slug: 'brake-repair',
+        title: { en: 'Brake Repair & Replacement', fr: "Réparation & Remplacement des freins" },
+        shortDescription: { en: 'Complete brake services for your safety.', fr: 'Services de freins complets pour votre sécurité.' },
+        pageContent: { en: 'From pads and rotors to calipers and lines, we ensure your braking system is responsive and safe. If you hear squeaking or grinding, come see us immediately.', fr: "Des plaquettes et disques aux étriers et conduites, on s'assure que votre système de freinage est réactif et sécuritaire. Si vous entendez des grincements, venez nous voir immédiatement." }
+      },
+      {
+        slug: 'engine-diagnostics',
+        title: { en: 'Advanced Engine Diagnostics', fr: "Diagnostic moteur avancé" },
+        shortDescription: { en: 'Pinpoint engine issues with state-of-the-art tools.', fr: 'Identifiez les problèmes moteur avec des outils de pointe.' },
+        pageContent: { en: 'Check engine light on? Our advanced diagnostic tools communicate with your vehicle’s computer to accurately identify and resolve engine issues quickly.', fr: "Lumière Check Engine allumée? Nos outils de diagnostic avancés communiquent avec l'ordinateur de votre véhicule pour identifier et résoudre les problèmes moteur rapidement." }
+      },
+      {
+        slug: 'steering-suspension',
+        title: { en: 'Steering & Suspension Service', fr: "Service de direction & suspension" },
+        shortDescription: { en: 'Improve ride comfort and handling.', fr: 'Améliorez le confort de roulement et la tenue de route.' },
+        pageContent: { en: 'Worn suspension components can lead to unsafe driving conditions and uneven tire wear. We inspect and repair shocks, struts, tie rods, and more.', fr: "Des composantes de suspension usées peuvent rendre la conduite dangereuse et user vos pneus inégalement. On inspecte et répare amortisseurs, jambes de force, biellettes et plus." }
+      },
+      {
+        slug: 'exhaust-system',
+        title: { en: 'Exhaust System & Muffler Repair', fr: "Réparation silencieux et échappement" },
+        shortDescription: { en: 'Reduce noise and emissions.', fr: 'Réduisez le bruit et les émissions.' },
+        pageContent: { en: 'A healthy exhaust system is crucial for fuel efficiency and safety. We repair leaks, replace mufflers, and ensure your vehicle meets emission standards.', fr: "Un système d'échappement en santé est crucial pour l'économie d'essence et la sécurité. On répare les fuites, remplace les silencieux et s'assure que votre véhicule respecte les normes." }
+      },
+      {
+        slug: 'tire-services',
+        title: { en: 'Tire Services', fr: "Services de pneus" },
+        shortDescription: { en: 'Rotation, balancing, and repair.', fr: 'Rotation, balancement et réparation.' },
+        pageContent: { en: 'We offer complete tire services including rotation, balancing, and puncture repair to extend the life of your tires and ensure a smooth ride.', fr: "On offre des services de pneus complets incluant rotation, balancement et réparation de crevaison pour prolonger la vie de vos pneus et assurer un roulement doux." }
+      },
+      {
+        slug: 'battery-electrical',
+        title: { en: 'Battery & Electrical System', fr: "Batterie & Système Électrique" },
+        shortDescription: { en: 'Diagnostics for starting and charging issues.', fr: 'Diagnostics pour problèmes de démarrage et charge.' },
+        pageContent: { en: 'Modern vehicles rely heavily on their electrical systems. We test batteries, alternators, and starters to prevent you from being stranded.', fr: "Les véhicules modernes dépendent beaucoup de leur système électrique. On teste batteries, alternateurs et démarreurs pour éviter que vous restiez en panne." }
+      },
+      {
+        slug: 'pre-purchase-inspection',
+        title: { en: 'Pre-purchase Inspections', fr: "Inspections avant achat" },
+        shortDescription: { en: 'Know the condition of a used car before you buy.', fr: "Connaissez l'état d'une auto usagée avant d'acheter." },
+        pageContent: { en: 'Buying a used car? Our comprehensive inspection checks all major systems to give you an honest assessment of the vehicle’s condition.', fr: "Vous achetez une auto usagée? Notre inspection complète vérifie tous les systèmes majeurs pour vous donner une évaluation honnête de l'état du véhicule." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'All Makes & Models', fr: 'Toutes Marques & Modèles' }, description: { en: 'Our team is experienced with a wide variety of domestic and imported vehicles.', fr: 'Notre équipe a de l\'expérience avec une grande variété de véhicules domestiques et importés.' } },
-        { title: { en: 'Transparent Diagnostics', fr: 'Diagnostics Transparents' }, description: { en: 'We explain the issues clearly and provide upfront estimates before any work begins.', fr: 'On vous explique les problèmes clairement et on vous donne une soumission avant de commencer le travail.' } },
-        { title: { en: 'Quality Parts', fr: 'Pièces de Qualité' }, description: { en: 'We use high-quality parts to ensure durable and reliable repairs.', fr: 'On utilise des pièces de haute qualité pour garantir des réparations qui durent.' } },
+      { title: { en: 'All Makes & Models', fr: 'Toutes Marques & Modèles' }, description: { en: 'Our team is experienced with a wide variety of domestic and imported vehicles.', fr: 'Notre équipe a de l\'expérience avec une grande variété de véhicules domestiques et importés.' } },
+      { title: { en: 'Transparent Diagnostics', fr: 'Diagnostics Transparents' }, description: { en: 'We explain the issues clearly and provide upfront estimates before any work begins.', fr: 'On vous explique les problèmes clairement et on vous donne une soumission avant de commencer le travail.' } },
+      { title: { en: 'Quality Parts', fr: 'Pièces de Qualité' }, description: { en: 'We use high-quality parts to ensure durable and reliable repairs.', fr: 'On utilise des pièces de haute qualité pour garantir des réparations qui durent.' } },
     ]
   },
   {
@@ -59,14 +109,39 @@ export const services: Service[] = [
       { en: "Refrigerant Recharge (R134a & R1234yf)", fr: "Recharge de réfrigérant (R134a & R1234yf)" },
       { en: "AC Leak Detection and Repair", fr: "Détection et réparation de fuites AC" },
       { en: "Compressor & Condenser Replacement", fr: "Remplacement du compresseur & condenseur" },
-      { en: "Air Conditioning Compressor Replacement", fr: "Remplacement compresseur air climatisé" },
       { en: "Evaporator & Blower Motor Service", fr: "Service de l'évaporateur & moteur de ventilation" },
       { en: "Full AC System Flush", fr: "Nettoyage complet du système d'AC" }
     ],
+    subServices: [
+      {
+        slug: 'ac-diagnostics',
+        title: { en: "AC System Diagnostics", fr: "Diagnostics du système d'AC" },
+        shortDescription: { en: "Identify why your AC isn't blowing cold.", fr: "Identifiez pourquoi votre AC ne pousse pas froid." },
+        pageContent: { en: "We perform a full system check to identify leaks, electrical issues, or mechanical failures preventing your AC from working properly.", fr: "On fait une vérification complète pour identifier les fuites, problèmes électriques ou bris mécaniques qui empêchent votre AC de bien fonctionner." }
+      },
+      {
+        slug: 'refrigerant-recharge',
+        title: { en: "Refrigerant Recharge", fr: "Recharge de réfrigérant" },
+        shortDescription: { en: "R134a & R1234yf recharge services.", fr: "Services de recharge R134a & R1234yf." },
+        pageContent: { en: "Low refrigerant is a common cause of poor cooling. We recharge your system with the correct type and amount of refrigerant.", fr: "Le manque de réfrigérant est une cause fréquente de mauvais refroidissement. On recharge votre système avec le bon type et la bonne quantité." }
+      },
+      {
+        slug: 'leak-detection',
+        title: { en: "AC Leak Detection", fr: "Détection de fuites AC" },
+        shortDescription: { en: "Find and fix hidden leaks.", fr: "Trouvez et réparez les fuites cachées." },
+        pageContent: { en: "Using UV dye and specialized sniffers, we locate even the smallest leaks in your AC system to prevent future refrigerant loss.", fr: "Avec du colorant UV et des détecteurs spécialisés, on localise même les plus petites fuites pour éviter les pertes futures." }
+      },
+      {
+        slug: 'compressor-replacement',
+        title: { en: "Compressor Replacement", fr: "Remplacement du compresseur" },
+        shortDescription: { en: "Replace faulty AC compressors.", fr: "Remplacez les compresseurs AC défectueux." },
+        pageContent: { en: "The compressor is the heart of your AC. If it fails, we replace it with a high-quality unit to restore your system's cooling power.", fr: "Le compresseur est le coeur de votre AC. S'il brise, on le remplace par une unité de qualité pour restaurer la puissance de refroidissement." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'Certified Technicians', fr: 'Techniciens Certifiés' }, description: { en: 'Our technicians are certified to handle modern automotive AC systems and refrigerants.', fr: 'Nos techniciens sont certifiés pour s\'occuper des systèmes d\'AC automobiles modernes et des réfrigérants.' } },
-        { title: { en: 'Advanced Equipment', fr: 'Équipement de Pointe' }, description: { en: 'We use specialized equipment for accurate leak detection and efficient servicing.', fr: 'On utilise de l\'équipement spécialisé pour une détection de fuites précise et un service efficace.' } },
-        { title: { en: 'Cost-Effective Solutions', fr: 'Solutions Économiques' }, description: { en: 'We focus on repairing components whenever possible to save you money.', fr: 'On se concentre sur la réparation des composantes lorsque c\'est possible pour vous faire économiser.' } },
+      { title: { en: 'Certified Technicians', fr: 'Techniciens Certifiés' }, description: { en: 'Our technicians are certified to handle modern automotive AC systems and refrigerants.', fr: 'Nos techniciens sont certifiés pour s\'occuper des systèmes d\'AC automobiles modernes et des réfrigérants.' } },
+      { title: { en: 'Advanced Equipment', fr: 'Équipement de Pointe' }, description: { en: 'We use specialized equipment for accurate leak detection and efficient servicing.', fr: 'On utilise de l\'équipement spécialisé pour une détection de fuites précise et un service efficace.' } },
+      { title: { en: 'Cost-Effective Solutions', fr: 'Solutions Économiques' }, description: { en: 'We focus on repairing components whenever possible to save you money.', fr: 'On se concentre sur la réparation des composantes lorsque c\'est possible pour vous faire économiser.' } },
     ]
   },
   {
@@ -88,13 +163,39 @@ export const services: Service[] = [
       { en: "Preventative Maintenance Programs", fr: "Programmes d'entretien préventif" },
       { en: "Provincial Safety Inspections (SAAQ)", fr: "Inspection SAAQ véhicules lourds" },
     ],
+    subServices: [
+      {
+        slug: 'diesel-engine-repair',
+        title: { en: "Diesel Engine Repair", fr: "Réparation moteur diesel" },
+        shortDescription: { en: "Expert diagnostics and repair for diesel engines.", fr: "Diagnostics et réparation experts pour moteurs diesel." },
+        pageContent: { en: "We specialize in diesel engine repair, from fuel injection issues to major overhauls, ensuring your heavy trucks maintain peak power and efficiency.", fr: "On se spécialise dans la réparation diesel, des problèmes d'injection aux révisions majeures, pour que vos camions gardent leur puissance et efficacité." }
+      },
+      {
+        slug: 'heavy-brake-systems',
+        title: { en: "Air & Hydraulic Brakes", fr: "Freins à Air & Hydrauliques" },
+        shortDescription: { en: "Maintenance for heavy duty braking systems.", fr: "Entretien pour systèmes de freinage poids lourds." },
+        pageContent: { en: "Safety is paramount. We service and repair air and hydraulic brake systems, including compressors, lines, and drums/discs.", fr: "La sécurité est primordiale. On entretient et répare les systèmes de freins à air et hydrauliques, incluant compresseurs, lignes et tambours/disques." }
+      },
+      {
+        slug: 'fleet-maintenance',
+        title: { en: "Fleet Maintenance", fr: "Entretien de flotte" },
+        shortDescription: { en: "Preventative programs for commercial fleets.", fr: "Programmes préventifs pour flottes commerciales." },
+        pageContent: { en: "We offer tailored maintenance programs to keep your fleet on the road and minimize unexpected downtime.", fr: "On offre des programmes d'entretien sur mesure pour garder votre flotte sur la route et minimiser les temps d'arrêt imprévus." }
+      },
+      {
+        slug: 'saaq-inspection-prep',
+        title: { en: "SAAQ Inspection Prep", fr: "Préparation Inspection SAAQ" },
+        shortDescription: { en: "Get ready for provincial safety inspections.", fr: "Préparez-vous pour les inspections de sécurité provinciales." },
+        pageContent: { en: "We inspect and repair your vehicle to ensure it meets all SAAQ safety standards before your official inspection.", fr: "On inspecte et répare votre véhicule pour s'assurer qu'il respecte toutes les normes SAAQ avant votre inspection officielle." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'Specialized Expertise', fr: 'Expertise Spécialisée' }, description: { en: 'Our technicians are highly trained and experienced specifically in heavy vehicle mechanics, not just cars.', fr: 'Nos techniciens sont formés et expérimentés spécifiquement en mécanique de véhicules lourds, pas juste les autos.' } },
-        { title: { en: 'Reduced Downtime', fr: 'Temps d\'Arrêt Réduit' }, description: { en: 'We work efficiently to get your valuable assets back in service faster.', fr: 'On travaille efficacement pour remettre vos précieux camions en service plus vite.' } },
-        { title: { en: 'Local Mascouche Partner', fr: 'Partenaire Local de Mascouche' }, description: { en: 'We\'re a family-owned business deeply committed to supporting local businesses.', fr: 'On est une business familiale engagée à soutenir les entreprises locales.' } },
+      { title: { en: 'Specialized Expertise', fr: 'Expertise Spécialisée' }, description: { en: 'Our technicians are highly trained and experienced specifically in heavy vehicle mechanics, not just cars.', fr: 'Nos techniciens sont formés et expérimentés spécifiquement en mécanique de véhicules lourds, pas juste les autos.' } },
+      { title: { en: 'Reduced Downtime', fr: 'Temps d\'Arrêt Réduit' }, description: { en: 'We work efficiently to get your valuable assets back in service faster.', fr: 'On travaille efficacement pour remettre vos précieux camions en service plus vite.' } },
+      { title: { en: 'Local Mascouche Partner', fr: 'Partenaire Local de Mascouche' }, description: { en: 'We\'re a family-owned business deeply committed to supporting local businesses.', fr: 'On est une business familiale engagée à soutenir les entreprises locales.' } },
     ]
   },
-   {
+  {
     slug: 'trailer-repair',
     title: { en: 'Trailer Repair', fr: 'Réparation de Remorque' },
     shortDescription: { en: 'Reliable repair and maintenance for utility, commercial, and RV trailers.', fr: 'Réparation et entretien fiables pour les remorques utilitaires, commerciales et de VR.' },
@@ -112,10 +213,36 @@ export const services: Service[] = [
       { en: "Wheel Bearing & Hub Service", fr: "Service des roulements de roue & moyeux" },
       { en: "Structural Welding & Frame Repair", fr: "Soudure structurelle remorque" }
     ],
+    subServices: [
+      {
+        slug: 'trailer-axles',
+        title: { en: "Axle Repair & Replacement", fr: "Réparation & remplacement d'essieux" },
+        shortDescription: { en: "Fix bent or damaged axles.", fr: "Réparez les essieux croches ou endommagés." },
+        pageContent: { en: "We repair and replace damaged axles to ensure your trailer tracks true and carries its load safely.", fr: "On répare et remplace les essieux endommagés pour que votre remorque roule droit et porte sa charge en sécurité." }
+      },
+      {
+        slug: 'trailer-brakes',
+        title: { en: "Trailer Brakes", fr: "Freins de remorque" },
+        shortDescription: { en: "Electric and hydraulic brake service.", fr: "Service de freins électriques et hydrauliques." },
+        pageContent: { en: "We service all trailer braking systems, ensuring your electric or hydraulic brakes engage correctly when you need them.", fr: "On entretient tous les systèmes de freinage de remorque, s'assurant que vos freins électriques ou hydrauliques s'engagent correctement." }
+      },
+      {
+        slug: 'trailer-wiring',
+        title: { en: "Wiring & Lighting", fr: "Filage & Éclairage" },
+        shortDescription: { en: "Fix lights and connection issues.", fr: "Réparez les lumières et problèmes de connexion." },
+        pageContent: { en: "Lighting issues are a common frustration. We diagnose and repair wiring faults, grounds, and connector plugs.", fr: "Les problèmes de lumières sont frustrants. On diagnostique et répare les défauts de filage, les mises à la terre et les connecteurs." }
+      },
+      {
+        slug: 'structural-welding',
+        title: { en: "Structural Welding", fr: "Soudure Structurelle" },
+        shortDescription: { en: "Frame repair and reinforcement.", fr: "Réparation et renforcement de châssis." },
+        pageContent: { en: "Our welders can repair cracks, reinforce frames, and modify trailers to suit your specific needs.", fr: "Nos soudeurs peuvent réparer les fissures, renforcer les châssis et modifier les remorques pour vos besoins spécifiques." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'All Trailer Types', fr: 'Tous les Types de Remorques' }, description: { en: 'We service everything from a small utility trailers to large commercial flatbeds and RVs.', fr: 'On s\'occupe de tout, des petites remorques utilitaires aux grands flatbeds commerciaux et VR.' } },
-        { title: { en: 'Safety Focused', fr: 'Axé sur la Sécurité' }, description: { en: 'Our primary goal is to ensure your trailer is safe and compliant with all regulations.', fr: 'Notre but principal est de s\'assurer que votre remorque est sécuritaire et conforme à toutes les réglementations.' } },
-        { title: { en: 'Durable Repairs', fr: 'Réparations Durables' }, description: { en: 'We use quality parts and expert techniques for repairs that last.', fr: 'On utilise des pièces de qualité et des techniques expertes pour des réparations qui durent longtemps.' } },
+      { title: { en: 'All Trailer Types', fr: 'Tous les Types de Remorques' }, description: { en: 'We service everything from a small utility trailers to large commercial flatbeds and RVs.', fr: 'On s\'occupe de tout, des petites remorques utilitaires aux grands flatbeds commerciaux et VR.' } },
+      { title: { en: 'Safety Focused', fr: 'Axé sur la Sécurité' }, description: { en: 'Our primary goal is to ensure your trailer is safe and compliant with all regulations.', fr: 'Notre but principal est de s\'assurer que votre remorque est sécuritaire et conforme à toutes les réglementations.' } },
+      { title: { en: 'Durable Repairs', fr: 'Réparations Durables' }, description: { en: 'We use quality parts and expert techniques for repairs that last.', fr: 'On utilise des pièces de qualité et des techniques expertes pour des réparations qui durent longtemps.' } },
     ]
   },
   {
@@ -135,10 +262,30 @@ export const services: Service[] = [
       { en: "Transfer Switch Inspection & Service", fr: "Inspection & service du commutateur de transfert" },
       { en: "Portable Generator Repair", fr: "Réparation génératrice portable" }
     ],
+    subServices: [
+      {
+        slug: 'generator-maintenance',
+        title: { en: "Preventative Maintenance", fr: "Entretien Préventif" },
+        shortDescription: { en: "Routine check-ups for reliability.", fr: "Vérifications de routine pour la fiabilité." },
+        pageContent: { en: "Regular maintenance includes oil changes, filter replacements, and system tests to ensure your generator starts when the power goes out.", fr: "L'entretien régulier inclut changements d'huile, filtres et tests système pour assurer que votre génératrice démarre quand le courant coupe." }
+      },
+      {
+        slug: 'generator-repair',
+        title: { en: "Generator Repair", fr: "Réparation de Génératrice" },
+        shortDescription: { en: "Fixing starting and running issues.", fr: "Réparation des problèmes de démarrage et fonctionnement." },
+        pageContent: { en: "If your generator won't start or runs roughly, our technicians can diagnose engine or electrical faults and repair them quickly.", fr: "Si votre génératrice ne part pas ou roule mal, nos techniciens peuvent diagnostiquer les défauts moteur ou électriques et les réparer vite." }
+      },
+      {
+        slug: 'load-bank-testing',
+        title: { en: "Load Bank Testing", fr: "Test de Banc de Charge" },
+        shortDescription: { en: "Verify performance under load.", fr: "Vérifiez la performance sous charge." },
+        pageContent: { en: "We test your generator under artificial load to ensure it can handle the power demands of your home or business without overheating or failing.", fr: "On teste votre génératrice sous charge artificielle pour s'assurer qu'elle peut supporter la demande de votre maison ou entreprise sans surchauffer." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'Peace of Mind', fr: 'Tranquillité d\'Esprit' }, description: { en: 'Regular maintenance ensures your generator will start and run properly during an outage.', fr: 'Un entretien régulier assure que votre génératrice démarrera et fonctionnera correctement lors d\'une panne.' } },
-        { title: { en: 'All Major Brands', fr: 'Toutes les Grandes Marques' }, description: { en: 'Our technicians are experienced with a wide range of generator makes and models.', fr: 'Nos techniciens ont de l\'expérience avec une large gamme de marques et modèles de génératrices.' } },
-        { title: { en: 'Mobile Service Available', fr: 'Service Mobile Disponible' }, description: { en: 'We can come to you for maintenance and diagnostics on stationary units.', fr: 'On peut se déplacer chez vous pour l\'entretien et les diagnostics sur les unités fixes.' } },
+      { title: { en: 'Peace of Mind', fr: 'Tranquillité d\'Esprit' }, description: { en: 'Regular maintenance ensures your generator will start and run properly during an outage.', fr: 'Un entretien régulier assure que votre génératrice démarrera et fonctionnera correctement lors d\'une panne.' } },
+      { title: { en: 'All Major Brands', fr: 'Toutes les Grandes Marques' }, description: { en: 'Our technicians are experienced with a wide range of generator makes and models.', fr: 'Nos techniciens ont de l\'expérience avec une large gamme de marques et modèles de génératrices.' } },
+      { title: { en: 'Mobile Service Available', fr: 'Service Mobile Disponible' }, description: { en: 'We can come to you for maintenance and diagnostics on stationary units.', fr: 'On peut se déplacer chez vous pour l\'entretien et les diagnostics sur les unités fixes.' } },
     ]
   },
   {
@@ -158,31 +305,51 @@ export const services: Service[] = [
       { en: "Custom Bracket & Mount Fabrication", fr: "Fabrication pièces sur mesure" },
       { en: "MIG & Stick Welding Services", fr: "Services de soudure MIG & à l'arc" }
     ],
+    subServices: [
+      {
+        slug: 'frame-repair',
+        title: { en: "Frame & Chassis Repair", fr: "Réparation de Châssis" },
+        shortDescription: { en: "Structural repairs for vehicles.", fr: "Réparations structurelles pour véhicules." },
+        pageContent: { en: "Rust or accident damage can compromise your vehicle's frame. We perform safe, structural welding repairs to restore integrity.", fr: "La rouille ou les accidents peuvent compromettre le châssis. On fait des soudures structurelles sécuritaires pour restaurer l'intégrité." }
+      },
+      {
+        slug: 'custom-exhaust',
+        title: { en: "Custom Exhaust Welding", fr: "Soudure Échappement Sur Mesure" },
+        shortDescription: { en: "Fabrication for custom exhaust systems.", fr: "Fabrication pour systèmes d'échappement custom." },
+        pageContent: { en: "We can fabricate and weld custom exhaust pipes and mounts for modifications or repairs where standard parts aren't available.", fr: "On peut fabriquer et souder des tuyaux et supports d'échappement sur mesure pour des modifications ou réparations où les pièces standard n'existent pas." }
+      },
+      {
+        slug: 'custom-fabrication',
+        title: { en: "Custom Fabrication", fr: "Fabrication Sur Mesure" },
+        shortDescription: { en: "Brackets, mounts, and unique solutions.", fr: "Supports, fixations et solutions uniques." },
+        pageContent: { en: "Need a custom bracket or a specific modification? Our fabrication skills allow us to create unique metal solutions for your needs.", fr: "Besoin d'un support sur mesure ou d'une modification spécifique? Nos compétences en fabrication nous permettent de créer des solutions en métal uniques." }
+      }
+    ],
     whyChoosePoints: [
-        { title: { en: 'Skilled Welders', fr: 'Soudeurs Qualifiés' }, description: { en: 'Our certified welders have the expertise to deliver high-quality, durable welds.', fr: 'Nos soudeurs certifiés ont l\'expertise pour livrer des soudures de haute qualité et durables.' } },
-        { title: { en: 'Problem Solvers', fr: 'Solutionneurs de Problèmes' }, description: { en: 'We can create custom solutions for unique repair and fabrication challenges.', fr: 'On peut créer des solutions sur mesure pour des défis de réparation et de fabrication uniques.' } },
-        { title: { en: 'Strength & Safety', fr: 'Solidité & Sécurité' }, description: { en: 'We prioritize structural integrity and safety in all our welding work.', fr: "On priorise l'intégrité structurale et la sécurité dans tous nos travaux de soudure." } },
+      { title: { en: 'Skilled Welders', fr: 'Soudeurs Qualifiés' }, description: { en: 'Our certified welders have the expertise to deliver high-quality, durable welds.', fr: 'Nos soudeurs certifiés ont l\'expertise pour livrer des soudures de haute qualité et durables.' } },
+      { title: { en: 'Problem Solvers', fr: 'Solutionneurs de Problèmes' }, description: { en: 'We can create custom solutions for unique repair and fabrication challenges.', fr: 'On peut créer des solutions sur mesure pour des défis de réparation et de fabrication uniques.' } },
+      { title: { en: 'Strength & Safety', fr: 'Solidité & Sécurité' }, description: { en: 'We prioritize structural integrity and safety in all our welding work.', fr: "On priorise l'intégrité structurale et la sécurité dans tous nos travaux de soudure." } },
     ]
   },
 ];
 
 const FAQ_DATA = [
-    {
-        question: { en: "What types of vehicles do you service?", fr: "Quels types de véhicules réparez-vous ?" },
-        answer: { en: "We are a full-service shop equipped to handle everything from family cars, SUVs, and light trucks to heavy-duty trucks, commercial fleets, trailers, and even generators. If it has an engine, we can likely fix it.", fr: "Nous sommes un garage complet équipé pour tout gérer, des voitures familiales, VUS et camions légers aux camions lourds, flottes commerciales, remorques et même les génératrices. Si ça a un moteur, on peut probablement le réparer." }
-    },
-    {
-        question: { en: "What are your operating hours?", fr: "Quelles sont vos heures d'ouverture ?" },
-        answer: { en: "We are open Monday to Thursday from 7:30 AM to 4:00 PM, and Friday from 7:30 AM to 12:00 PM. We are closed on weekends.", fr: "Nous sommes ouverts du lundi au jeudi de 7h30 à 16h00, et le vendredi de 7h30 à 12h00. Nous sommes fermés la fin de semaine." }
-    },
-    {
-        question: { en: "Do you service diesel engines?", fr: "Réparez-vous les moteurs diesel ?" },
-        answer: { en: "Yes, absolutely. Our heavy vehicle mechanics specialize in advanced diesel engine diagnostics and repair for trucks and commercial equipment.", fr: "Oui, absolument. Nos mécaniciens de véhicules lourds se spécialisent dans le diagnostic et la réparation de moteurs diesel avancés pour les camions et équipements commerciaux." }
-    },
-    {
-        question: { en: "Are your repairs guaranteed?", fr: "Est-ce que vos réparations sont garanties ?" },
-        answer: { en: "Yes. We stand behind our work with a guarantee on all our repairs. Our goal is to provide you with total confidence and peace of mind on the road.", fr: "Oui. Nous garantissons tout notre travail. Notre objectif est de vous offrir une confiance totale et une tranquillité d'esprit sur la route." }
-    }
+  {
+    question: { en: "What types of vehicles do you service?", fr: "Quels types de véhicules réparez-vous ?" },
+    answer: { en: "We are a full-service shop equipped to handle everything from family cars, SUVs, and light trucks to heavy-duty trucks, commercial fleets, trailers, and even generators. If it has an engine, we can likely fix it.", fr: "Nous sommes un garage complet équipé pour tout gérer, des voitures familiales, VUS et camions légers aux camions lourds, flottes commerciales, remorques et même les génératrices. Si ça a un moteur, on peut probablement le réparer." }
+  },
+  {
+    question: { en: "What are your operating hours?", fr: "Quelles sont vos heures d'ouverture ?" },
+    answer: { en: "We are open Monday to Thursday from 7:30 AM to 4:00 PM, and Friday from 7:30 AM to 12:00 PM. We are closed on weekends.", fr: "Nous sommes ouverts du lundi au jeudi de 7h30 à 16h00, et le vendredi de 7h30 à 12h00. Nous sommes fermés la fin de semaine." }
+  },
+  {
+    question: { en: "Do you service diesel engines?", fr: "Réparez-vous les moteurs diesel ?" },
+    answer: { en: "Yes, absolutely. Our heavy vehicle mechanics specialize in advanced diesel engine diagnostics and repair for trucks and commercial equipment.", fr: "Oui, absolument. Nos mécaniciens de véhicules lourds se spécialisent dans le diagnostic et la réparation de moteurs diesel avancés pour les camions et équipements commerciaux." }
+  },
+  {
+    question: { en: "Are your repairs guaranteed?", fr: "Est-ce que vos réparations sont garanties ?" },
+    answer: { en: "Yes. We stand behind our work with a guarantee on all our repairs. Our goal is to provide you with total confidence and peace of mind on the road.", fr: "Oui. Nous garantissons tout notre travail. Notre objectif est de vous offrir une confiance totale et une tranquillité d'esprit sur la route." }
+  }
 ];
 
 export const WHY_CHOOSE_US_POINTS = [
@@ -249,9 +416,9 @@ const en = {
       cta: 'Get Directions'
     },
     faq: {
-        title: "Frequently Asked Questions",
-        subtitle: "Quick answers to common questions about our services in Mascouche.",
-        questions: FAQ_DATA
+      title: "Frequently Asked Questions",
+      subtitle: "Quick answers to common questions about our services in Mascouche.",
+      questions: FAQ_DATA
     }
   },
   breadcrumbs: {
@@ -362,9 +529,9 @@ const en = {
       submit: "Submit Request"
     },
     success: {
-        title: "Appointment Request Sent!",
-        message: "Thank you! We've received your request and will contact you shortly to confirm your booking.",
-        button: "Start a New Request"
+      title: "Appointment Request Sent!",
+      message: "Thank you! We've received your request and will contact you shortly to confirm your booking.",
+      button: "Start a New Request"
     }
   },
   prequalificationForm: {
@@ -374,40 +541,40 @@ const en = {
       subtitle: 'Our smart form connects you to the best expert and provides fair pricing, without obligation.'
     },
     steps: {
-        1: {
-            alex_anxieux: { title: "Describe the urgent problem with your vehicle" },
-            sophie_sage: { title: "What type of maintenance or inspection are you looking for?" },
-            martin_prevoyant: { title: "What is the approximate date for your planned service?" }
-        },
-        2: {
-            title: "Vehicle Details"
-        },
-        3: {
-            title: "Schedule your appointment"
-        },
-        4: {
-            title: "Almost done!"
-        }
+      1: {
+        alex_anxieux: { title: "Describe the urgent problem with your vehicle" },
+        sophie_sage: { title: "What type of maintenance or inspection are you looking for?" },
+        martin_prevoyant: { title: "What is the approximate date for your planned service?" }
+      },
+      2: {
+        title: "Vehicle Details"
+      },
+      3: {
+        title: "Schedule your appointment"
+      },
+      4: {
+        title: "Almost done!"
+      }
     },
     buttons: {
-        continue: "Continue",
-        back: "Back",
-        submit: "Send My Request"
+      continue: "Continue",
+      back: "Back",
+      submit: "Send My Request"
     }
   },
   seo: {
     about: {
-        description: "Discover the history of MGC Réparation Inc., a trusted family-owned garage in Mascouche, QC. Learn about our commitment to honesty, expertise, and exceptional customer service since 2012."
+      description: "Discover the history of MGC Réparation Inc., a trusted family-owned garage in Mascouche, QC. Learn about our commitment to honesty, expertise, and exceptional customer service since 2012."
     },
     contact: {
-        description: "Contact MGC Réparation Inc. in Mascouche, QC. Get directions to our shop, our business hours, or request a free quote for your car, heavy truck, or trailer repairs."
+      description: "Contact MGC Réparation Inc. in Mascouche, QC. Get directions to our shop, our business hours, or request a free quote for your car, heavy truck, or trailer repairs."
     },
     services: {
-        description: "Explore the full range of mechanical services offered by MGC Réparation Inc. in Mascouche: general mechanics, heavy truck repair, trailer service, welding, and more."
+      description: "Explore the full range of mechanical services offered by MGC Réparation Inc. in Mascouche: general mechanics, heavy truck repair, trailer service, welding, and more."
     },
     privacy: {
-        title: "Privacy Policy",
-        description: "Review the privacy policy of MGC Réparation Inc. to understand how we protect your personal information on our website."
+      title: "Privacy Policy",
+      description: "Review the privacy policy of MGC Réparation Inc. to understand how we protect your personal information on our website."
     }
   }
 };
@@ -452,10 +619,10 @@ const fr: typeof en = {
       visitSubtitle: 'On est prêt à vous servir.',
       cta: 'Obtenir l\'itinéraire'
     },
-     faq: {
-        title: "Questions Fréquemment Posées",
-        subtitle: "Réponses rapides aux questions courantes sur nos services à Mascouche.",
-        questions: FAQ_DATA
+    faq: {
+      title: "Questions Fréquemment Posées",
+      subtitle: "Réponses rapides aux questions courantes sur nos services à Mascouche.",
+      questions: FAQ_DATA
     }
   },
   breadcrumbs: {
@@ -536,39 +703,39 @@ const fr: typeof en = {
     },
     progress: 'Étape {current} sur {total}',
     steps: {
-        1: {
-            title: "Quel type de véhicule a besoin d'un service?",
-            options: {
-                car: "Voiture / VUS / Camion léger",
-                heavy: "Camion lourd",
-                trailer: "Remorque / Autre équipement"
-            }
-        },
-        2: {
-            title: "Quel genre de service avez-vous besoin?",
-            options: {
-                maintenance: "Entretien / Inspection",
-                repair: "Réparation spécifique",
-                diagnostics: "Diagnostic / Pas certain"
-            }
-        },
-        3: {
-            title: "Parlez-nous de vos besoins et réservez une heure.",
-            descriptionPlaceholder: "Décrivez le problème (ex: bruit de freins, voyant moteur allumé, besoin de changement de pneus, entretien AC) ou le service que vous cherchez...",
-            fullName: "Nom complet",
-            phone: "Téléphone",
-            email: "Courriel"
+      1: {
+        title: "Quel type de véhicule a besoin d'un service?",
+        options: {
+          car: "Voiture / VUS / Camion léger",
+          heavy: "Camion lourd",
+          trailer: "Remorque / Autre équipement"
         }
+      },
+      2: {
+        title: "Quel genre de service avez-vous besoin?",
+        options: {
+          maintenance: "Entretien / Inspection",
+          repair: "Réparation spécifique",
+          diagnostics: "Diagnostic / Pas certain"
+        }
+      },
+      3: {
+        title: "Parlez-nous de vos besoins et réservez une heure.",
+        descriptionPlaceholder: "Décrivez le problème (ex: bruit de freins, voyant moteur allumé, besoin de changement de pneus, entretien AC) ou le service que vous cherchez...",
+        fullName: "Nom complet",
+        phone: "Téléphone",
+        email: "Courriel"
+      }
     },
     buttons: {
-        next: "Suivant",
-        back: "Retour",
-        submit: "Envoyer ma demande"
+      next: "Suivant",
+      back: "Retour",
+      submit: "Envoyer ma demande"
     },
     success: {
-        title: "Rendez-vous demandé!",
-        message: "Merci! Nous avons bien reçu votre demande et nous vous contacterons sous peu pour confirmer votre réservation.",
-        button: "Nouvelle demande"
+      title: "Rendez-vous demandé!",
+      message: "Merci! Nous avons bien reçu votre demande et nous vous contacterons sous peu pour confirmer votre réservation.",
+      button: "Nouvelle demande"
     }
   },
   prequalificationForm: {
@@ -578,40 +745,40 @@ const fr: typeof en = {
       subtitle: 'Notre formulaire intelligent vous connecte au meilleur expert et vous donne un prix juste, sans engagement.'
     },
     steps: {
-        1: {
-            alex_anxieux: { title: "Décrivez le problème urgent de votre véhicule" },
-            sophie_sage: { title: "Quel type d'entretien ou d'inspection recherchez-vous?" },
-            martin_prevoyant: { title: "Quelle est la date approximative pour votre service planifié?" }
-        },
-        2: {
-            title: "Détails du véhicule"
-        },
-        3: {
-            title: "Planifiez votre rendez-vous"
-        },
-        4: {
-            title: "Presque terminé!"
-        }
+      1: {
+        alex_anxieux: { title: "Décrivez le problème urgent de votre véhicule" },
+        sophie_sage: { title: "Quel type d'entretien ou d'inspection recherchez-vous?" },
+        martin_prevoyant: { title: "Quelle est la date approximative pour votre service planifié?" }
+      },
+      2: {
+        title: "Détails du véhicule"
+      },
+      3: {
+        title: "Planifiez votre rendez-vous"
+      },
+      4: {
+        title: "Presque terminé!"
+      }
     },
     buttons: {
-        continue: "Continuer",
-        back: "Retour",
-        submit: "Envoyer ma demande"
+      continue: "Continuer",
+      back: "Retour",
+      submit: "Envoyer ma demande"
     }
   },
   seo: {
     about: {
-        description: "Découvrez l'histoire de MGC Réparation Inc., un garage familial de confiance à Mascouche, QC. Apprenez-en plus sur notre engagement envers l'honnêteté, l'expertise et le service client exceptionnel depuis 2012."
+      description: "Découvrez l'histoire de MGC Réparation Inc., un garage familial de confiance à Mascouche, QC. Apprenez-en plus sur notre engagement envers l'honnêteté, l'expertise et le service client exceptionnel depuis 2012."
     },
     contact: {
-        description: "Contactez MGC Réparation Inc. à Mascouche, QC. Obtenez l'itinéraire vers notre garage, nos heures d'ouverture ou demandez une soumission gratuite pour vos réparations auto, camion lourd, ou remorque."
+      description: "Contactez MGC Réparation Inc. à Mascouche, QC. Obtenez l'itinéraire vers notre garage, nos heures d'ouverture ou demandez une soumission gratuite pour vos réparations auto, camion lourd, ou remorque."
     },
     services: {
-        description: "Explorez la gamme complète de services de mécanique offerts par MGC Réparation Inc. à Mascouche: mécanique générale, réparation de camions lourds, service de remorques, soudure, et plus encore."
+      description: "Explorez la gamme complète de services de mécanique offerts par MGC Réparation Inc. à Mascouche: mécanique générale, réparation de camions lourds, service de remorques, soudure, et plus encore."
     },
     privacy: {
-        title: "Politique de Confidentialité",
-        description: "Consultez la politique de confidentialité de MGC Réparation Inc. pour comprendre comment nous protégeons vos renseignements personnels sur notre site web."
+      title: "Politique de Confidentialité",
+      description: "Consultez la politique de confidentialité de MGC Réparation Inc. pour comprendre comment nous protégeons vos renseignements personnels sur notre site web."
     }
   }
 };

@@ -12,6 +12,8 @@ import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
 import LandingTiresPage from './pages/LandingTiresPage';
 import ThankYouPage from './pages/ThankYouPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import SubServicePage from './pages/SubServicePage';
+import LocationLandingPage from './pages/LocationLandingPage';
 
 import { services } from './i18n';
 import type { Service } from './types';
@@ -108,32 +110,41 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
   }, [route, isOpen, openWizard]);
 
   const renderContent = () => {
-    if (route.startsWith('/services')) {
-      const slug = route.startsWith('/services/') ? route.split('/services/')[1] : null;
-      if (slug) {
-        const service = services.find((s: Service) => s.slug === slug);
-        if (service) {
-          return <ServiceDetailPage service={service} />;
-        }
-        // Fallback to home page if slug is invalid
-        return <HomePage />;
-      }
-      return <ServicesPage />;
+    const path = window.location.pathname;
+
+    if (path === '/') return <HomePage />;
+    if (path === '/about') return <AboutPage />;
+    if (path === '/contact') return <ContactPage />;
+    if (path === '/services') return <ServicesPage />;
+    if (path === '/politique-de-confidentialite') return <PrivacyPolicyPage />;
+
+    // Check for location pages (e.g., /mechanic-terrebonne)
+    if (path.startsWith('/mechanic-')) {
+      const citySlug = path.replace('/mechanic-', '');
+      return <LocationLandingPage citySlug={citySlug} />;
     }
 
-    switch (route) {
-      case '/about':
-        return <AboutPage />;
-      case '/contact':
-        return <ContactPage />;
-      case '/politique-de-confidentialite':
-        return <PrivacyPolicyPage />;
-      case '/':
-        return <HomePage />;
-      default:
-        // For any unknown paths, show the home page.
-        return <HomePage />;
+    // Check for service detail pages
+    if (path.startsWith('/services/')) {
+      const parts = path.split('/').filter(Boolean); // ['services', 'category', 'subcategory']
+      const categorySlug = parts[1];
+      const subcategorySlug = parts[2];
+
+      const service = services.find(s => s.slug === categorySlug);
+
+      if (service) {
+        if (subcategorySlug) {
+          // Find subservice
+          const subService = service.subServices?.find(s => s.slug === subcategorySlug);
+          if (subService) {
+            return <SubServicePage service={service} subService={subService} />;
+          }
+        }
+        return <ServiceDetailPage service={service} />;
+      }
     }
+
+    return <HomePage />;
   };
 
   return (
@@ -152,7 +163,7 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
 const App: React.FC = () => {
   const [route, setRoute] = useState(cleanPath(window.location.pathname));
   const landingPages = ['/offre', '/bilan', '/pneus'];
-  
+
   // Track initial page view
   useEffect(() => {
     if (landingPages.includes(route) || route === '/merci') {
@@ -183,7 +194,7 @@ const App: React.FC = () => {
       if (anchor?.href.startsWith('tel:')) {
         trackClickToCall();
       }
-      
+
       if (
         anchor &&
         anchor.href &&
@@ -199,17 +210,17 @@ const App: React.FC = () => {
             window.history.pushState({}, '', newPath);
             setRoute(newPath);
             window.scrollTo(0, 0);
-             if (landingPages.includes(newPath) || newPath === '/merci') {
-                trackLandingPageView(newPath);
+            if (landingPages.includes(newPath) || newPath === '/merci') {
+              trackLandingPageView(newPath);
             } else {
-                trackPageView(newPath);
+              trackPageView(newPath);
             }
           }
         }
       }
     };
     document.addEventListener('click', handleLinkClick);
-    
+
     return () => {
       window.removeEventListener('popstate', handlePopState);
       document.removeEventListener('click', handleLinkClick);
@@ -222,33 +233,34 @@ const App: React.FC = () => {
       '/bilan': LandingHealthCheckPage,
       '/pneus': LandingTiresPage,
     };
-    
+
     return (
-       <BusinessInfoProvider>
-          <PrequalificationFormProvider>
-            {(() => {
-              const LandingComponent = landingPageMap[route];
-              if (LandingComponent) {
-                return (
-                  <>
-                    <LandingComponent />
-                    <PrequalificationForm />
-                  </>
-                );
-              }
-              
-              if (route === '/merci') {
-                return <ThankYouPage />;
-              }
-              
+      <BusinessInfoProvider>
+        <PrequalificationFormProvider>
+          {(() => {
+            const LandingComponent = landingPageMap[route];
+            if (LandingComponent) {
               return (
                 <QuoteWizardProvider>
-                  <MainLayout route={route} />
+                  <LandingComponent />
+                  <PrequalificationForm />
+                  <QuoteWizard />
                 </QuoteWizardProvider>
               );
-            })()}
-          </PrequalificationFormProvider>
-       </BusinessInfoProvider>
+            }
+
+            if (route === '/merci') {
+              return <ThankYouPage />;
+            }
+
+            return (
+              <QuoteWizardProvider>
+                <MainLayout route={route} />
+              </QuoteWizardProvider>
+            );
+          })()}
+        </PrequalificationFormProvider>
+      </BusinessInfoProvider>
     );
   };
 

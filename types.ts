@@ -5,6 +5,14 @@ export type BilingualText = {
   fr: string;
 };
 
+export interface SubService {
+  slug: string;
+  title: BilingualText;
+  shortDescription: BilingualText;
+  pageContent: BilingualText;
+  features?: BilingualText[];
+}
+
 export interface Service {
   slug: string;
   title: BilingualText;
@@ -16,6 +24,7 @@ export interface Service {
   subHeadline: BilingualText;
   pageContent: BilingualText;
   servicePoints: BilingualText[];
+  subServices?: SubService[];
   whyChoosePoints: { title: BilingualText; description: BilingualText }[];
 }
 
