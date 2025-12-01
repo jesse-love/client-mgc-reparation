@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { services } from '../i18n';
 import { UsersIcon, ShieldCheckIcon, WrenchScrewdriverIcon, HeartIcon, ChevronDownIcon, StarIcon } from '@heroicons/react/24/solid';
@@ -22,12 +23,6 @@ const iconMap: { [key:string]: React.ElementType } = {
 const Hero: React.FC = () => {
     const { t } = useLanguage();
     const { openWizard } = useQuoteWizard();
-    const { reviews, isLoading, aggregateRating } = useBusinessInfo();
-
-    const featuredReview = !isLoading && reviews.length > 0 
-        ? reviews.find(r => r.starRating === 'FIVE' && r.comment && r.comment.length > 20 && r.comment.length < 150) 
-        : null;
-
     return (
         <section className="relative min-h-screen flex flex-col justify-center text-white bg-brand-dark">
             <HeroBackground />
@@ -40,45 +35,7 @@ const Hero: React.FC = () => {
                 <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-200">
                     {t.home.hero.subtitle}
                 </p>
-                
-                {/* --- NEW TRUST SIGNALS --- */}
-                <div className="mt-8 flex flex-col items-center justify-center gap-4 text-slate-200">
-                    {isLoading ? (
-                        <div className="animate-pulse flex flex-col items-center gap-4 py-4">
-                            <div className="h-6 w-72 bg-slate-700/50 rounded-md"></div>
-                            <div className="h-5 w-96 bg-slate-700/50 rounded-md"></div>
-                        </div>
-                    ) : (
-                        <>
-                            {aggregateRating && (
-                                <div className="flex items-center gap-2">
-                                    <div className="flex">
-                                        {Array.from({ length: 5 }).map((_, i) => (
-                                            <StarIcon
-                                                key={i}
-                                                className={`h-6 w-6 ${i < Math.round(aggregateRating.ratingValue) ? 'text-yellow-400' : 'text-slate-500'}`}
-                                            />
-                                        ))}
-                                    </div>
-                                    <span className="font-semibold text-lg">
-                                        {t.home.hero.ratingText
-                                            .replace('{ratingValue}', aggregateRating.ratingValue.toFixed(1))
-                                            .replace('{reviewCount}', aggregateRating.reviewCount.toString())
-                                        }
-                                    </span>
-                                </div>
-                            )}
-                            {featuredReview && (
-                                <p className="max-w-2xl mx-auto text-base md:text-lg italic text-slate-300">
-                                    "{featuredReview.comment}" <span className="not-italic font-semibold">- {featuredReview.reviewer.displayName}</span>
-                                </p>
-                            )}
-                        </>
-                    )}
-                </div>
-                {/* --- END NEW TRUST SIGNALS --- */}
-
-                <div className="mt-10">
+                <div className="mt-12">
                     <button onClick={() => openWizard()} className="bg-orange-500 text-slate-900 font-bold py-3 px-8 md:py-4 md:px-10 rounded-md transition-all duration-300 text-lg shadow-xl hover:bg-orange-400 hover:shadow-2xl hover:shadow-orange-400/50 transform hover:-translate-y-1 hover:scale-110">
                         {t.home.hero.ctaBook}
                     </button>

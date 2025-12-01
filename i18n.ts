@@ -226,8 +226,7 @@ const en = {
       title2: 'GUARANTEED WORK.',
       subtitle: 'Your trusted, family-owned shop in Mascouche for expert car, truck, trailer, and generator services. We get it done right, the first time. Fast diagnostics available.',
       ctaBook: 'Get My Free Quote',
-      ctaCall: 'Call Us Now:',
-      ratingText: '{ratingValue} out of 5 stars based on {reviewCount} Google reviews'
+      ctaCall: 'Call Us Now:'
     },
     services: {
       title: 'OUR EXPERT AUTO & HEAVY VEHICLE MECHANICS SERVICES',
@@ -431,8 +430,7 @@ const fr: typeof en = {
       title2: 'TRAVAIL GARANTI.',
       subtitle: 'Votre garage familial de confiance à Mascouche pour des services experts pour autos, camions, remorques et génératrices. On fait la job comme il faut, du premier coup. Diagnostic rapide disponible.',
       ctaBook: 'Obtenir ma soumission gratuite',
-      ctaCall: 'Appelez-nous:',
-      ratingText: '{ratingValue} sur 5 étoiles basé sur {reviewCount} avis Google'
+      ctaCall: 'Appelez-nous:'
     },
     services: {
       title: 'NOS SERVICES EXPERTS DE MÉCANIQUE AUTO ET VÉHICULES LOURDS',
