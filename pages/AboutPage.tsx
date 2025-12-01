@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import CallToActionSection from '../components/CallToActionSection';
-import ShopIllustration from '../components/ShopIllustration';
 import SchemaManager, { Seo } from '../components/SchemaManager';
 
 const AboutPage: React.FC = () => {
@@ -56,7 +55,12 @@ const AboutPage: React.FC = () => {
             <div className="mt-12 text-lg text-slate-700 dark:text-slate-300 space-y-6 leading-relaxed">
               <p>{t.about.p1}</p>
               <p>{t.about.p2}</p>
-              <ShopIllustration />
+              <img 
+                src="https://assets.cdn.filesafe.space/lpbJcUZUxjGIuobzcrkf/media/684449e7374ef20a7cedf272.jpeg"
+                alt="Façade du garage MGC Réparation à Mascouche"
+                className="rounded-lg shadow-xl my-8 w-full"
+                loading="lazy"
+              />
               <p>{t.about.p3}</p>
               <p>{t.about.p4}</p>
               <p>{t.about.p5}</p>
