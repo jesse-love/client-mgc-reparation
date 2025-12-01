@@ -38,6 +38,10 @@ export interface BusinessInfo {
   reviews: GMBReview[];
   isLoading: boolean;
   error: string | null;
+  aggregateRating?: {
+    ratingValue: number;
+    reviewCount: number;
+  };
 }
 
 

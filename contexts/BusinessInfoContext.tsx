@@ -17,6 +17,7 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
     reviews: [],
     isLoading: true,
     error: null,
+    aggregateRating: undefined,
   });
 
   // This effect will push an event to the dataLayer once the business
@@ -68,6 +69,19 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
         const data = await response.json();
         
         const ratingMap: { [key: number]: string } = { 1: 'ONE', 2: 'TWO', 3: 'THREE', 4: 'FOUR', 5: 'FIVE' };
+        
+        let aggregateRating;
+        if (data.reviews && data.reviews.length > 0) {
+            const totalRating = data.reviews.reduce((acc: number, review: any) => acc + (review.rating || 0), 0);
+            const reviewCount = data.reviews.length;
+            if (reviewCount > 0) {
+              const ratingValue = totalRating / reviewCount;
+              aggregateRating = {
+                  ratingValue: parseFloat(ratingValue.toFixed(1)),
+                  reviewCount: reviewCount
+              };
+            }
+        }
 
         const formatOperatingHours = (periods?: any[]): { en: string; fr: string }[] => {
             if (!periods) return [{ en: 'Hours not available', fr: 'Heures non disponibles' }];
@@ -111,6 +125,7 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
             comment: r.text?.text || '',
             createTime: r.publishTime || new Date().toISOString(),
           })),
+          aggregateRating: aggregateRating,
           isLoading: false,
           error: null,
         });

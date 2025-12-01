@@ -171,6 +171,9 @@ const SchemaManager: React.FC<SchemaManagerProps> = ({ pageType, service }) => {
         }
 
         if (pageType === 'ServiceDetailPage' && service) {
+            // This block generates a 'Service' schema for any service detail page,
+            // including Air Conditioning, Trailer Repair, Generator Services, and Welding & Assembly.
+            // It correctly links to the organization as the provider and defines the service area.
             graph.push({
                 '@type': 'Service',
                 serviceType: service.title.en,
