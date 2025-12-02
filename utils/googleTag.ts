@@ -43,15 +43,15 @@ export const trackLandingPageView = (path: string) => {
 };
 
 interface UserData {
-    name?: string;
-    email?: string;
-    phone?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
 }
 
 interface LeadGenerationParams {
-    avatarType: string;
-    userData: UserData;
-    vehicleType?: string;
+  avatarType: string;
+  userData: UserData;
+  vehicleType?: string;
 }
 
 /**
@@ -86,12 +86,14 @@ export const trackLeadGeneration = ({ avatarType, userData, vehicleType }: LeadG
  * Pushes a specific conversion event to the dataLayer for GTM.
  * @param type - The type of conversion to track.
  */
-export const trackConversion = (type: 'contact_form' | 'wizard_form') => {
+export const trackConversion = (type: 'contact_form' | 'wizard_form' | 'click_to_call_heavy') => {
   let eventName = '';
   if (type === 'contact_form') {
     eventName = GTM_CONTACT_FORM_EVENT;
   } else if (type === 'wizard_form') {
     eventName = GTM_WIZARD_FORM_EVENT;
+  } else if (type === 'click_to_call_heavy') {
+    eventName = GTM_CLICK_TO_CALL_EVENT;
   }
 
   if (eventName) {

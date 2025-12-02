@@ -80,4 +80,8 @@ export interface QuoteWizardData {
   description: string;
   appointmentDate: string;
   appointmentTime: string;
+  vehicleYear: string;
+  vehicleMake: string;
+  vehicleModel: string;
+  tireSize?: string;
 }

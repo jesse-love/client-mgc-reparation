@@ -7,11 +7,64 @@ import SchemaManager, { Seo } from '../components/SchemaManager';
 import { MapPinIcon, ClockIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
 // This would typically come from a database or config file
-const locationData: { [key: string]: { name: string; distance: string; time: string } } = {
-    'terrebonne': { name: 'Terrebonne', distance: '12 km', time: '15 min' },
-    'repentigny': { name: 'Repentigny', distance: '18 km', time: '20 min' },
-    'blainville': { name: 'Blainville', distance: '22 km', time: '25 min' },
-    'laval': { name: 'Laval', distance: '25 km', time: '30 min' },
+// This would typically come from a database or config file
+const locationData: { [key: string]: { name: string; distance: string; time: string; landmark: string; directions: string } } = {
+    'terrebonne': {
+        name: 'Terrebonne',
+        distance: '12 km',
+        time: '15 min',
+        landmark: 'Galeries Terrebonne',
+        directions: 'Take A-25 N to Mascouche. Exit 44 toward Chemin de la Côte-Georges.'
+    },
+    'repentigny': {
+        name: 'Repentigny',
+        distance: '18 km',
+        time: '20 min',
+        landmark: 'Parc de l\'Île-Lebel',
+        directions: 'Take A-40 W and A-640 W to Mascouche. Exit 44.'
+    },
+    'blainville': {
+        name: 'Blainville',
+        distance: '22 km',
+        time: '25 min',
+        landmark: 'Premium Outlets Montreal',
+        directions: 'Take A-15 S and A-640 E to Mascouche. Exit 44.'
+    },
+    'laval': {
+        name: 'Laval',
+        distance: '25 km',
+        time: '30 min',
+        landmark: 'Carrefour Laval',
+        directions: 'Take A-440 E and A-25 N to Mascouche. Exit 44.'
+    },
+    'mascouche': {
+        name: 'Mascouche',
+        distance: '5 km',
+        time: '8 min',
+        landmark: 'Parc du Grand-Coteau',
+        directions: 'Head east on Chemin Sainte-Marie, turn left on Chemin de la Côte-Georges.'
+    },
+    'bois-des-filion': {
+        name: 'Bois-des-Filion',
+        distance: '15 km',
+        time: '18 min',
+        landmark: 'Pont Athanase-David',
+        directions: 'Take A-640 E to Mascouche. Exit 44.'
+    },
+    'lorraine': {
+        name: 'Lorraine',
+        distance: '18 km',
+        time: '20 min',
+        landmark: 'Place Lorraine',
+        directions: 'Take A-640 E to Mascouche. Exit 44.'
+    },
+    'rosemere': {
+        name: 'Rosemère',
+        distance: '20 km',
+        time: '22 min',
+        landmark: 'Place Rosemère',
+        directions: 'Take A-640 E to Mascouche. Exit 44.'
+    }
 };
 
 interface LocationLandingPageProps {
@@ -24,7 +77,13 @@ const LocationLandingPage: React.FC<LocationLandingPageProps> = ({ citySlug }) =
 
     // Fallback if no slug provided or invalid
     const cityKey = citySlug?.toLowerCase() || 'terrebonne';
-    const city = locationData[cityKey] || { name: cityKey.charAt(0).toUpperCase() + cityKey.slice(1), distance: 'N/A', time: 'N/A' };
+    const city = locationData[cityKey] || {
+        name: cityKey.charAt(0).toUpperCase() + cityKey.slice(1),
+        distance: 'N/A',
+        time: 'N/A',
+        landmark: 'Mascouche',
+        directions: 'Check GPS for best route.'
+    };
 
     const title = language === 'en'
         ? `Expert Mechanic Serving ${city.name}`
@@ -104,8 +163,8 @@ const LocationLandingPage: React.FC<LocationLandingPageProps> = ({ citySlug }) =
                                 <h3 className="font-bold text-lg mb-2 text-slate-900 dark:text-white">{language === 'en' ? 'Easy Access' : 'Accès Facile'}</h3>
                                 <p className="text-slate-600 dark:text-slate-400">
                                     {language === 'en'
-                                        ? "Located conveniently near major highways, getting here is a breeze."
-                                        : "Situé près des autoroutes majeures, se rendre ici est un jeu d'enfant."}
+                                        ? `Located near ${city.landmark}. ${city.directions}`
+                                        : `Situé près de ${city.landmark}. ${city.directions}`}
                                 </p>
                             </div>
 

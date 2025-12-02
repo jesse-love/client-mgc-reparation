@@ -8,6 +8,7 @@ interface QuoteWizardContextType {
   wizardData: QuoteWizardData;
   setWizardData: Dispatch<SetStateAction<QuoteWizardData>>;
   resetWizard: () => void;
+  selectOption: (key: keyof QuoteWizardData, value: any) => void;
 }
 
 const QuoteWizardContext = createContext<QuoteWizardContextType | undefined>(undefined);
@@ -22,6 +23,10 @@ export const initialWizardData: QuoteWizardData = {
   description: '',
   appointmentDate: '',
   appointmentTime: '',
+  vehicleYear: '',
+  vehicleMake: '',
+  vehicleModel: '',
+  tireSize: '',
 };
 
 export const QuoteWizardProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -33,16 +38,20 @@ export const QuoteWizardProvider: React.FC<{ children: ReactNode }> = ({ childre
     setIsOpen(false);
     // Optional: reset data on close after a small delay to allow animation
     setTimeout(() => {
-        setWizardData(initialWizardData);
+      setWizardData(initialWizardData);
     }, 300);
   }
 
   const resetWizard = () => {
-      setWizardData(initialWizardData);
+    setWizardData(initialWizardData);
   }
 
+  const selectOption = (key: keyof QuoteWizardData, value: any) => {
+    setWizardData(prev => ({ ...prev, [key]: value }));
+  };
+
   return (
-    <QuoteWizardContext.Provider value={{ isOpen, openWizard, closeWizard, wizardData, setWizardData, resetWizard }}>
+    <QuoteWizardContext.Provider value={{ isOpen, openWizard, closeWizard, wizardData, setWizardData, resetWizard, selectOption }}>
       {children}
     </QuoteWizardContext.Provider>
   );

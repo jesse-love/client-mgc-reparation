@@ -11,10 +11,10 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-brand-dark text-slate-300">
       <div className="container mx-auto py-20 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* About */}
           <div className="space-y-6 md:col-span-2 lg:col-span-1">
-             <a href="/" className="text-3xl font-bold font-oswald tracking-wider text-white">MGC<span className="text-orange-500"> RÉPARATION</span></a>
+            <a href="/" className="text-3xl font-bold font-oswald tracking-wider text-white">MGC<span className="text-orange-500"> RÉPARATION</span></a>
             <p className="text-slate-400">
               {t.footer.about}
             </p>
@@ -23,33 +23,33 @@ const Footer: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-oswald font-bold uppercase tracking-wider text-orange-500">{t.footer.contactUs}</h3>
-            {isLoading ? Array.from({length: 3}).map((_, i) => <div key={i} className="h-6 bg-slate-800 rounded w-3/4 animate-pulse"></div>) :
-            <ul className="space-y-4 text-slate-300">
-              <li className="flex items-start">
-                <MapPinIcon className="h-5 w-5 mt-1 mr-4 flex-shrink-0 text-orange-500" />
-                <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">{address}</a>
-              </li>
-              <li className="flex items-start">
-                <PhoneIcon className="h-5 w-5 mt-1 mr-4 text-orange-500" />
-                <a href={`tel:${phone}`} className="hover:text-orange-400 transition-colors">{phone}</a>
-              </li>
-               <li className="flex items-start">
-                <EnvelopeIcon className="h-5 w-5 mt-1 mr-4 text-orange-500" />
-                <a href={`mailto:info@mgcreparation.ca`} className="hover:text-orange-400 transition-colors">info@mgcreparation.ca</a>
-              </li>
-            </ul>
+            {isLoading ? Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-6 bg-slate-800 rounded w-3/4 animate-pulse"></div>) :
+              <ul className="space-y-4 text-slate-300">
+                <li className="flex items-start">
+                  <MapPinIcon className="h-5 w-5 mt-1 mr-4 flex-shrink-0 text-orange-500" />
+                  <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">{address}</a>
+                </li>
+                <li className="flex items-start">
+                  <PhoneIcon className="h-5 w-5 mt-1 mr-4 text-orange-500" />
+                  <a href={`tel:${phone}`} className="hover:text-orange-400 transition-colors">{phone}</a>
+                </li>
+                <li className="flex items-start">
+                  <EnvelopeIcon className="h-5 w-5 mt-1 mr-4 text-orange-500" />
+                  <a href={`mailto:info@mgcreparation.ca`} className="hover:text-orange-400 transition-colors">info@mgcreparation.ca</a>
+                </li>
+              </ul>
             }
           </div>
 
           {/* Operating Hours */}
           <div className="space-y-4">
             <h3 className="text-lg font-oswald font-bold uppercase tracking-wider text-orange-500">{t.footer.operatingHours}</h3>
-             {isLoading ? Array.from({length: 5}).map((_, i) => <div key={i} className="h-5 bg-slate-800 rounded w-1/2 animate-pulse my-2"></div>) :
-            <ul className="space-y-2 text-slate-300">
-              {operatingHours.map((line, index) => (
-                <li key={index}>{line[language]}</li>
-              ))}
-            </ul>
+            {isLoading ? Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-5 bg-slate-800 rounded w-1/2 animate-pulse my-2"></div>) :
+              <ul className="space-y-2 text-slate-300">
+                {operatingHours.map((line, index) => (
+                  <li key={index}>{line[language]}</li>
+                ))}
+              </ul>
             }
           </div>
 
@@ -62,6 +62,21 @@ const Footer: React.FC = () => {
                   <a href={link.href} className="text-slate-300 hover:text-orange-400 transition-colors">{link.name[language]}</a>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Areas We Serve */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-oswald font-bold uppercase tracking-wider text-orange-500">{t.footer.areasServed}</h3>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li><a href="/mechanic-terrebonne" className="hover:text-orange-400 transition-colors">Terrebonne</a></li>
+              <li><a href="/mechanic-mascouche" className="hover:text-orange-400 transition-colors">Mascouche</a></li>
+              <li><a href="/mechanic-blainville" className="hover:text-orange-400 transition-colors">Blainville</a></li>
+              <li><a href="/mechanic-laval" className="hover:text-orange-400 transition-colors">Laval</a></li>
+              <li><a href="/mechanic-repentigny" className="hover:text-orange-400 transition-colors">Repentigny</a></li>
+              <li><a href="/mechanic-bois-des-filion" className="hover:text-orange-400 transition-colors">Bois-des-Filion</a></li>
+              <li><a href="/mechanic-lorraine" className="hover:text-orange-400 transition-colors">Lorraine</a></li>
+              <li><a href="/mechanic-rosemere" className="hover:text-orange-400 transition-colors">Rosemère</a></li>
             </ul>
           </div>
         </div>

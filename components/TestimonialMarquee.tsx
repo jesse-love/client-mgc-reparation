@@ -1,48 +1,18 @@
 import React from 'react';
-import { useBusinessInfo } from '../contexts/BusinessInfoContext';
+import Marquee from 'react-fast-marquee';
 import { StarIcon } from '@heroicons/react/24/solid';
-import Avatar from './Avatar';
+import { useReviews } from '../contexts/ReviewsContext';
 
 const TestimonialMarquee: React.FC = () => {
-    const { reviews, isLoading, error } = useBusinessInfo();
-    const fiveStarReviews = reviews.filter(r => r.starRating === 'FIVE' && r.comment && r.comment.length > 20);
-
-    // FIX: Explicitly type MarqueeItem as a React.FC to allow for the 'key' prop used in the map function.
-    const MarqueeItem: React.FC<{ review: (typeof fiveStarReviews)[0] }> = ({ review }) => (
-        <div className="flex-shrink-0 w-80 sm:w-96 bg-slate-900/50 backdrop-blur-sm p-6 rounded-xl shadow-lg flex flex-col mx-4 border border-white/10">
-            <div className="flex items-center mb-3">
-                {Array.from({ length: 5 }).map((_, i) => <StarIcon key={i} className="h-5 w-5 text-yellow-400" />)}
-            </div>
-            <p className="text-slate-300 text-base leading-relaxed flex-grow italic">"{review.comment}"</p>
-            <div className="flex items-center mt-4 pt-4 border-t border-white/10">
-                <div className="flex-shrink-0 mr-4">
-                  <Avatar name={review.reviewer.displayName} />
-                </div>
-                <div>
-                    <p className="font-bold text-white">{review.reviewer.displayName}</p>
-                    <p className="text-sm text-slate-400">Client Vérifié</p>
-                </div>
-            </div>
-        </div>
-    );
-    
-    // Create a seamless loop by duplicating the reviews
-    const marqueeContent = fiveStarReviews.length > 3 ? [...fiveStarReviews, ...fiveStarReviews] : fiveStarReviews;
-
-    return (
-        <div className="py-2">
-             <style>{`
-                @keyframes scroll {
-                    from { transform: translateX(0); }
-                    to { transform: translateX(-50%); }
-                }
-                .scrolling-wrapper {
-                    animation: scroll 60s linear infinite;
-                }
-                 .scrolling-wrapper:hover {
-                    animation-play-state: paused;
-                }
-            `}</style>
+                    to { transform: translateX(-50 %); }
+}
+                .scrolling - wrapper {
+    animation: scroll 60s linear infinite;
+}
+                 .scrolling - wrapper:hover {
+    animation - play - state: paused;
+}
+`}</style>
             <div className="relative w-full overflow-hidden group">
                 <div className="flex scrolling-wrapper group-hover:pause">
                     {isLoading && Array.from({ length: 10 }).map((_, i) => (

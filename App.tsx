@@ -19,6 +19,7 @@ import { services } from './i18n';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
+import { UserLocationProvider } from './contexts/UserLocationContext';
 import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
 import { PrequalificationFormProvider } from './contexts/PrequalificationFormContext';
 import QuoteWizard from './components/QuoteWizard';
@@ -237,28 +238,30 @@ const App: React.FC = () => {
     return (
       <BusinessInfoProvider>
         <PrequalificationFormProvider>
-          {(() => {
-            const LandingComponent = landingPageMap[route];
-            if (LandingComponent) {
+          <UserLocationProvider>
+            {(() => {
+              const LandingComponent = landingPageMap[route];
+              if (LandingComponent) {
+                return (
+                  <QuoteWizardProvider>
+                    <LandingComponent />
+                    <PrequalificationForm />
+                    <QuoteWizard />
+                  </QuoteWizardProvider>
+                );
+              }
+
+              if (route === '/merci') {
+                return <ThankYouPage />;
+              }
+
               return (
                 <QuoteWizardProvider>
-                  <LandingComponent />
-                  <PrequalificationForm />
-                  <QuoteWizard />
+                  <MainLayout route={route} />
                 </QuoteWizardProvider>
               );
-            }
-
-            if (route === '/merci') {
-              return <ThankYouPage />;
-            }
-
-            return (
-              <QuoteWizardProvider>
-                <MainLayout route={route} />
-              </QuoteWizardProvider>
-            );
-          })()}
+            })()}
+          </UserLocationProvider>
         </PrequalificationFormProvider>
       </BusinessInfoProvider>
     );

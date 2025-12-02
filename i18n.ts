@@ -385,6 +385,7 @@ const en = {
     contactUs: 'Contact Us',
     operatingHours: 'Operating Hours',
     quickLinks: 'Quick Links',
+    areasServed: 'Areas We Serve',
     rights: 'All Rights Reserved.'
   },
   home: {
@@ -512,7 +513,25 @@ const en = {
         options: {
           maintenance: "Maintenance / Inspection",
           repair: "Specific Repair",
-          diagnostics: "Diagnostics / Not Sure"
+          diagnostics: "Diagnostics / Not Sure",
+          tires: "Tires / Wheels"
+        },
+        offers: {
+          alex: {
+            title: "Oil Change + Free Brake Inspection ($150 Value)",
+            description: "Hear a noise? Get a 50-point brake inspection included with your regular oil change. Safety first.",
+            badge: "Most Popular"
+          },
+          sophie: {
+            title: "$49 Diagnostic (100% Credited)",
+            description: "Dealer charging too much? Get an honest 2nd opinion. The $49 fee is fully credited back if you do the repair.",
+            badge: "Best Value"
+          },
+          martin: {
+            title: "Tire Change + Free Brake Inspection",
+            description: "Kill two birds with one stone. We check your brakes for free while your wheels are off.",
+            badge: "Seasonal Special"
+          }
         }
       },
       3: {
@@ -520,7 +539,11 @@ const en = {
         descriptionPlaceholder: "Describe the issue (e.g., brake noise, check engine light, tire change, AC maintenance) or the service you're looking for...",
         fullName: "Full Name",
         phone: "Phone",
-        email: "Email"
+        email: "Email",
+        vehicleYear: "Year",
+        vehicleMake: "Make",
+        vehicleModel: "Model",
+        tireSize: "Tire Size (e.g., 225/45R17)"
       }
     },
     buttons: {
@@ -532,6 +555,19 @@ const en = {
       title: "Appointment Request Sent!",
       message: "Thank you! We've received your request and will contact you shortly to confirm your booking.",
       button: "Start a New Request"
+    },
+    urgency: "🔥 2 slots left for tomorrow",
+    trustWall: {
+      maintenance: "Quickest oil change I've ever had. They even checked my brakes for free.",
+      repair: "Fixed my transmission when the dealer said it needed replacing. Saved me $2000!",
+      general: "Honest mechanics are hard to find. MGC is the real deal. Highly recommend.",
+      verified: "Verified Customer"
+    },
+    priorityAccess: {
+      title: "Priority Access Required",
+      description: "For heavy vehicles, we skip the queue. Call our dedicated commercial line now for immediate assistance.",
+      code: "Mention code \"FLEET-VIP\" for priority dispatch.",
+      label: "Priority Service"
     }
   },
   prequalificationForm: {
@@ -576,6 +612,73 @@ const en = {
       title: "Privacy Policy",
       description: "Review the privacy policy of MGC Réparation Inc. to understand how we protect your personal information on our website."
     }
+  },
+  landingOffer: {
+    urgency: "🔥 {city} Special: Only 3 Spots Left This Week",
+    title: "Hear a Brake Noise?",
+    subtitle: "Get a FREE Brake Inspection",
+    value: "($150 Value)",
+    description: "Included with your regular Oil Change in {city}.",
+    cards: {
+      trojan: {
+        title: "Trojan Horse Offer",
+        description: "We don't just look. We inspect 50 points of safety while we change your oil."
+      },
+      credited: {
+        title: "100% Credited",
+        description: "If repairs are needed, the inspection value is credited back to you."
+      },
+      safety: {
+        title: "Safety First",
+        description: "Don't risk it. Know exactly what's wrong before you pay a dime."
+      }
+    },
+    cta: "Claim My Free Inspection Now",
+    disclaimer: "Valid for {city} residents. No obligation to repair."
+  },
+  landingHealthCheck: {
+    badge: "🛡️ The \"Honest Mechanic\" Guarantee in {city}",
+    title: "Dealer Quoted You a Fortune?",
+    subtitle: "Get a Second Opinion for $49",
+    description: "(And we credit 100% of it back if you do the repair).",
+    cards: {
+      scan: {
+        title: "Full 50-Point Scan",
+        description: "We check everything. No guessing. You get a clear, jargon-free report."
+      },
+      credited: {
+        title: "100% Credited Back",
+        description: "The $49 fee vanishes if you proceed with the repair. It's effectively free."
+      },
+      pressure: {
+        title: "No Pressure",
+        description: "We tell you the truth. You decide what to do. No sales tactics."
+      }
+    },
+    cta: "Book My $49 Credited Session",
+    disclaimer: "Trusted by 500+ {city} drivers."
+  },
+  landingTires: {
+    badge: "❄️ Seasonal Special: Limited Slots in {city}",
+    title: "Need a Tire Change?",
+    subtitle: "Get a FREE Brake Inspection",
+    description: "While We're At It. Two services. One trip. Zero wasted time.",
+    cards: {
+      install: {
+        title: "Professional Install",
+        description: "Mounting, balancing, and torque check. Done right the first time."
+      },
+      check: {
+        title: "Free Brake Check",
+        description: "Since the wheels are off, we check your pads and rotors for free ($150 value)."
+      },
+      fast: {
+        title: "Fast Service",
+        description: "We respect your time. Book a slot and get back on the road quickly."
+      }
+    },
+    cta: "Book My Tire Combo Now",
+    disclaimer: "Available for all car makes & models in {city}."
   }
 };
 
@@ -589,6 +692,7 @@ const fr: typeof en = {
     contactUs: 'Nous Contacter',
     operatingHours: 'Heures d\'Ouverture',
     quickLinks: 'Liens Rapides',
+    areasServed: 'Zones Desservies',
     rights: 'Tous droits réservés.'
   },
   home: {
@@ -716,7 +820,25 @@ const fr: typeof en = {
         options: {
           maintenance: "Entretien / Inspection",
           repair: "Réparation spécifique",
-          diagnostics: "Diagnostic / Pas certain"
+          diagnostics: "Diagnostic / Pas certain",
+          tires: "Pneus / Roues"
+        },
+        offers: {
+          alex: {
+            title: "Changement d'Huile + Inspection Freins Gratuite (Valeur 150$)",
+            description: "Bruit suspect? Inspection 50 points incluse avec votre changement d'huile. Votre sécurité avant tout.",
+            badge: "Plus Populaire"
+          },
+          sophie: {
+            title: "Diagnostic à 49$ (100% Crédité)",
+            description: "Le concessionnaire charge trop cher? Obtenez un 2e avis honnête. Le 49$ est 100% crédité sur votre réparation.",
+            badge: "Meilleure Valeur"
+          },
+          martin: {
+            title: "Combo Pneus + Inspection Gratuite",
+            description: "2 services en 1. On vérifie vos freins gratuitement pendant que vos roues sont enlevées.",
+            badge: "Spécial Saisonnier"
+          }
         }
       },
       3: {
@@ -724,7 +846,11 @@ const fr: typeof en = {
         descriptionPlaceholder: "Décrivez le problème (ex: bruit de freins, voyant moteur allumé, besoin de changement de pneus, entretien AC) ou le service que vous cherchez...",
         fullName: "Nom complet",
         phone: "Téléphone",
-        email: "Courriel"
+        email: "Courriel",
+        vehicleYear: "Année",
+        vehicleMake: "Marque",
+        vehicleModel: "Modèle",
+        tireSize: "Taille de pneu (ex: 225/45R17)"
       }
     },
     buttons: {
@@ -736,28 +862,41 @@ const fr: typeof en = {
       title: "Rendez-vous demandé!",
       message: "Merci! Nous avons bien reçu votre demande et nous vous contacterons sous peu pour confirmer votre réservation.",
       button: "Nouvelle demande"
+    },
+    urgency: "🔥 2 places restantes pour demain",
+    trustWall: {
+      maintenance: "Le changement d'huile le plus rapide que j'ai eu. Ils ont même vérifié mes freins gratuitement.",
+      repair: "Ils ont réparé ma transmission quand le concessionnaire disait de la changer. J'ai sauvé 2000$!",
+      general: "C'est dur de trouver des mécanos honnêtes. MGC c'est la vraie affaire. Je recommande fortement.",
+      verified: "Client Vérifié"
+    },
+    priorityAccess: {
+      title: "Accès Prioritaire Requis",
+      description: "Pour les véhicules lourds, on saute la file. Appelez notre ligne commerciale dédiée maintenant pour une assistance immédiate.",
+      code: "Mentionnez le code \"FLOTTE-VIP\" pour un dispatch prioritaire.",
+      label: "Service Prioritaire"
     }
   },
   prequalificationForm: {
-    formTitle: 'OBTENEZ VOTRE SOUMISSION PERSONNALISÉE',
+    formTitle: 'OBTENEZ VOTRE SOUMISSION SUR MESURE',
     infoPanel: {
-      title: 'Trouvez rapidement le service parfait pour vos besoins mécaniques.',
-      subtitle: 'Notre formulaire intelligent vous connecte au meilleur expert et vous donne un prix juste, sans engagement.'
+      title: 'Trouvez rapidement le service mécanique parfait pour vos besoins.',
+      subtitle: 'Notre formulaire intelligent vous connecte au meilleur expert et vous donne un prix juste, sans obligation.'
     },
     steps: {
       1: {
-        alex_anxieux: { title: "Décrivez le problème urgent de votre véhicule" },
-        sophie_sage: { title: "Quel type d'entretien ou d'inspection recherchez-vous?" },
-        martin_prevoyant: { title: "Quelle est la date approximative pour votre service planifié?" }
+        alex_anxieux: { title: "Décrivez le problème urgent avec votre véhicule" },
+        sophie_sage: { title: "Quel type d'entretien ou inspection cherchez-vous ?" },
+        martin_prevoyant: { title: "Quelle est la date approximative pour votre service prévu ?" }
       },
       2: {
-        title: "Détails du véhicule"
+        title: "Détails du Véhicule"
       },
       3: {
         title: "Planifiez votre rendez-vous"
       },
       4: {
-        title: "Presque terminé!"
+        title: "Presque fini!"
       }
     },
     buttons: {
@@ -768,18 +907,85 @@ const fr: typeof en = {
   },
   seo: {
     about: {
-      description: "Découvrez l'histoire de MGC Réparation Inc., un garage familial de confiance à Mascouche, QC. Apprenez-en plus sur notre engagement envers l'honnêteté, l'expertise et le service client exceptionnel depuis 2012."
+      description: "Découvrez l'histoire de MGC Réparation Inc., un garage familial de confiance à Mascouche, QC. Apprenez-en plus sur notre engagement envers l'honnêteté, l'expertise et un service client exceptionnel depuis 2012."
     },
     contact: {
-      description: "Contactez MGC Réparation Inc. à Mascouche, QC. Obtenez l'itinéraire vers notre garage, nos heures d'ouverture ou demandez une soumission gratuite pour vos réparations auto, camion lourd, ou remorque."
+      description: "Contactez MGC Réparation Inc. à Mascouche, QC. Obtenez l'itinéraire vers notre garage, nos heures d'ouverture, ou demandez une soumission gratuite pour vos réparations d'auto, camion lourd ou remorque."
     },
     services: {
-      description: "Explorez la gamme complète de services de mécanique offerts par MGC Réparation Inc. à Mascouche: mécanique générale, réparation de camions lourds, service de remorques, soudure, et plus encore."
+      description: "Explorez la gamme complète de services mécaniques offerts par MGC Réparation Inc. à Mascouche : mécanique générale, réparation de camions lourds, service de remorques, soudure, et plus."
     },
     privacy: {
       title: "Politique de Confidentialité",
-      description: "Consultez la politique de confidentialité de MGC Réparation Inc. pour comprendre comment nous protégeons vos renseignements personnels sur notre site web."
+      description: "Consultez la politique de confidentialité de MGC Réparation Inc. pour comprendre comment nous protégeons vos informations personnelles sur notre site web."
     }
+  },
+  landingOffer: {
+    urgency: "🔥 Spécial {city}: Seulement 3 places restantes cette semaine",
+    title: "Bruit de freins suspect?",
+    subtitle: "Obtenez une Inspection de Freins GRATUITE",
+    value: "(Valeur 150$)",
+    description: "Incluse avec votre changement d'huile régulier à {city}.",
+    cards: {
+      trojan: {
+        title: "Offre Cheval de Troie",
+        description: "On ne fait pas juste regarder. On inspecte 50 points de sécurité pendant qu'on change votre huile."
+      },
+      credited: {
+        title: "100% Crédité",
+        description: "Si des réparations sont nécessaires, la valeur de l'inspection vous est créditée."
+      },
+      safety: {
+        title: "Sécurité Avant Tout",
+        description: "Ne prenez pas de risque. Sachez exactement ce qui ne va pas avant de payer un sou."
+      }
+    },
+    cta: "Réclamer mon Inspection Gratuite",
+    disclaimer: "Valide pour les résidents de {city}. Aucune obligation de réparation."
+  },
+  landingHealthCheck: {
+    badge: "🛡️ La Garantie \"Mécanicien Honnête\" à {city}",
+    title: "Le concessionnaire charge trop cher?",
+    subtitle: "Obtenez un 2e avis pour 49$",
+    description: "(Et on vous le crédite à 100% si vous faites la réparation).",
+    cards: {
+      scan: {
+        title: "Scan Complet 50 Points",
+        description: "On vérifie tout. Pas de devinettes. Vous recevez un rapport clair, sans jargon."
+      },
+      credited: {
+        title: "100% Remboursé",
+        description: "Le frais de 49$ disparaît si vous procédez à la réparation. C'est effectivement gratuit."
+      },
+      pressure: {
+        title: "Pas de Pression",
+        description: "On vous dit la vérité. Vous décidez quoi faire. Pas de tactiques de vente."
+      }
+    },
+    cta: "Réserver ma Session Créditée à 49$",
+    disclaimer: "La confiance de 500+ conducteurs de {city}."
+  },
+  landingTires: {
+    badge: "❄️ Spécial Saisonnier: Places Limitées à {city}",
+    title: "Besoin de changer vos pneus?",
+    subtitle: "Obtenez une Inspection de Freins GRATUITE",
+    description: "Pendant qu'on y est. Deux services. Un voyage. Zéro perte de temps.",
+    cards: {
+      install: {
+        title: "Installation Pro",
+        description: "Montage, balancement et vérification du couple. Bien fait du premier coup."
+      },
+      check: {
+        title: "Vérification Freins Gratuite",
+        description: "Puisque les roues sont enlevées, on vérifie vos plaquettes et disques gratuitement (valeur 150$)."
+      },
+      fast: {
+        title: "Service Rapide",
+        description: "On respecte votre temps. Réservez une plage et reprenez la route rapidement."
+      }
+    },
+    cta: "Réserver mon Combo Pneus Maintenant",
+    disclaimer: "Disponible pour toutes marques & modèles à {city}."
   }
 };
 
