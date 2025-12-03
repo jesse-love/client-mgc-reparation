@@ -21,6 +21,8 @@ const LandingTiresPage: React.FC = () => {
   const city = userCity || "Mascouche";
   const content = offers.martin; // "Martin" is the Tires offer
 
+
+
   const handleOpenWizard = () => {
     openWizard();
     selectOption('serviceCategory', 'Tire Change + Free Inspection');

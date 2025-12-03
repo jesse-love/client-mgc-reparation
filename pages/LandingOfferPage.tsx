@@ -17,6 +17,8 @@ const LandingOfferPage: React.FC = () => {
   const city = userCity || "Mascouche";
   const content = offers.alex; // "Alex" is the Oil Change offer
 
+
+
   const handleOpenWizard = () => {
     openWizard();
     selectOption('serviceCategory', 'Oil Change + Free Inspection');

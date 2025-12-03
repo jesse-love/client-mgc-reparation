@@ -34,8 +34,10 @@ const QuoteWizard: React.FC = () => {
 
     // Date Picker State and Refs
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const timePickerRef = useRef<HTMLDivElement>(null);
 
     const handleNext = () => setWizardData(prev => ({ ...prev, step: prev.step + 1 }));
     const handleBack = () => {
@@ -150,6 +152,9 @@ ${wizardData.description}
             if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
                 setIsDatePickerOpen(false);
             }
+            if (timePickerRef.current && !timePickerRef.current.contains(event.target as Node)) {
+                setIsTimePickerOpen(false);
+            }
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -215,7 +220,7 @@ ${wizardData.description}
         });
 
         return (
-            <div className={`absolute left-1/2 -translate-x-1/2 w-full max-w-sm bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-20 top-full mt-2 dark:bg-slate-900 dark:border-slate-600`}>
+            <div className={`absolute left-1/2 -translate-x-1/2 w-full max-w-sm bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-20 bottom-full mb-2 dark:bg-slate-900 dark:border-slate-600`}>
                 <div className="flex justify-between items-center mb-4">
                     <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
                         <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-slate-300" />
@@ -249,15 +254,20 @@ ${wizardData.description}
                 if (operatingHours.lunch && time >= operatingHours.lunch && time < operatingHours.lunch + 1) continue;
                 const hour = Math.floor(time);
                 const minutes = (time % 1) * 60;
-                const period = hour >= 12 ? 'PM' : 'AM';
-                let displayHour = hour % 12;
-                if (displayHour === 0) displayHour = 12;
                 const displayMinutes = minutes === 0 ? '00' : minutes;
-                slots.push(`${displayHour}:${displayMinutes} ${period}`);
+
+                if (language === 'fr') {
+                    slots.push(`${hour}:${displayMinutes}`);
+                } else {
+                    const period = hour >= 12 ? 'PM' : 'AM';
+                    let displayHour = hour % 12;
+                    if (displayHour === 0) displayHour = 12;
+                    slots.push(`${displayHour}:${displayMinutes} ${period}`);
+                }
             }
         }
         return slots;
-    }, []);
+    }, [language]);
 
     const availableSlots = generateTimeSlots(wizardData.appointmentDate);
 
@@ -464,18 +474,36 @@ ${wizardData.description}
                                     {!wizardData.appointmentDate ? (
                                         <div className="h-full w-full p-4 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 text-center text-lg">{t.contactForm.selectDateFirst}</div>
                                     ) : availableSlots.length > 0 ? (
-                                        <select
-                                            id="appointmentTime"
-                                            name="appointmentTime"
-                                            value={wizardData.appointmentTime}
-                                            onChange={handleChange}
-                                            className={`${commonInputClass} h-full border border-slate-300 dark:border-slate-600`}
-                                        >
-                                            <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
-                                            {availableSlots.map(time => (
-                                                <option key={time} value={time}>{time}</option>
-                                            ))}
-                                        </select>
+                                        <div className="relative h-full" ref={timePickerRef}>
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsTimePickerOpen(!isTimePickerOpen)}
+                                                className={`${commonInputClass} h-full border border-slate-300 dark:border-slate-600 text-left flex justify-between items-center`}
+                                            >
+                                                <span className={!wizardData.appointmentTime ? 'text-slate-400' : ''}>
+                                                    {wizardData.appointmentTime || t.contactForm.appointmentTimePlaceholder}
+                                                </span>
+                                                <ChevronLeftIcon className={`h-5 w-5 text-slate-400 transition-transform ${isTimePickerOpen ? 'rotate-90' : '-rotate-90'}`} />
+                                            </button>
+
+                                            {isTimePickerOpen && (
+                                                <div className="absolute bottom-full mb-2 left-0 w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-lg max-h-60 overflow-y-auto z-30">
+                                                    {availableSlots.map(time => (
+                                                        <button
+                                                            key={time}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                handleSelectOption('appointmentTime', time);
+                                                                setIsTimePickerOpen(false);
+                                                            }}
+                                                            className={`w-full text-left px-4 py-3 hover:bg-orange-50 dark:hover:bg-slate-700 transition-colors ${wizardData.appointmentTime === time ? 'bg-orange-100 dark:bg-slate-600 font-bold text-orange-700 dark:text-orange-400' : 'text-slate-700 dark:text-slate-200'}`}
+                                                        >
+                                                            {time}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     ) : (
                                         <div className="h-full w-full p-4 flex items-center justify-center bg-red-100 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300 text-center text-lg">{t.contactForm.noSlotsAvailable}</div>
                                     )}
@@ -498,7 +526,7 @@ ${wizardData.description}
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={closeWizard}></div>
 
-            <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+            <div className={`relative flex w-full h-full md:w-auto md:h-auto md:max-w-7xl md:max-h-[90vh] overflow-hidden transition-all duration-300 transform-gpu shadow-2xl md:rounded-2xl ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                 {/* Left Info Panel (Hidden on small, visible on md+) */}
                 <div className="hidden md:flex flex-col justify-between p-8 lg:p-12 text-white bg-blue-800 flex-shrink-0 md:w-1/2 lg:w-2/5 xl:w-1/3">
                     <div>
@@ -525,7 +553,7 @@ ${wizardData.description}
                 </div>
 
                 {/* Right Form Panel */}
-                <div className="relative flex-grow flex flex-col bg-white dark:bg-slate-800 text-slate-900 dark:text-white p-6 sm:p-8 md:w-1/2 lg:w-3/5 xl:w-2/3">
+                <div className="relative flex-grow flex flex-col bg-white dark:bg-slate-800 text-slate-900 dark:text-white p-6 sm:p-8 md:w-1/2 lg:w-3/5 xl:w-2/3 overflow-y-auto">
                     <button onClick={closeWizard} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-white/70 dark:hover:text-white z-20 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
                         <XMarkIcon className="h-8 w-8" />
                     </button>

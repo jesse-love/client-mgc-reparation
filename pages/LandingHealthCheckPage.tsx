@@ -17,6 +17,8 @@ const LandingHealthCheckPage: React.FC = () => {
   const city = userCity || "Mascouche";
   const content = offers.sophie; // "Sophie" is the Diagnostic offer
 
+
+
   const handleOpenWizard = () => {
     openWizard();
     selectOption('serviceCategory', '$49 Credited Diagnostic');

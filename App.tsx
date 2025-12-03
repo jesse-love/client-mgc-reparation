@@ -21,6 +21,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
 import { UserLocationProvider } from './contexts/UserLocationContext';
 import { BusinessInfoProvider } from './contexts/BusinessInfoContext';
+import { ContentProvider } from './contexts/ContentContext';
 import { PrequalificationFormProvider } from './contexts/PrequalificationFormContext';
 import QuoteWizard from './components/QuoteWizard';
 import PrequalificationForm from './components/PrequalificationForm';
@@ -239,28 +240,30 @@ const App: React.FC = () => {
       <BusinessInfoProvider>
         <PrequalificationFormProvider>
           <UserLocationProvider>
-            {(() => {
-              const LandingComponent = landingPageMap[route];
-              if (LandingComponent) {
+            <ContentProvider>
+              {(() => {
+                const LandingComponent = landingPageMap[route];
+                if (LandingComponent) {
+                  return (
+                    <QuoteWizardProvider>
+                      <LandingComponent />
+                      <PrequalificationForm />
+                      <QuoteWizard />
+                    </QuoteWizardProvider>
+                  );
+                }
+
+                if (route === '/merci') {
+                  return <ThankYouPage />;
+                }
+
                 return (
                   <QuoteWizardProvider>
-                    <LandingComponent />
-                    <PrequalificationForm />
-                    <QuoteWizard />
+                    <MainLayout route={route} />
                   </QuoteWizardProvider>
                 );
-              }
-
-              if (route === '/merci') {
-                return <ThankYouPage />;
-              }
-
-              return (
-                <QuoteWizardProvider>
-                  <MainLayout route={route} />
-                </QuoteWizardProvider>
-              );
-            })()}
+              })()}
+            </ContentProvider>
           </UserLocationProvider>
         </PrequalificationFormProvider>
       </BusinessInfoProvider>
