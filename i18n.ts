@@ -16,7 +16,6 @@ export const NAV_LINKS: NavLink[] = [
     ]
   },
   { name: { en: 'ABOUT US', fr: 'À PROPOS' }, href: '/about' },
-  { name: { en: 'CONTACT', fr: 'CONTACT' }, href: '/contact' },
 ];
 
 export const services: Service[] = [
@@ -378,7 +377,10 @@ export const WHY_CHOOSE_US_POINTS = [
 const en = {
   header: {
     bookService: 'Get My Quote & Book Appointment',
-    allServices: 'All Services'
+    allServices: 'All Services',
+    checkPrice: 'Check Price & Availability',
+    spotsLeft: '3 spots',
+    callButton: '(514) 123-4567'
   },
   footer: {
     about: 'Your trusted, family-owned auto and heavy vehicle experts in Mascouche, QC. Honest repairs, guaranteed work.',
@@ -685,7 +687,10 @@ const en = {
 const fr: typeof en = {
   header: {
     bookService: 'Obtenir ma soumission et rendez-vous',
-    allServices: 'Tous les services'
+    allServices: 'Tous les services',
+    checkPrice: 'Voir Prix & Dispo',
+    spotsLeft: '3 places',
+    callButton: '(514) 123-4567'
   },
   footer: {
     about: 'Votre garage familial de confiance pour l\'auto et les véhicules lourds à Mascouche, QC. Réparations honnêtes, travail garanti.',

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -14,6 +15,8 @@ import ThankYouPage from './pages/ThankYouPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import SubServicePage from './pages/SubServicePage';
 import LocationLandingPage from './pages/LocationLandingPage';
+import DynamicFAQPage from './pages/DynamicFAQPage';
+import UrgencyTopbar from './components/UrgencyTopbar';
 
 import { services } from './i18n';
 import type { Service } from './types';
@@ -146,12 +149,20 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
       }
     }
 
+    // [NEW] Dynamic FAQ Pages (pSEO)
+    if (path.startsWith('/faq/')) {
+      return <DynamicFAQPage />;
+    }
+
     return <HomePage />;
   };
 
+  const isFaqPage = window.location.pathname.startsWith('/faq/');
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-brand-dark text-slate-800 dark:text-slate-200">
-      <Header />
+      {isFaqPage && <UrgencyTopbar />}
+      <Header hasUrgencyBanner={isFaqPage} />
       <main className="flex-grow">
         {renderContent()}
       </main>
@@ -273,7 +284,9 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        {renderAppContent()}
+        <HelmetProvider>
+          {renderAppContent()}
+        </HelmetProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

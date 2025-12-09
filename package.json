@@ -4,10 +4,15 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@google-cloud/vertexai": "^1.10.0",
     "@heroicons/react": "^2.2.0",
+    "@types/react-helmet-async": "^1.0.1",
+    "axios": "^1.13.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-fast-marquee": "^1.6.5"
+    "react-fast-marquee": "^1.6.5",
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",

@@ -23,39 +23,42 @@
       tailwind.config = {
         darkMode: 'class',
         theme: {
-          extend: {
-            colors: {
-              'brand-blue': '#1a3a6d',
-              'brand-dark': '#0f172a',
-              'slate': {
-                '50': '#f8fafc',
-                '100': '#f1f5f9',
-                '200': '#e2e8f0',
-                '300': '#cbd5e1',
-                '400': '#94a3b8',
-                '500': '#64748b',
-                '600': '#475569',
-                '700': '#334155',
-                '800': '#1e293b',
-                '900': '#0f172a',
-              },
-              'orange': {
-                '400': '#fb923c',
-                '500': '#f97316',
-                '600': '#ea580c',
-              }
+          container: {
+            center: true,
+            padding: {
+              DEFAULT: '1rem',
+              sm: '2rem',
+              lg: '4rem',
+              xl: '5rem',
+              '2xl': '6rem',
             },
+          },
+          extend: {
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
               oswald: ['Oswald', 'sans-serif'],
+            },
+            colors: {
+              'brand-blue': '#1a3a6d',
+              'brand-dark': '#0f172a',
             },
           },
         },
       }
     </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            font-size: clamp(16px, 0.5vw + 15px, 18px); /* Fluid Base Typography */
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
   <script type="importmap">
 {
   "imports": {
