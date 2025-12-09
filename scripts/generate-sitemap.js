@@ -74,35 +74,21 @@ const generateSitemap = () => {
 
   // 4. pSEO Dynamic FAQ Pages
   try {
-    const pSEOPath = path.resolve(__dirname, '../data/harvested_keywords_fr.csv');
+    const pSEOPath = path.resolve(__dirname, '../data/pseo_content.json');
     if (fs.existsSync(pSEOPath)) {
       const fileContent = fs.readFileSync(pSEOPath, 'utf8');
-      const lines = fileContent.split('\n').filter(Boolean);
+      const pseoData = JSON.parse(fileContent);
+      const slugs = Object.keys(pseoData);
 
-      // Skip header (i=1)
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i];
-        // CSV line format: "keyword",City,Status
-        // Extract keyword between quotes
-        const match = line.match(/"([^"]+)"/);
-        if (match && match[1]) {
-          const keyword = match[1];
-          // Slugify: "changement huile terrebonne" -> "changement-huile-terrebonne"
-          const slug = keyword
-            .toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
-            .replace(/[^a-z0-9]+/g, '-') // special chars to dash
-            .replace(/^-+|-+$/g, ''); // trim dashes
-
-          xml += `
+      slugs.forEach(slug => {
+        xml += `
   <url>
     <loc>${DOMAIN}/faq/${slug}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
-        }
-      }
-      console.log(`✅ Added ${lines.length - 1} pSEO pages to sitemap.`);
+      });
+      console.log(`✅ Added ${slugs.length} pSEO pages to sitemap from JSON.`);
     }
   } catch (err) {
     console.error("Error adding pSEO pages to sitemap:", err);
