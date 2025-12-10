@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon, ChevronDownIcon, SunIcon, MoonIcon, BoltIcon, Pho
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../App';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 const cleanPath = (path: string): string => {
   if (path.endsWith('/index.html')) {
@@ -69,6 +70,7 @@ const Header: React.FC<{ hasUrgencyBanner?: boolean }> = ({ hasUrgencyBanner = f
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { language, t } = useLanguage();
   const { openWizard } = useQuoteWizard();
+  const { phone } = useBusinessInfo();
 
   const isHomePage = cleanPath(window.location.pathname) === '/';
 
@@ -140,9 +142,9 @@ const Header: React.FC<{ hasUrgencyBanner?: boolean }> = ({ hasUrgencyBanner = f
               <ThemeToggle />
             </div>
 
-            <a href="tel:5141234567" className="hidden lg:inline-flex items-center gap-2 bg-slate-800/50 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl border border-slate-600 hover:border-orange-500 transition-all duration-300 group whitespace-nowrap">
+            <a href={`tel:${phone.replace(/[^0-9]/g, '')}`} className="hidden lg:inline-flex items-center gap-2 bg-slate-800/50 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl border border-slate-600 hover:border-orange-500 transition-all duration-300 group whitespace-nowrap">
               <PhoneIcon className="h-4 w-4 text-orange-500 group-hover:text-white transition-colors flex-shrink-0" />
-              <span className="tracking-wide text-xs xl:text-sm">{t.header.callButton}</span>
+              <span className="tracking-wide text-xs xl:text-sm">{phone}</span>
             </a>
 
             <button onClick={handleBookServiceClick} className="hidden lg:inline-flex items-center gap-2 bg-[#ff6b35] hover:bg-[#ff8c61] text-white font-bold py-2.5 px-4 rounded-xl shadow-2xl hover:shadow-orange-500/40 transform hover:scale-105 transition-all duration-300 ring-2 ring-[#ff6b35]/20 group whitespace-nowrap">

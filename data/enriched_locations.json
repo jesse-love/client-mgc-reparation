@@ -1,0 +1,62 @@
+{
+  "Terrebonne": {
+    "landmarks": [
+      {
+        "name": "Parc René-Lévesque",
+        "address": "1094 Rue St Sacrement, Terrebonne, QC J6W 3G6, Canada",
+        "type": "park"
+      },
+      {
+        "name": "School Vision Terrebonne",
+        "address": "2955 Bd de la Pinière, Terrebonne, QC J6X 0A3, Canada",
+        "type": "school"
+      },
+      {
+        "name": "Galeries Terrebonne",
+        "address": "1185 Boulevard Moody, Terrebonne, QC J6W 4N2, Canada",
+        "type": "shopping_mall"
+      }
+    ],
+    "lastUpdated": "2025-12-10T09:00:24.026Z"
+  },
+  "Laval": {
+    "landmarks": [
+      {
+        "name": "Nature Center",
+        "address": "901 Av. du Parc, Laval, QC H7E 2T7, Canada",
+        "type": "park"
+      },
+      {
+        "name": "Laval College",
+        "address": "1275 Av. du Collège, Laval, QC H7C 1W8, Canada",
+        "type": "school"
+      },
+      {
+        "name": "CF Carrefour Laval",
+        "address": "3003 Boul. le Carrefour, Laval, QC H7T 1C7, Canada",
+        "type": "shopping_mall"
+      }
+    ],
+    "lastUpdated": "2025-12-10T09:00:26.260Z"
+  },
+  "Mascouche": {
+    "landmarks": [
+      {
+        "name": "Grand Coteau Park",
+        "address": "2600 Bd de Mascouche, Mascouche, QC J7K 0E4, Canada",
+        "type": "park"
+      },
+      {
+        "name": "École des Hauts-Bois",
+        "address": "99 Av. Napoléon, Mascouche, QC J7L 3B3, Canada",
+        "type": "primary_school"
+      },
+      {
+        "name": "SmartCentres Mascouche",
+        "address": "155 Mnt Masson, Mascouche, QC J7K 3B4, Canada",
+        "type": "shopping_mall"
+      }
+    ],
+    "lastUpdated": "2025-12-10T09:00:27.091Z"
+  }
+}

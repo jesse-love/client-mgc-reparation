@@ -6,10 +6,13 @@ import {
     StarIcon,
     ClockIcon,
     ShieldCheckIcon,
-    BoltIcon
+    BoltIcon,
+    MapPinIcon
 } from '@heroicons/react/24/solid';
 import { PhoneIcon } from '@heroicons/react/24/outline';
 import pseoData from '../data/pseo_content.json';
+import enrichedLocations from '../data/enriched_locations.json';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 // --- DESIGN SYSTEM COMPONENTS ---
 
@@ -62,6 +65,22 @@ const FeatureCard: React.FC<{ html: string }> = ({ html }) => {
     );
 };
 
+// --- GOOGLE MAPS STAY-EMBED ---
+const GoogleMapsEmbed: React.FC = () => (
+    <div className="mt-16 mb-8 rounded-xl overflow-hidden shadow-2xl border-4 border-slate-200 dark:border-slate-700">
+        <iframe
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyALSGej1fcjXsVjfffK62nM5kW3SNS6svE&q=place_id:ChIJMeqEvlfbyEwRcwObeP5z2SA&language=fr`}
+            title="Garage MGC Réparation Location"
+        ></iframe>
+    </div>
+);
+
 const FeatureGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="my-8">
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none p-0">
@@ -95,6 +114,7 @@ const DynamicFAQPage: React.FC = () => {
     const path = window.location.pathname;
     const slug = path.replace('/faq/', '');
     const { openWizard } = useQuoteWizard();
+    const { rating, userRatingCount, phone } = useBusinessInfo();
     const [scarcityLeft, setScarcityLeft] = useState(3);
 
     // Dynamic Scarcity Counter
@@ -115,7 +135,8 @@ const DynamicFAQPage: React.FC = () => {
         );
     }
 
-    const { question, answer, city, keyword } = pageData;
+    const { question, answer: rawAnswer, city, keyword } = pageData;
+    const answer = rawAnswer.replace(/514-XXX-XXXX|514-555-0123/g, phone !== 'Loading...' ? phone : '514-123-4567');
     const displayTitle = question || keyword.replace(/\b\w/g, (l: string) => l.toUpperCase());
     const cleanAnswer = answer.replace(/<[^>]+>/g, '').substring(0, 180) + "...";
 
@@ -168,8 +189,8 @@ const DynamicFAQPage: React.FC = () => {
                         },
                         "aggregateRating": {
                             "@type": "AggregateRating",
-                            "ratingValue": "4.9",
-                            "reviewCount": "127"
+                            "ratingValue": String(rating),
+                            "reviewCount": String(userRatingCount)
                         },
                         "offers": {
                             "@type": "Offer",
@@ -256,9 +277,58 @@ const DynamicFAQPage: React.FC = () => {
                         <div className="flex text-yellow-500">
                             {[1, 2, 3, 4, 5].map(i => <StarIcon key={i} className="h-4 w-4" />)}
                         </div>
-                        <span className="font-semibold text-slate-400">4.9/5 sur 120+ avis.</span>
+                        <span className="font-semibold text-slate-400">{rating}/5 sur {userRatingCount}+ avis.</span>
                     </div>
                 </div>
+            </div>
+            <div className="max-w-4xl mx-auto backdrop-blur-sm bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-2xl p-6 md:p-12 border border-slate-100 dark:border-slate-800">
+                {/* Urgency Badge */}
+                <div className="flex justify-center mb-6">
+                    <span className="bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 px-4 py-1.5 rounded-full text-sm font-bold animate-pulse border border-red-200 dark:border-red-800 flex items-center gap-2">
+                        <ClockIcon className="h-4 w-4" />
+                        Plus que {scarcityLeft} places disponibles cette semaine à {city}
+                    </span>
+                </div>
+
+                <h1 className="text-4xl md:text-5xl font-oswald font-bold text-slate-900 dark:text-white mb-6 leading-tight text-center">
+                    {displayTitle}
+                </h1>
+
+                {/* Social Proof Bar */}
+                <div className="flex items-center justify-center gap-1 mb-10">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                        <StarIcon key={s} className="h-6 w-6 text-yellow-500" />
+                    ))}
+                    <span className="ml-2 text-slate-600 dark:text-slate-400 font-medium">({rating}.0/5.0 - {userRatingCount}+ Avis)</span>
+                </div>
+
+                {renderContent}
+
+                {/* HYPER-LOCAL TRUST SIGNALS */}
+                {enrichedLocations[city as keyof typeof enrichedLocations] && (
+                    <div className="my-10 p-6 bg-blue-50 dark:bg-slate-800/50 rounded-xl border border-blue-100 dark:border-slate-700">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                            <MapPinIcon className="h-6 w-6 text-blue-600" />
+                            Service de proximité à {city}
+                        </h3>
+                        <p className="text-slate-600 dark:text-slate-300 mb-4">
+                            Que vous soyez près du <strong>{(enrichedLocations[city as keyof typeof enrichedLocations] as any).landmarks[0].name}</strong> ou
+                            que vous veniez du secteur <strong>{(enrichedLocations[city as keyof typeof enrichedLocations] as any).landmarks[1]?.name || 'centre-ville'}</strong>,
+                            nous sommes votre garage local.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {(enrichedLocations[city as keyof typeof enrichedLocations] as any).landmarks.map((l: any, i: number) => (
+                                <span key={i} className="bg-white dark:bg-slate-700 px-3 py-1 rounded-full text-xs font-bold text-slate-500 border border-slate-200 dark:border-slate-600">
+                                    📍 {l.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* STAY-EMBED MAP */}
+                <GoogleMapsEmbed />
+
             </div>
             {/* --- MAIN CONTENT SECTION (Modern Service Layout) --- */}
             <div className="container max-w-5xl py-16">
@@ -308,6 +378,25 @@ const DynamicFAQPage: React.FC = () => {
                     </div>
                 </div>
 
+                {/* MID-PAGE CONVERSION TRIGGER */}
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                        onClick={() => document.getElementById('main-cta')?.click()}
+                        className="bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all flex items-center gap-2"
+                    >
+                        <BoltIcon className="h-5 w-5" />
+                        Voir Prix & Dispo
+                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-1">3 places</span>
+                    </button>
+                    <a
+                        href={`tel:${phone.replace(/[^0-9]/g, '')}`}
+                        className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold py-3 px-6 rounded-lg shadow-sm hover:border-orange-500 transition-all flex items-center gap-2"
+                    >
+                        <PhoneIcon className="h-5 w-5 text-orange-500" />
+                        Appeler {phone}
+                    </a>
+                </div>
+
                 {/* FINAL CTA AREA */}
                 <div className="mt-16 text-center">
                     <h2 className="text-3xl font-oswald font-bold text-slate-900 dark:text-white mb-6">
@@ -324,11 +413,11 @@ const DynamicFAQPage: React.FC = () => {
                             Obtenir Prix & Dispo
                         </button>
                         <a
-                            href="tel:514-123-4567"
+                            href={`tel:${phone.replace(/[^0-9]/g, '')}`}
                             className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 text-lg font-bold py-4 px-10 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
                         >
                             <PhoneIcon className="h-6 w-6 text-orange-500" />
-                            514-123-4567
+                            {phone}
                         </a>
                     </div>
                     <p className="mt-4 text-sm text-slate-500">Aucun paiement requis pour la réservation en ligne.</p>

@@ -45,6 +45,8 @@ export interface BusinessInfo {
   googleMapsUrl: string;
   operatingHours: { en: string; fr: string }[];
   reviews: GMBReview[];
+  rating: number;
+  userRatingCount: number;
   isLoading: boolean;
   error: string | null;
 }

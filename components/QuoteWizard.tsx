@@ -6,6 +6,7 @@ import { XMarkIcon, CheckCircleIcon, ArrowLeftIcon, CalendarIcon, ChevronLeftIco
 import { createGoogleCalendarLink } from '../utils/calendar';
 import { useTheme } from '../App';
 import { trackConversion } from '../utils/googleTag';
+import { useBusinessInfo } from '../contexts/BusinessInfoContext';
 
 // FIX: Add appointmentDate to ValidationErrors to resolve TypeScript error.
 type ValidationErrors = {
@@ -29,6 +30,7 @@ const QuoteWizard: React.FC = () => {
     const { isOpen, closeWizard, wizardData, setWizardData, resetWizard } = useQuoteWizard();
     const { language, t } = useLanguage();
     const { theme } = useTheme();
+    const { phone } = useBusinessInfo();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errors, setErrors] = useState<ValidationErrors>({});
 
@@ -313,9 +315,9 @@ ${wizardData.description}
                         {t.quoteWizard.priorityAccess.description}
                     </p>
 
-                    <a href="tel:514-555-0123" onClick={() => trackConversion('click_to_call_heavy')} className="flex items-center justify-center w-full max-w-sm bg-red-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mb-4">
+                    <a href={`tel:${phone.replace(/[^0-9]/g, '')}`} onClick={() => trackConversion('click_to_call_heavy')} className="flex items-center justify-center w-full max-w-sm bg-red-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mb-4">
                         <span className="mr-3 text-2xl">📞</span>
-                        <span className="text-xl">514-555-0123</span>
+                        <span className="text-xl">{phone}</span>
                     </a>
 
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
@@ -437,7 +439,7 @@ ${wizardData.description}
                                     <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                         {t.quoteWizard.steps[3].phone} <span className="text-orange-500 text-xs">(Mobile preferred)</span>
                                     </label>
-                                    <input type="tel" id="phone" name="phone" placeholder="514-555-0123" value={wizardData.phone} onChange={handleChange} className={`${commonInputClass} ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
+                                    <input type="tel" id="phone" name="phone" placeholder={phone} value={wizardData.phone} onChange={handleChange} className={`${commonInputClass} ${errors.phone ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'}`} />
                                     {errors.phone && <p className="text-red-500 text-sm mt-1 text-center">{errors.phone}</p>}
                                     <div className="mt-2 flex items-start">
                                         <div className="flex items-center h-5">

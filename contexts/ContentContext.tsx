@@ -1,17 +1,19 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { CMSContent, OfferContent, BusinessContent } from '../types/Content';
 import { translations } from '../i18n';
 import { useLanguage } from './LanguageContext';
+import { useBusinessInfo } from './BusinessInfoContext';
 
 const ContentContext = createContext<CMSContent | undefined>(undefined);
 
 export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { language } = useLanguage();
+    const { phone, address, operatingHours, isLoading: isBusinessInfoLoading } = useBusinessInfo();
     const t = translations[language];
 
     // Synchronously derive content from i18n
     // No async fetching, no loading state, no white screen.
-    const content: CMSContent = {
+    const content: CMSContent = useMemo(() => ({
         offers: {
             alex: {
                 id: 'alex',
@@ -66,18 +68,21 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
             }
         },
         business: {
-            phone: "514-555-0123",
+            phone: phone !== "Loading..." ? phone : "514-555-0123", // Fallback only during initial load if vital
             email: "info@mgcreparation.com",
-            address: "123 Boul. Industriel, Mascouche, QC",
+            address: address !== "Loading..." ? address : "Chargement de l'adresse...",
+            // TODO: Map operatingHours from BusinessInfoContext to these strings if desired, 
+            // but currently BusinessInfoContext provides an array. Keeping hardcoded for now or mapping simpler?
+            // For now, keeping hardcoded hours as they might be specific formatted strings.
             hoursMondayFriday: "8:00 - 18:00",
             hoursSaturday: "9:00 - 15:00",
             hoursSunday: "Fermé",
             promoBannerText: "",
             promoBannerActive: false
         },
-        isLoading: false,
+        isLoading: isBusinessInfoLoading,
         error: null
-    };
+    }), [language, t, phone, address, isBusinessInfoLoading]);
 
     return (
         <ContentContext.Provider value={content}>
