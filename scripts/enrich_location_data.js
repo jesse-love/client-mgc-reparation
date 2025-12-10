@@ -1,6 +1,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import 'dotenv/config';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const PSEO_PATH = path.resolve(__dirname, '../data/pseo_content.json');
 const OUTPUT_PATH = path.resolve(__dirname, '../data/enriched_locations.json');
-const API_KEY = "AIzaSyALSGej1fcjXsVjfffK62nM5kW3SNS6svE"; // User provided Places API Key
+const API_KEY = process.env.GOOGLE_PLACES_SCRIPT_KEY;
 
 // We want to find landmarks for each unique city found in the pSEO data.
 // We will look for 3 types of landmarks: 'park', 'school', 'shopping_mall'
