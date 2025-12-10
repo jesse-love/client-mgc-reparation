@@ -75,7 +75,7 @@ const GoogleMapsEmbed: React.FC = () => (
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_EMBED_KEY}&q=place_id:ChIJMeqEvlfbyEwRcwObeP5z2SA&language=fr`}
+            src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_EMBED_API_KEY}&q=place_id:ChIJMeqEvlfbyEwRcwObeP5z2SA&language=fr`}
             title="Garage MGC Réparation Location"
         ></iframe>
     </div>

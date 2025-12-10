@@ -8,9 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // --- CONFIGURATION ---
-const PROJECT_ID = 'gen-lang-client-0992117425';
-const LOCATION = 'us-central1';
-const MODEL_NAME = 'gemini-2.5-flash';
+import 'dotenv/config'; // Load env vars
+const PROJECT_ID = process.env.GOOGLE_PROJECT_ID;
+const LOCATION = process.env.GOOGLE_LOCATION;
+const MODEL_NAME = process.env.GOOGLE_MODEL_NAME;
 
 // Input/Output
 const INPUT_CSV = path.join(__dirname, '../data/harvested_keywords_fr.csv');
