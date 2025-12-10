@@ -39,7 +39,7 @@ export const BusinessInfoProvider: React.FC<{ children: ReactNode }> = ({ childr
   useEffect(() => {
     const fetchBusinessInfo = async () => {
       // The API key is now expected to be in the environment variables
-      const API_KEY = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+      const API_KEY = 'AIzaSyCGujd97_lW9TAK4Q4Z9ces06wk5MvMupg'; // Directly using the key provided by the user to ensure correctness.
 
       if (!API_KEY || API_KEY.trim() === '') {
         console.error("API Key is missing.");
