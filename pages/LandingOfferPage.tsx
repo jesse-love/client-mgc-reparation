@@ -20,8 +20,11 @@ const LandingOfferPage: React.FC = () => {
 
 
   const handleOpenWizard = () => {
-    openWizard();
-    selectOption('serviceCategory', 'Oil Change + Free Inspection');
+    openWizard({
+      vehicleType: 'Car/SUV/Light Truck',
+      serviceCategory: 'Oil Change + Free Inspection',
+      step: 3
+    });
   };
 
   return (

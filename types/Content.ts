@@ -9,11 +9,7 @@ export interface OfferContent {
     ctaText: string;
     disclaimer: string;
     active: boolean;
-    cards: {
-        card1: { title: string; description: string };
-        card2: { title: string; description: string };
-        card3: { title: string; description: string };
-    };
+    cards: Record<string, { title: string; description: string }>;
 }
 
 export interface BusinessContent {

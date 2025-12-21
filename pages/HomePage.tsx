@@ -11,9 +11,10 @@ import HeroBackground from '../components/HeroBackground';
 import MechanicIllustration from '../components/MechanicIllustration';
 import SchemaManager, { Seo } from '../components/SchemaManager';
 import Avatar from '../components/Avatar';
+import HeroQuickStart from '../components/HeroQuickStart';
 import type { GMBReview } from '../types';
 
-const iconMap: { [key:string]: React.ElementType } = {
+const iconMap: { [key: string]: React.ElementType } = {
     UsersIcon,
     ShieldCheckIcon,
     WrenchScrewdriverIcon,
@@ -27,7 +28,7 @@ const Hero: React.FC = () => {
         <section className="relative min-h-screen flex flex-col justify-center text-white bg-brand-dark">
             <HeroBackground />
             <div className="absolute inset-0 bg-brand-dark/60 from-brand-dark/80 to-transparent bg-gradient-to-t"></div>
-            
+
             <div className="relative z-10 text-center px-4 flex-grow flex flex-col justify-center max-w-6xl mx-auto pt-20">
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-oswald font-bold uppercase tracking-wider text-shadow-lg">
                     {t.home.hero.title1} <span className="text-orange-500">{t.home.hero.title2}</span>
@@ -35,10 +36,18 @@ const Hero: React.FC = () => {
                 <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-200">
                     {t.home.hero.subtitle}
                 </p>
-                <div className="mt-12">
-                    <button onClick={() => openWizard()} className="bg-orange-500 text-slate-900 font-bold py-3 px-8 md:py-4 md:px-10 rounded-md transition-all duration-300 text-lg shadow-xl hover:bg-orange-400 hover:shadow-2xl hover:shadow-orange-400/50 transform hover:-translate-y-1 hover:scale-110">
-                        {t.home.hero.ctaBook}
-                    </button>
+                <div className="mt-8">
+                    {/* Old Button Replaced by Quick Start */}
+                    <div className="md:hidden">
+                        <button onClick={() => openWizard()} className="bg-orange-500 text-slate-900 font-bold py-3 px-8 rounded-md transition-all duration-300 text-lg shadow-xl hover:bg-orange-400 w-full font-oswald uppercase">
+                            {t.home.hero.ctaBook}
+                        </button>
+                    </div>
+
+                    <div className="hidden md:block">
+                        <p className="text-slate-300 text-sm mb-2 uppercase tracking-widest font-semibold">Commencer votre demande maintenant :</p>
+                        <HeroQuickStart />
+                    </div>
                 </div>
             </div>
 
@@ -54,11 +63,11 @@ const Hero: React.FC = () => {
 
 const MobileLoadingCard: React.FC = () => (
     <div className="bg-white dark:bg-brand-dark p-6 rounded-xl shadow-lg animate-pulse border border-slate-200 dark:border-slate-800">
-         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
-         <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-full mb-2"></div>
-         <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-full mb-2"></div>
-         <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-5/6 mb-4"></div>
-         <div className="flex items-center mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-4"></div>
+        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-full mb-2"></div>
+        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-full mb-2"></div>
+        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-5/6 mb-4"></div>
+        <div className="flex items-center mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
             <div className="h-12 w-12 bg-slate-200 dark:bg-slate-700 rounded-full mr-4"></div>
             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
         </div>
@@ -73,7 +82,7 @@ const MobileTestimonialCard: React.FC<{ review: GMBReview }> = ({ review }) => (
         <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed flex-grow italic">"{review.comment}"</p>
         <div className="flex items-center mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
             <div className="flex-shrink-0 mr-4">
-              <Avatar name={review.reviewer.displayName} />
+                <Avatar name={review.reviewer.displayName} />
             </div>
             <div>
                 <p className="font-bold text-slate-800 dark:text-white">{review.reviewer.displayName}</p>
@@ -199,18 +208,18 @@ const FAQ: React.FC = () => {
 }
 
 const HomePage: React.FC = () => {
-  return (
-    <>
-      <Seo />
-      <SchemaManager pageType="HomePage" />
-      <Hero />
-      <MobileTestimonials />
-      <ServicesOverview />
-      <WhyChooseUs />
-      <FAQ />
-      <LocationInfo />
-    </>
-  );
+    return (
+        <>
+            <Seo />
+            <SchemaManager pageType="HomePage" />
+            <Hero />
+            <MobileTestimonials />
+            <ServicesOverview />
+            <WhyChooseUs />
+            <FAQ />
+            <LocationInfo />
+        </>
+    );
 };
 
 export default HomePage;

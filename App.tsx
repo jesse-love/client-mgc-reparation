@@ -11,6 +11,8 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import LandingOfferPage from './pages/LandingOfferPage';
 import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
 import LandingTiresPage from './pages/LandingTiresPage';
+import LandingTruckPage from './pages/LandingTruckPage';
+import LandingGeneratorPage from './pages/LandingGeneratorPage';
 import ThankYouPage from './pages/ThankYouPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import SubServicePage from './pages/SubServicePage';
@@ -19,6 +21,7 @@ import DynamicFAQPage from './pages/DynamicFAQPage';
 import UrgencyTopbar from './components/UrgencyTopbar';
 
 import { services } from './i18n';
+import StickyActionButtons from './components/StickyActionButtons';
 import type { Service } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteWizardProvider, useQuoteWizard } from './contexts/QuoteWizardContext';
@@ -160,10 +163,13 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
   const isFaqPage = window.location.pathname.startsWith('/faq/');
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-brand-dark text-slate-800 dark:text-slate-200">
+    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-brand-dark text-slate-800 dark:text-slate-200 relative">
+      {/* Mobile Sticky Bar */}
+      <StickyActionButtons />
+
       {isFaqPage && <UrgencyTopbar />}
       <Header hasUrgencyBanner={isFaqPage} />
-      <main className="flex-grow">
+      <main className="flex-grow pb-20 md:pb-0"> {/* Padding for mobile sticky bar */}
         {renderContent()}
       </main>
       <Footer />
@@ -245,6 +251,8 @@ const App: React.FC = () => {
       '/offre': LandingOfferPage,
       '/bilan': LandingHealthCheckPage,
       '/pneus': LandingTiresPage,
+      '/camion': LandingTruckPage,
+      '/generatrice': LandingGeneratorPage,
     };
 
     return (
@@ -265,7 +273,12 @@ const App: React.FC = () => {
                 }
 
                 if (route === '/merci') {
-                  return <ThankYouPage />;
+                  return (
+                    <QuoteWizardProvider>
+                      <ThankYouPage />
+                      {/* QuoteWizard might not be needed on Thank You, but Context is needed for StickyButtons */}
+                    </QuoteWizardProvider>
+                  );
                 }
 
                 return (

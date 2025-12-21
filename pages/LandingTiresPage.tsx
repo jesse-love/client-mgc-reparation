@@ -24,8 +24,11 @@ const LandingTiresPage: React.FC = () => {
 
 
   const handleOpenWizard = () => {
-    openWizard();
-    selectOption('serviceCategory', 'Tire Change + Free Inspection');
+    openWizard({
+      vehicleType: 'Car/SUV/Light Truck',
+      serviceCategory: 'Tire Change + Free Inspection',
+      step: 3 // Jump straight to booking
+    });
   };
 
   return (

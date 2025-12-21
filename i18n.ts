@@ -681,6 +681,50 @@ const en = {
     },
     cta: "Book My Tire Combo Now",
     disclaimer: "Available for all car makes & models in {city}."
+  },
+  landingTruck: {
+    badge: "🚛 Priority Fleet Status in {city}",
+    title: "Truck Down? Losing Money?",
+    subtitle: "Get Priority VIP Access",
+    description: "Minimize downtime with our dedicated heavy vehicle lines.",
+    cards: {
+      priority: {
+        title: "Skip the Line",
+        description: "Commercial clients get priority dispatch. because time is money."
+      },
+      expert: {
+        title: "Diesel Experts",
+        description: "Certified mechanics who speak fluent Diesel. No guessing."
+      },
+      fleet: {
+        title: "Fleet Rates",
+        description: "Fair pricing for businesses. We keep your ROI high."
+      }
+    },
+    cta: "Request Priority Service",
+    disclaimer: "Valid for Commercial Trucks, Trailers & Fleets."
+  },
+  landingGenerator: {
+    badge: "⚡ Power Security for {city}",
+    title: "Next Storm Coming?",
+    subtitle: "Don't Be Left in the Dark.",
+    description: "Ensure your home or business stays powered when the grid fails.",
+    cards: {
+      ready: {
+        title: "Storm Ready",
+        description: "50-point inspection ensures your unit starts the second power cuts out."
+      },
+      business: {
+        title: "Zero Downtime",
+        description: "For businesses: Every minute without power is lost revenue. We prevent that."
+      },
+      mobile: {
+        title: "We Come to You",
+        description: "Mobile service units equipped to repair stationary generators on-site."
+      }
+    },
+    cta: "Secure My Power Now",
+    disclaimer: "Maintenance plans for all major brands."
   }
 };
 
@@ -991,6 +1035,50 @@ const fr: typeof en = {
     },
     cta: "Réserver mon Combo Pneus Maintenant",
     disclaimer: "Disponible pour toutes marques & modèles à {city}."
+  },
+  landingTruck: {
+    badge: "🚛 Statut Flotte Prioritaire à {city}",
+    title: "Camion en Panne ? Perte de Revenus ?",
+    subtitle: "Obtenez un Accès VIP Prioritaire",
+    description: "Minimisez vos temps d'arrêt avec nos lignes dédiées poids lourds.",
+    cards: {
+      priority: {
+        title: "Coupez la File",
+        description: "Les clients commerciaux passent en premier. Parce que le temps, c'est de l'argent."
+      },
+      expert: {
+        title: "Experts Diesel",
+        description: "Des mécanos certifiés qui parlent le Diesel couramment. Pas de devinettes."
+      },
+      fleet: {
+        title: "Tarifs de Flotte",
+        description: "Prix justes pour les entreprises. On garde votre ROI élevé."
+      }
+    },
+    cta: "Demander le Service Prioritaire",
+    disclaimer: "Valide pour Camions Commerciaux, Remorques & Flottes."
+  },
+  landingGenerator: {
+    badge: "⚡ Sécurité Électrique à {city}",
+    title: "Prêt pour la Tempête ?",
+    subtitle: "Ne restez pas dans le noir.",
+    description: "Assurez que votre maison ou commerce reste allumé quand le réseau lâche.",
+    cards: {
+      ready: {
+        title: "Prêt à démarrer",
+        description: "Inspection 50 points pour garantir que ça part à la seconde où le courant coupe."
+      },
+      business: {
+        title: "Zéro Perte",
+        description: "Pour commerces : Chaque minute sans courant est une perte. On empêche ça."
+      },
+      mobile: {
+        title: "Service Mobile",
+        description: "Unités mobiles équipées pour réparer votre génératrice sur place."
+      }
+    },
+    cta: "Sécuriser mon Courant",
+    disclaimer: "Plans d'entretien pour toutes les grandes marques."
   }
 };
 

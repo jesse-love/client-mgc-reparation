@@ -65,6 +65,40 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
                     card2: { title: t.landingTires.cards.check.title, description: t.landingTires.cards.check.description },
                     card3: { title: t.landingTires.cards.fast.title, description: t.landingTires.cards.fast.description }
                 }
+            },
+            truck: {
+                id: 'truck',
+                title: t.landingTruck.title,
+                subtitle: t.landingTruck.subtitle,
+                value: "",
+                description: t.landingTruck.description,
+                urgencyText: "",
+                badgeText: t.landingTruck.badge,
+                ctaText: t.landingTruck.cta,
+                disclaimer: t.landingTruck.disclaimer,
+                active: true,
+                cards: {
+                    priority: { title: t.landingTruck.cards.priority.title, description: t.landingTruck.cards.priority.description },
+                    expert: { title: t.landingTruck.cards.expert.title, description: t.landingTruck.cards.expert.description },
+                    fleet: { title: t.landingTruck.cards.fleet.title, description: t.landingTruck.cards.fleet.description }
+                }
+            },
+            generator: {
+                id: 'generator',
+                title: t.landingGenerator.title,
+                subtitle: t.landingGenerator.subtitle,
+                value: "",
+                description: t.landingGenerator.description,
+                urgencyText: "",
+                badgeText: t.landingGenerator.badge,
+                ctaText: t.landingGenerator.cta,
+                disclaimer: t.landingGenerator.disclaimer,
+                active: true,
+                cards: {
+                    ready: { title: t.landingGenerator.cards.ready.title, description: t.landingGenerator.cards.ready.description },
+                    business: { title: t.landingGenerator.cards.business.title, description: t.landingGenerator.cards.business.description },
+                    mobile: { title: t.landingGenerator.cards.mobile.title, description: t.landingGenerator.cards.mobile.description }
+                }
             }
         },
         business: {

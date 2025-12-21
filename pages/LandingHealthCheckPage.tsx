@@ -20,8 +20,11 @@ const LandingHealthCheckPage: React.FC = () => {
 
 
   const handleOpenWizard = () => {
-    openWizard();
-    selectOption('serviceCategory', '$49 Credited Diagnostic');
+    openWizard({
+      vehicleType: 'Car/SUV/Light Truck',
+      serviceCategory: '$49 Credited Diagnostic',
+      step: 3
+    });
   };
 
   return (
