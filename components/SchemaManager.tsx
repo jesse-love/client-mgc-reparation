@@ -9,32 +9,7 @@ interface SchemaManagerProps {
     service?: Service;
 }
 
-// --- SEO Component for meta tags ---
-const defaultTitle = 'MGC Réparation | Auto & Camion Mascouche | Réparations Honnêtes & Garanties';
-const defaultDescription = "MGC Réparation Inc. à Mascouche, QC : Votre expert familial de confiance pour la réparation d'autos, camions lourds, remorques et génératrices. Diagnostics honnêtes, service garanti, de la mécanique générale à la soudure spécialisée. Demandez votre soumission gratuite!";
-
-interface SeoProps {
-  title?: string;
-  description?: string;
-}
-
-export const Seo: React.FC<SeoProps> = ({ title, description }) => {
-  useEffect(() => {
-    const newTitle = title ? `${title} | MGC Réparation` : defaultTitle;
-    const newDescription = description || defaultDescription;
-
-    document.title = newTitle;
-
-    const metaDescriptionTag = document.querySelector('meta[name="description"]');
-    if (metaDescriptionTag) {
-      metaDescriptionTag.setAttribute('content', newDescription);
-    }
-    
-  }, [title, description]);
-
-  return null;
-};
-// --- END SEO Component ---
+// --- SchemaManager for JSON-LD ---
 
 // --- Helper Functions ---
 
@@ -42,11 +17,11 @@ const parseAddress = (fullAddress: string) => {
     // Example: 1287 Chem. de la Côte Georges, Mascouche, QC J7K 3C3
     const parts = fullAddress.split(', ');
     if (parts.length < 3) return {};
-    
+
     const streetAddress = parts[0];
     const addressLocality = parts[1];
     const regionAndPostal = parts[2].split(' ');
-    
+
     const addressRegion = regionAndPostal.length > 1 ? regionAndPostal[0] : '';
     const postalCode = regionAndPostal.length > 1 ? regionAndPostal.slice(1).join(' ') : '';
 
@@ -65,13 +40,13 @@ const formatOpeningHours = (hoursLines: { en: string; fr: string }[]) => {
         'monday': 'Mo', 'tuesday': 'Tu', 'wednesday': 'We', 'thursday': 'Th',
         'friday': 'Fr', 'saturday': 'Sa', 'sunday': 'Su',
     };
-    
+
     return hoursLines.map(line => {
         const [day, hours] = line.en.toLowerCase().split(': ');
         if (hours === 'closed' || !dayMap[day]) return null;
 
         const [start, end] = hours.split(' - ');
-        
+
         const formatTime = (time: string) => {
             let [hour, minutePart] = time.split(':');
             const period = minutePart.slice(-2);
@@ -93,13 +68,13 @@ const formatOpeningHours = (hoursLines: { en: string; fr: string }[]) => {
 const calculateAggregateRating = (reviews: any[]) => {
     if (reviews.length === 0) return null;
     const ratingMap: { [key: string]: number } = { 'ONE': 1, 'TWO': 2, 'THREE': 3, 'FOUR': 4, 'FIVE': 5 };
-    
+
     const validReviews = reviews.filter(r => ratingMap[r.starRating]);
     if (validReviews.length === 0) return null;
 
     const total = validReviews.reduce((acc, r) => acc + ratingMap[r.starRating], 0);
     const average = (total / validReviews.length).toFixed(2);
-    
+
     return {
         '@type': 'AggregateRating',
         ratingValue: average,

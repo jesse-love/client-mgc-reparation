@@ -10,6 +10,7 @@ interface ConversionHeroProps {
     backgroundImage?: string;
     benefits?: string[];
     breadcrumbs?: React.ReactNode;
+    serviceName?: string;
 }
 
 const ConversionHero: React.FC<ConversionHeroProps> = ({
@@ -17,7 +18,8 @@ const ConversionHero: React.FC<ConversionHeroProps> = ({
     subtitle,
     backgroundImage = "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=1974", // Default mechanic shop bg
     benefits,
-    breadcrumbs
+    breadcrumbs,
+    serviceName
 }) => {
     const { t } = useLanguage();
     const { openWizard, setWizardData } = useQuoteWizard();
@@ -31,8 +33,10 @@ const ConversionHero: React.FC<ConversionHeroProps> = ({
         openWizard();
     };
 
+    const trustTitle = t.serviceDetail.whyTrustTitle?.replace('{service}', serviceName || title) || "Expert Technicians";
+
     const defaultBenefits = [
-        t.serviceDetail.whyTrustTitle || "Expert Technicians",
+        trustTitle,
         "Same-Day Service Available",
         "Transparent Pricing",
         "1-Year Warranty on Parts & Labor"

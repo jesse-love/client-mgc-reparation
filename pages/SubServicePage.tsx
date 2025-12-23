@@ -1,8 +1,10 @@
+
 import React from 'react';
 import type { Service, SubService } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
-import SchemaManager, { Seo } from '../components/SchemaManager';
+import SchemaManager from '../components/SchemaManager';
+import SEO from '../components/SEO';
 import CallToActionSection from '../components/CallToActionSection';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import ConversionHero from '../components/ConversionHero';
@@ -54,8 +56,8 @@ const SubServicePage: React.FC<SubServicePageProps> = ({ service, subService }) 
 
     return (
         <>
-            <Seo
-                title={`${subService.title[language]} - ${service.title[language]}`}
+            <SEO
+                title={`${subService.title[language]} - ${service.title[language]} `}
                 description={subService.shortDescription[language]}
             />
             {/* TODO: Update SchemaManager to handle SubService if needed, or just use Service schema */}
@@ -66,6 +68,7 @@ const SubServicePage: React.FC<SubServicePageProps> = ({ service, subService }) 
                 subtitle={subService.shortDescription[language]}
                 breadcrumbs={breadcrumbs}
                 benefits={subService.features?.map(f => f[language])}
+                serviceName={subService.title[language]}
             />
 
             {/* Main Content */}
@@ -113,16 +116,16 @@ const SubServicePage: React.FC<SubServicePageProps> = ({ service, subService }) 
                                                 >
                                                     <span>{s.title[language]}</span>
                                                     <ArrowRightIcon className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                                </a>
-                                            </li>
+                                                </a >
+                                            </li >
                                         ))}
-                                    </ul>
-                                </div>
+                                    </ul >
+                                </div >
                             )}
-                        </aside>
-                    </div>
-                </div>
-            </div>
+                        </aside >
+                    </div >
+                </div >
+            </div >
 
             <CallToActionSection
                 title={t.serviceDetail.ctaTitle}

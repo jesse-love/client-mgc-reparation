@@ -18,7 +18,9 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import SubServicePage from './pages/SubServicePage';
 import LocationLandingPage from './pages/LocationLandingPage';
 import DynamicFAQPage from './pages/DynamicFAQPage';
+import DashboardPage from './pages/DashboardPage';
 import UrgencyTopbar from './components/UrgencyTopbar';
+import SEO from './components/SEO';
 
 import { services } from './i18n';
 import StickyActionButtons from './components/StickyActionButtons';
@@ -125,6 +127,7 @@ const MainLayout: React.FC<{ route: string }> = ({ route }) => {
     if (path === '/contact') return <ContactPage />;
     if (path === '/services') return <ServicesPage />;
     if (path === '/politique-de-confidentialite') return <PrivacyPolicyPage />;
+    if (path === '/dashboard') return <DashboardPage />;
 
     // Check for location pages (e.g., /mechanic-terrebonne)
     if (path.startsWith('/mechanic-')) {
@@ -260,6 +263,7 @@ const App: React.FC = () => {
         <PrequalificationFormProvider>
           <UserLocationProvider>
             <ContentProvider>
+              <SEO />
               {(() => {
                 const LandingComponent = landingPageMap[route];
                 if (LandingComponent) {

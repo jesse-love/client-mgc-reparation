@@ -3,7 +3,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import ConversionHero from '../components/ConversionHero';
 import CallToActionSection from '../components/CallToActionSection';
-import SchemaManager, { Seo } from '../components/SchemaManager';
+import SchemaManager from '../components/SchemaManager';
+import SEO from '../components/SEO';
 import { MapPinIcon, ClockIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
 // This would typically come from a database or config file
@@ -127,7 +128,7 @@ const LocationLandingPage: React.FC<LocationLandingPageProps> = ({ citySlug }) =
 
     return (
         <>
-            <Seo
+            <SEO
                 title={`${title} - MGC Réparation`}
                 description={subtitle}
             />
@@ -185,10 +186,7 @@ const LocationLandingPage: React.FC<LocationLandingPageProps> = ({ citySlug }) =
                                     ? `Don't settle for less in ${city.name}. Come to the experts in Mascouche.`
                                     : `Ne vous contentez pas de moins à ${city.name}. Venez voir les experts à Mascouche.`}
                             </p>
-                            <button
-                                onClick={openWizard}
-                                className="bg-orange-500 text-slate-900 font-bold py-4 px-10 rounded-md hover:bg-orange-400 transition-all duration-300 text-lg shadow-lg hover:shadow-xl"
-                            >
+                            <button onClick={() => openWizard()} className="mt-8 bg-orange-500 text-slate-900 font-bold py-4 px-10 rounded-full transition-all duration-300 text-xl shadow-xl hover:bg-orange-400 hover:scale-105 font-oswald uppercase">
                                 {t.header.bookService}
                             </button>
                         </div>
