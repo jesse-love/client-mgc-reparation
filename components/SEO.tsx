@@ -9,6 +9,7 @@ interface SEOProps {
     article?: boolean;
     ogType?: 'website' | 'article' | 'business.business';
     canonical?: string;
+    keywords?: string;
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -17,7 +18,8 @@ const SEO: React.FC<SEOProps> = ({
     image,
     article,
     ogType = 'website',
-    canonical
+    canonical,
+    keywords
 }) => {
     const { language } = useLanguage();
 
@@ -36,22 +38,31 @@ const SEO: React.FC<SEOProps> = ({
     // Use the generated social hero as default
     const seoImage = image || "https://mgcreparation.ca/mgc_social_hero.png";
     const url = window.location.href;
+    const path = window.location.pathname;
 
     return (
         <Helmet>
             {/* Standard tags */}
             <title>{seoTitle}</title>
             <meta name="description" content={seoDescription} />
+            {keywords && <meta name="keywords" content={keywords} />}
             {canonical && <link rel="canonical" href={canonical} />}
+
+            {/* Hreflang Tags for Bilingual SEO */}
+            <link rel="alternate" href={`https://mgcreparation.ca${path}`} hrefLang={language === 'fr' ? 'fr' : 'en'} />
+            <link rel="alternate" href={`https://mgcreparation.ca${path}`} hrefLang="x-default" />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content={ogType} />
             <meta property="og:title" content={seoTitle} />
             <meta property="og:description" content={seoDescription} />
             <meta property="og:image" content={seoImage} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
             <meta property="og:url" content={url} />
             <meta property="og:site_name" content={siteName} />
             <meta property="og:locale" content={language === 'fr' ? 'fr_CA' : 'en_US'} />
+            <meta property="og:locale:alternate" content={language === 'fr' ? 'en_US' : 'fr_CA'} />
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />

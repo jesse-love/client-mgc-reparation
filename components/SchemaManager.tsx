@@ -85,7 +85,7 @@ const calculateAggregateRating = (reviews: any[]) => {
 
 const SchemaManager: React.FC<SchemaManagerProps> = ({ pageType, service }) => {
     const businessInfo = useBusinessInfo();
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     useEffect(() => {
         if (businessInfo.isLoading || businessInfo.error) {
@@ -159,6 +159,46 @@ const SchemaManager: React.FC<SchemaManagerProps> = ({ pageType, service }) => {
                 }
             });
         }
+
+        // 3. Breadcrumb Schema
+        const breadcrumbs = {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: t.breadcrumbs.home,
+                    item: websiteUrl
+                }
+            ]
+        };
+
+        if (pageType === 'Generic' || pageType === 'ServiceDetailPage') {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+
+            // Example: /about -> Home > About
+            // Example: /services/freins -> Home > Services > Freins
+
+            let currentPath = websiteUrl;
+            pathParts.forEach((part, index) => {
+                currentPath += `/${part}`;
+                // Simple capitalization for name fallback
+                let name = part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' ');
+
+                // Try to find better name if service
+                if (index === 0 && part === 'services') name = t.breadcrumbs.services;
+                if (index === 1 && service) name = service.title[language];
+
+                // Don't duplicate Home if path is empty (root)
+                breadcrumbs.itemListElement.push({
+                    '@type': 'ListItem',
+                    position: index + 2,
+                    name: name, // This property name must be compatible with ListItem schema
+                    item: currentPath
+                });
+            });
+        }
+        graph.push(breadcrumbs);
 
         const schema = {
             '@context': 'https://schema.org',
