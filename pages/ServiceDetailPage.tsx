@@ -4,7 +4,8 @@ import type { Service } from '../types';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
-import SchemaManager, { Seo } from '../components/SchemaManager';
+import SchemaManager from '../components/SchemaManager';
+import SEO from '../components/SEO';
 import CallToActionSection from '../components/CallToActionSection';
 import ConversionHero from '../components/ConversionHero';
 
@@ -44,7 +45,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
 
   return (
     <>
-      <Seo
+      <SEO
         title={service.title[language]}
         description={service.metaDescription[language]}
       />
@@ -80,9 +81,9 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
                       <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 line-clamp-2">
                         {sub.shortDescription[language]}
                       </p>
-                    </a>
+                    </a >
                   ))}
-                </div>
+                </div >
               ) : (
                 <ul className="mt-4">
                   {service.servicePoints.map((point, index) => (
@@ -93,10 +94,10 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ service }) => {
                   ))}
                 </ul>
               )}
-            </div>
-          </div>
-        </div>
-      </div>
+            </div >
+          </div >
+        </div >
+      </div >
 
       <CallToActionSection
         title={t.serviceDetail.ctaTitle}

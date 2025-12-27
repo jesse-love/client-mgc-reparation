@@ -9,7 +9,8 @@ import TestimonialMarquee from '../components/TestimonialMarquee';
 import LocationInfo from '../components/LocationInfo';
 import HeroBackground from '../components/HeroBackground';
 import MechanicIllustration from '../components/MechanicIllustration';
-import SchemaManager, { Seo } from '../components/SchemaManager';
+import SchemaManager from '../components/SchemaManager';
+import SEO from '../components/SEO';
 import Avatar from '../components/Avatar';
 import HeroQuickStart from '../components/HeroQuickStart';
 import type { GMBReview } from '../types';
@@ -210,7 +211,7 @@ const FAQ: React.FC = () => {
 const HomePage: React.FC = () => {
     return (
         <>
-            <Seo />
+            <SEO />
             <SchemaManager pageType="HomePage" />
             <Hero />
             <MobileTestimonials />

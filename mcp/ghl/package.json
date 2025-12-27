@@ -1,0 +1,22 @@
+{
+    "name": "ghl-mcp-server",
+    "version": "0.3.0",
+    "description": "GoHighLevel MCP Server",
+    "type": "module",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node build/index.js",
+        "dev": "ts-node index.ts"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^0.6.0",
+        "axios": "^1.7.9",
+        "dotenv": "^17.2.3",
+        "zod": "^3.24.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "typescript": "^5.7.2"
+    }
+}

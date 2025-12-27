@@ -1,0 +1,31 @@
+import { VertexAI } from "@google-cloud/vertexai";
+import path from "path";
+import process from "process";
+
+const KEY_FILE = path.join(process.cwd(), 'gcloud-key.json');
+process.env.GOOGLE_APPLICATION_CREDENTIALS = KEY_FILE;
+
+const testVertex = async () => {
+    console.log('🧠 Testing Vertex AI Strategic Brain (Montreal)...');
+
+    try {
+        const project = "gen-lang-client-0992117425";
+        const location = "northamerica-northeast1"; // Montreal
+
+        const vertexAI = new VertexAI({ project, location });
+        const model = vertexAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        const prompt = "Propose une stratégie de 3 mots pour augmenter les conversions de MGC Réparation à Mascouche.";
+        const result = await model.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        });
+
+        const responseText = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+        console.log('✅ Success! Strategic Suggestion:');
+        console.log(responseText);
+    } catch (err) {
+        console.error('❌ Vertex AI Failed:', err.message);
+    }
+};
+
+testVertex();

@@ -2,7 +2,8 @@
 import React from 'react';
 import { services } from '../i18n';
 import { useLanguage } from '../contexts/LanguageContext';
-import SchemaManager, { Seo } from '../components/SchemaManager';
+import SchemaManager from '../components/SchemaManager';
+import SEO from '../components/SEO';
 import CallToActionSection from '../components/CallToActionSection';
 
 const ServicesPage: React.FC = () => {
@@ -10,12 +11,12 @@ const ServicesPage: React.FC = () => {
 
   return (
     <>
-      <Seo
-        title={t.breadcrumbs.services}
-        description={t.seo.services.description}
+      <SEO
+        title={t.services.title}
+        description="Découvrez nos services complets : mécanique générale, poids lourds, soudure, air climatisé et génératrice. Expertise certifiée à Mascouche."
       />
       <SchemaManager pageType="Generic" />
-      
+
       {/* Hero section */}
       <div className="bg-white dark:bg-slate-900 pt-28 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -33,9 +34,9 @@ const ServicesPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <a 
-                key={service.slug} 
-                href={`/services/${service.slug}`} 
+              <a
+                key={service.slug}
+                href={`/services/${service.slug}`}
                 className="group block bg-white dark:bg-slate-900 p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-800 hover:border-orange-400"
               >
                 <service.icon className="h-10 w-10 text-orange-500 mb-5" />
@@ -53,8 +54,8 @@ const ServicesPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <CallToActionSection 
+
+      <CallToActionSection
         title={t.about.ctaTitle}
         subtitle={t.about.ctaSubtitle}
       />
