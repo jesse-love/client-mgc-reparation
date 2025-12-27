@@ -7,6 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../App';
 import { useQuoteWizard } from '../contexts/QuoteWizardContext';
 import { useBusinessInfo } from '../contexts/BusinessInfoContext';
+import { pushToDataLayer, AnalyticsEvents } from '../utils/Analytics';
 
 const cleanPath = (path: string): string => {
   if (path.endsWith('/index.html')) {
@@ -142,7 +143,11 @@ const Header: React.FC<{ hasUrgencyBanner?: boolean }> = ({ hasUrgencyBanner = f
               <ThemeToggle />
             </div>
 
-            <a href={`tel:${phone.replace(/[^0-9]/g, '')}`} className="hidden lg:inline-flex items-center gap-2 bg-slate-800/50 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl border border-slate-600 hover:border-orange-500 transition-all duration-300 group whitespace-nowrap">
+            <a
+              href={`tel:${phone.replace(/[^0-9]/g, '')}`}
+              onClick={() => pushToDataLayer(AnalyticsEvents.CONTACT_CLICK, { type: 'phone_header' })}
+              className="hidden lg:inline-flex items-center gap-2 bg-slate-800/50 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl border border-slate-600 hover:border-orange-500 transition-all duration-300 group whitespace-nowrap"
+            >
               <PhoneIcon className="h-4 w-4 text-orange-500 group-hover:text-white transition-colors flex-shrink-0" />
               <span className="tracking-wide text-xs xl:text-sm">{phone}</span>
             </a>

@@ -266,7 +266,16 @@ const App: React.FC = () => {
         <PrequalificationFormProvider>
           <UserLocationProvider>
             <ContentProvider>
-              <SEO />
+              <SEO
+                keywords={(() => {
+                  const path = route;
+                  if (path === '/') return "mécanique générale mascouche, garage auto mascouche, réparation freins, changement huile, mechanic mascouche";
+                  if (path === '/services') return "services mécanique, inspection auto, diagnostic moteur, suspension, direction, freins abs";
+                  if (path.includes('camion') || path.includes('truck')) return "mécanique poids lourds, camion diesel, réparation remorque, heavy duty mechanic, camionneur";
+                  if (path.includes('pneus')) return "changement pneus mascouche, vente pneus, installation pneus, entreposage pneus";
+                  return "mécanique générale, garage mascouche, réparation auto";
+                })()}
+              />
               {(() => {
                 const LandingComponent = landingPageMap[route];
                 if (LandingComponent) {

@@ -4,6 +4,7 @@ import { usePrequalificationForm } from '../contexts/PrequalificationFormContext
 import { XMarkIcon, CheckCircleIcon, ArrowLeftIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../App';
+import { pushToDataLayer, AnalyticsEvents } from '../utils/Analytics';
 
 type PrequalificationData = {
     step: number;
@@ -130,10 +131,10 @@ const PrequalificationForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateStep()) return;
-        
+
         const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
-        
-        const problemDescription = avatarType === 'martin_prevoyant' 
+
+        const problemDescription = avatarType === 'martin_prevoyant'
             ? `Changement de pneus. Date approximative souhaitée: ${formData.preferredDate}.`
             : formData.problem;
 
@@ -149,7 +150,7 @@ const PrequalificationForm: React.FC = () => {
 *Description/Demande:*
 ${problemDescription}
         `.trim();
-        
+
         const payload = { text: messageBody };
 
         try {
@@ -165,13 +166,19 @@ ${problemDescription}
                 phone: encodeURIComponent(formData.phone),
                 vehicleType: encodeURIComponent(formData.vehicleType),
             });
+            pushToDataLayer(AnalyticsEvents.GENERATE_LEAD, {
+                form_name: 'prequalification_form',
+                vehicle_type: formData.vehicleType,
+                avatar_type: avatarType
+            });
+
             window.location.href = `/merci?${params.toString()}`;
         } catch (error) {
             console.error('Failed to submit form to webhook:', error);
             alert('Une erreur est survenue. Veuillez nous appeler directement.');
         }
     };
-    
+
     const generateTimeSlots = useCallback((selectedDateString: string): string[] => {
         if (!selectedDateString) return [];
         const selectedDate = new Date(selectedDateString.replace(/-/g, '/'));
@@ -202,7 +209,7 @@ ${problemDescription}
             className: `w-full p-4 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white rounded-md placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500`,
             onChange: handleChange,
         };
-        switch(avatarType) {
+        switch (avatarType) {
             case 'alex_anxieux':
                 return {
                     title: t.prequalificationForm.steps[1].alex_anxieux.title,
@@ -210,13 +217,13 @@ ${problemDescription}
                     error: errors.problem,
                 };
             case 'sophie_sage':
-                 return {
+                return {
                     title: t.prequalificationForm.steps[1].sophie_sage.title,
                     content: <textarea name="problem" value={formData.problem} rows={4} {...commonProps} placeholder="Ex: Bilan avant un long voyage, 2e avis sur un devis..."></textarea>,
                     error: errors.problem,
                 };
             case 'martin_prevoyant':
-                 return {
+                return {
                     title: t.prequalificationForm.steps[1].martin_prevoyant.title,
                     content: <input type="text" name="preferredDate" value={formData.preferredDate} {...commonProps} placeholder="Ex: La semaine prochaine, mardi matin..." />,
                     error: errors.preferredDate,
@@ -231,12 +238,12 @@ ${problemDescription}
         const handlePrevMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));
         const handleNextMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1));
         const handleDateSelect = (day: number) => {
-          const selectedDate = new Date(Date.UTC(viewDate.getFullYear(), viewDate.getMonth(), day));
-          const dateString = selectedDate.toISOString().split('T')[0];
-          setFormData(prev => ({ ...prev, appointmentDate: dateString, appointmentTime: '' }));
-          setIsDatePickerOpen(false);
+            const selectedDate = new Date(Date.UTC(viewDate.getFullYear(), viewDate.getMonth(), day));
+            const dateString = selectedDate.toISOString().split('T')[0];
+            setFormData(prev => ({ ...prev, appointmentDate: dateString, appointmentTime: '' }));
+            setIsDatePickerOpen(false);
         };
-      
+
         const year = viewDate.getFullYear();
         const month = viewDate.getMonth();
         const numDays = daysInMonth(year, month);
@@ -245,7 +252,7 @@ ${problemDescription}
         const weekDays = language === 'fr' ? ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'] : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
         const today = new Date();
         const selectedDateObj = formData.appointmentDate ? new Date(formData.appointmentDate + 'T00:00:00Z') : null;
-        
+
         return (
             <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10 dark:bg-slate-900 dark:border-slate-600">
                 <div className="flex justify-between items-center mb-4">
@@ -282,7 +289,7 @@ ${problemDescription}
             onChange: handleChange,
         };
         const totalSteps = 4;
-        
+
         switch (formData.step) {
             case 1:
                 const { title, content, error } = firstStepContent();
@@ -299,7 +306,7 @@ ${problemDescription}
             case 2:
                 const currentYear = new Date().getFullYear();
                 const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
-                 return (
+                return (
                     <>
                         <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[2].title}</h2>
                         <div className="space-y-4">
@@ -318,9 +325,9 @@ ${problemDescription}
                 );
             case 3:
                 return (
-                     <>
+                    <>
                         <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[3].title}</h2>
-                         <div className="space-y-4">
+                        <div className="space-y-4">
                             <div className="relative" ref={datePickerRef}>
                                 <div className="relative">
                                     <input type="text" readOnly value={formData.appointmentDate} onClick={() => setIsDatePickerOpen(!isDatePickerOpen)} placeholder={t.contactForm.appointmentDatePlaceholder} className={`${commonInputProps.className} pl-12 cursor-pointer`} />
@@ -328,8 +335,8 @@ ${problemDescription}
                                 </div>
                                 {isDatePickerOpen && renderCalendar()}
                             </div>
-                             {errors.appointmentDate && <p className="text-red-500 text-sm mt-1">{errors.appointmentDate}</p>}
-                            
+                            {errors.appointmentDate && <p className="text-red-500 text-sm mt-1">{errors.appointmentDate}</p>}
+
                             {formData.appointmentDate ? (
                                 availableSlots.length > 0 ? (
                                     <select name="appointmentTime" value={formData.appointmentTime} {...commonInputProps}>
@@ -347,9 +354,9 @@ ${problemDescription}
                 );
             case 4:
                 return (
-                     <>
-                         <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[4].title}</h2>
-                         <div className="space-y-4">
+                    <>
+                        <h2 className="text-3xl font-oswald font-bold mb-6 text-center text-slate-900 dark:text-white">{t.prequalificationForm.steps[4].title}</h2>
+                        <div className="space-y-4">
                             {/* FIX: Using common fullName translation from contactForm for consistency */}
                             <input type="text" name="fullName" placeholder={t.contactForm.fullName} value={formData.fullName} {...commonInputProps} />
                             {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
@@ -363,13 +370,13 @@ ${problemDescription}
             default: return null;
         }
     };
-    
+
     if (!isOpen) return null;
 
     return (
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={closeForm}></div>
-            
+
             <div className={`relative flex w-full h-full md:max-w-7xl md:max-h-[800px] overflow-hidden transition-all duration-300 transform-gpu md:rounded-2xl shadow-2xl ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                 {/* Left Info Panel (Hidden on small, visible on md+) */}
                 <div className="hidden md:flex flex-col justify-center items-start p-8 lg:p-12 text-white bg-blue-800 flex-shrink-0 md:w-1/2 lg:w-2/5 xl:w-1/3">
@@ -380,15 +387,15 @@ ${problemDescription}
 
                 {/* Right Form Panel */}
                 <div className="relative flex-grow flex flex-col bg-white dark:bg-slate-800 text-slate-900 dark:text-white p-6 sm:p-8 md:w-1/2 lg:w-3/5 xl:w-2/3">
-                     <button onClick={closeForm} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-white/70 dark:hover:text-white z-20 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
-                         <XMarkIcon className="h-8 w-8" />
-                     </button>
-                     <h2 className="text-3xl font-oswald font-bold text-center mb-4">{t.prequalificationForm.formTitle}</h2>
-                     <ProgressBar current={formData.step} total={4} />
-                    
+                    <button onClick={closeForm} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-white/70 dark:hover:text-white z-20 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <XMarkIcon className="h-8 w-8" />
+                    </button>
+                    <h2 className="text-3xl font-oswald font-bold text-center mb-4">{t.prequalificationForm.formTitle}</h2>
+                    <ProgressBar current={formData.step} total={4} />
+
                     <form onSubmit={handleSubmit} className="flex flex-col flex-grow mt-6">
                         <div className="flex-grow overflow-y-auto">
-                             {renderStepContent()}
+                            {renderStepContent()}
                         </div>
                         <div className="mt-6 flex items-center">
                             {formData.step > 1 && (

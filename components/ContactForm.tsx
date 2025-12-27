@@ -3,10 +3,10 @@ import type { FormData } from '../types';
 import { services } from '../i18n';
 import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { useLanguage } from '../contexts/LanguageContext';
-import { trackConversion } from '../utils/googleTag';
+import { pushToDataLayer, AnalyticsEvents } from '../utils/Analytics';
 
 type ValidationErrors = {
-    [K in keyof FormData]?: string;
+  [K in keyof FormData]?: string;
 };
 
 
@@ -40,7 +40,7 @@ const ContactForm: React.FC = () => {
     if (formData.appointmentDate) {
       const selected = new Date(formData.appointmentDate);
       if (!isNaN(selected.getTime())) {
-          setViewDate(new Date(selected.getUTCFullYear(), selected.getUTCMonth(), 1));
+        setViewDate(new Date(selected.getUTCFullYear(), selected.getUTCMonth(), 1));
       }
     } else {
       setViewDate(new Date());
@@ -63,14 +63,14 @@ const ContactForm: React.FC = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name as keyof ValidationErrors]) {
-        setErrors(prev => ({ ...prev, [name]: undefined }));
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     setFormData(prev => {
-      const newServices = checked 
+      const newServices = checked
         ? [...prev.serviceNeeded, value]
         : prev.serviceNeeded.filter(service => service !== value);
       return { ...prev, serviceNeeded: newServices };
@@ -78,32 +78,32 @@ const ContactForm: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-      const newErrors: ValidationErrors = {};
-      if (!formData.fullName.trim()) newErrors.fullName = t.contactForm.validation.required;
-      if (!formData.phone.trim()) newErrors.phone = t.contactForm.validation.required;
-      if (!formData.email.trim()) {
-          newErrors.email = t.contactForm.validation.required;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-          newErrors.email = t.contactForm.validation.email;
-      }
-      if (!formData.description.trim()) newErrors.description = t.contactForm.validation.required;
-      
-      setErrors(newErrors);
-      return Object.keys(newErrors).length === 0;
+    const newErrors: ValidationErrors = {};
+    if (!formData.fullName.trim()) newErrors.fullName = t.contactForm.validation.required;
+    if (!formData.phone.trim()) newErrors.phone = t.contactForm.validation.required;
+    if (!formData.email.trim()) {
+      newErrors.email = t.contactForm.validation.required;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = t.contactForm.validation.email;
+    }
+    if (!formData.description.trim()) newErrors.description = t.contactForm.validation.required;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+
     const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAQA5dTsm5U/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=aCNAfav8FUhPPhQ0tMhrsE-6PCpIpxtyC3aor2E1UGA";
-    
+
     if (!webhookUrl) {
       console.error('Google Chat Webhook URL is not configured.');
       alert('This form is currently unavailable. Please call us directly.');
       return;
     }
-    
+
     const messageBody = `*New Service Request from MGC Website*
 
 *Full Name:* ${formData.fullName}
@@ -119,33 +119,37 @@ const ContactForm: React.FC = () => {
 *Description:*
 ${formData.description}
     `.trim();
-    
+
     const payload = {
-        text: messageBody
+      text: messageBody
     };
 
     try {
-        const response = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: JSON.stringify(payload),
-        });
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload),
+      });
 
-        if (!response.ok) {
-            throw new Error(`Webhook failed with status ${response.status}`);
-        }
-        
-        // --- Conversion Tracking ---
-        trackConversion('contact_form');
-        // -------------------------
-        
-        console.log('Form successfully submitted to webhook.');
-        setIsSubmitted(true);
+      if (!response.ok) {
+        throw new Error(`Webhook failed with status ${response.status}`);
+      }
+
+      // --- Conversion Tracking ---
+      pushToDataLayer(AnalyticsEvents.GENERATE_LEAD, {
+        form_name: 'contact_form',
+        contact_method: formData.contactMethod,
+        service_needed: formData.serviceNeeded
+      });
+      // -------------------------
+
+      console.log('Form successfully submitted to webhook.');
+      setIsSubmitted(true);
     } catch (error) {
-        console.error('Failed to submit form to webhook:', error);
-        alert('There was an error submitting your request. Please try again or call us directly.');
+      console.error('Failed to submit form to webhook:', error);
+      alert('There was an error submitting your request. Please try again or call us directly.');
     }
   };
 
@@ -162,36 +166,36 @@ ${formData.description}
   }
 
   const generateTimeSlots = (selectedDateString: string): string[] => {
-      if (!selectedDateString) return [];
-      
-      const selectedDate = new Date(selectedDateString.replace(/-/g, '/'));
-      const dayOfWeek = selectedDate.getDay();
-      
-      const slots: string[] = [];
-      let operatingHours: { start: number, end: number, lunch?: number } | null = null;
-      
-      if (dayOfWeek >= 1 && dayOfWeek <= 4) {
-          operatingHours = { start: 7.5, end: 16, lunch: 12 };
-      } 
-      else if (dayOfWeek === 5) {
-          operatingHours = { start: 7.5, end: 12 };
+    if (!selectedDateString) return [];
+
+    const selectedDate = new Date(selectedDateString.replace(/-/g, '/'));
+    const dayOfWeek = selectedDate.getDay();
+
+    const slots: string[] = [];
+    let operatingHours: { start: number, end: number, lunch?: number } | null = null;
+
+    if (dayOfWeek >= 1 && dayOfWeek <= 4) {
+      operatingHours = { start: 7.5, end: 16, lunch: 12 };
+    }
+    else if (dayOfWeek === 5) {
+      operatingHours = { start: 7.5, end: 12 };
+    }
+
+    if (operatingHours) {
+      for (let time = operatingHours.start; time < operatingHours.end; time += 1) {
+        if (operatingHours.lunch && time >= operatingHours.lunch && time < operatingHours.lunch + 1) continue;
+
+        const hour = Math.floor(time);
+        const minutes = (time % 1) * 60;
+        const period = hour >= 12 ? 'PM' : 'AM';
+        let displayHour = hour % 12;
+        if (displayHour === 0) displayHour = 12;
+        const displayMinutes = minutes === 0 ? '00' : minutes;
+
+        slots.push(`${displayHour}:${displayMinutes} ${period}`);
       }
-
-      if (operatingHours) {
-        for (let time = operatingHours.start; time < operatingHours.end; time += 1) {
-            if (operatingHours.lunch && time >= operatingHours.lunch && time < operatingHours.lunch + 1) continue;
-
-            const hour = Math.floor(time);
-            const minutes = (time % 1) * 60;
-            const period = hour >= 12 ? 'PM' : 'AM';
-            let displayHour = hour % 12;
-            if (displayHour === 0) displayHour = 12;
-            const displayMinutes = minutes === 0 ? '00' : minutes;
-
-            slots.push(`${displayHour}:${displayMinutes} ${period}`);
-        }
-      }
-      return slots;
+    }
+    return slots;
   };
 
   const availableSlots = generateTimeSlots(formData.appointmentDate);
@@ -202,43 +206,43 @@ ${formData.description}
 
     const handlePrevMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));
     const handleNextMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1));
-    
+
     const handleDateSelect = (day: number) => {
       const selectedDate = new Date(Date.UTC(viewDate.getFullYear(), viewDate.getMonth(), day));
       const dateString = selectedDate.toISOString().split('T')[0];
       setFormData(prev => ({ ...prev, appointmentDate: dateString, appointmentTime: '' }));
       setIsDatePickerOpen(false);
     };
-  
+
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
     const numDays = daysInMonth(year, month);
     const startDay = firstDayOfMonth(year, month);
     const monthName = viewDate.toLocaleString(language, { month: 'long' });
-    const weekDays = language === 'fr' 
-      ? ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'] 
+    const weekDays = language === 'fr'
+      ? ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
       : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
     const today = new Date();
     const selectedDateObj = formData.appointmentDate ? new Date(formData.appointmentDate + 'T00:00:00Z') : null;
-    
+
     const blanks = Array.from({ length: startDay }, (_, i) => <div key={`blank-${i}`} className="text-center p-2"></div>);
     const days = Array.from({ length: numDays }, (_, i) => {
-        const day = i + 1;
-        const currentDate = new Date(year, month, day);
-        const dayOfWeek = currentDate.getDay();
-        const isToday = today.toDateString() === currentDate.toDateString();
-        const isSelected = selectedDateObj && selectedDateObj.getUTCDate() === day && selectedDateObj.getUTCMonth() === month && selectedDateObj.getUTCFullYear() === year;
-        const isPast = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
+      const day = i + 1;
+      const currentDate = new Date(year, month, day);
+      const dayOfWeek = currentDate.getDay();
+      const isToday = today.toDateString() === currentDate.toDateString();
+      const isSelected = selectedDateObj && selectedDateObj.getUTCDate() === day && selectedDateObj.getUTCMonth() === month && selectedDateObj.getUTCFullYear() === year;
+      const isPast = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const isDisabled = isPast || dayOfWeek === 0 || dayOfWeek === 6;
 
-        return (
-            <div key={day} className="text-center">
-                <button
-                    type="button"
-                    onClick={() => !isDisabled && handleDateSelect(day)}
-                    disabled={isDisabled}
-                    className={`
+      return (
+        <div key={day} className="text-center">
+          <button
+            type="button"
+            onClick={() => !isDisabled && handleDateSelect(day)}
+            disabled={isDisabled}
+            className={`
                         w-10 h-10 rounded-full transition-colors duration-200
                         ${isSelected ? 'bg-orange-500 text-brand-dark font-bold' : ''}
                         ${!isSelected && !isDisabled ? 'hover:bg-orange-100 dark:hover:bg-orange-500/20' : ''}
@@ -246,39 +250,38 @@ ${formData.description}
                         ${isDisabled ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'text-gray-700 dark:text-gray-200'}
                         ${isPast ? 'line-through' : ''}
                     `}
-                >
-                    {day}
-                </button>
-            </div>
-        );
+          >
+            {day}
+          </button>
+        </div>
+      );
     });
 
     return (
-        <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10 dark:bg-slate-800 dark:border-gray-600">
-            <div className="flex justify-between items-center mb-4">
-                <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-                </button>
-                <div className="font-bold text-gray-800 dark:text-gray-100">{monthName} {year}</div>
-                <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                    <ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-                </button>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-gray-400 mb-2">
-                {weekDays.map(d => <div key={d}>{d}</div>)}
-            </div>
-            <div className="grid grid-cols-7 gap-y-1">
-                {blanks}
-                {days}
-            </div>
+      <div className="absolute top-full mt-2 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-10 dark:bg-slate-800 dark:border-gray-600">
+        <div className="flex justify-between items-center mb-4">
+          <button type="button" onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+            <ChevronLeftIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          </button>
+          <div className="font-bold text-gray-800 dark:text-gray-100">{monthName} {year}</div>
+          <button type="button" onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
+            <ChevronRightIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          </button>
         </div>
+        <div className="grid grid-cols-7 gap-1 text-sm text-center text-gray-500 dark:text-gray-400 mb-2">
+          {weekDays.map(d => <div key={d}>{d}</div>)}
+        </div>
+        <div className="grid grid-cols-7 gap-y-1">
+          {blanks}
+          {days}
+        </div>
+      </div>
     );
   };
 
   // Common input class for consistency
   const commonInputClass = (field: keyof ValidationErrors) =>
-    `mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white ${
-      errors[field] ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+    `mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 dark:bg-slate-700 dark:text-white ${errors[field] ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
     }`;
 
 
@@ -324,7 +327,7 @@ ${formData.description}
           <input type="text" name="vehicleDetails" id="vehicleDetails" value={formData.vehicleDetails} onChange={handleChange} className={commonInputClass('vehicleDetails')} placeholder={t.contactForm.vehicleDetailsPlaceholder} />
         </div>
       </div>
-      
+
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.serviceNeeded}</label>
         <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -348,50 +351,49 @@ ${formData.description}
           <label htmlFor="appointmentDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.appointmentDate}</label>
           <div className="relative mt-1">
             <input
-                type="text"
-                id="appointmentDate"
-                name="appointmentDate"
-                readOnly
-                value={formData.appointmentDate}
-                onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-                placeholder={t.contactForm.appointmentDatePlaceholder}
-                className={`w-full pl-10 pr-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ${
-                  errors.appointmentDate ? 'border-red-500' : 'border-gray-300'
+              type="text"
+              id="appointmentDate"
+              name="appointmentDate"
+              readOnly
+              value={formData.appointmentDate}
+              onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
+              placeholder={t.contactForm.appointmentDatePlaceholder}
+              className={`w-full pl-10 pr-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 cursor-pointer dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ${errors.appointmentDate ? 'border-red-500' : 'border-gray-300'
                 }`}
-                aria-haspopup="true"
-                aria-expanded={isDatePickerOpen}
+              aria-haspopup="true"
+              aria-expanded={isDatePickerOpen}
             />
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <CalendarIcon className="h-5 w-5 text-gray-400" />
+              <CalendarIcon className="h-5 w-5 text-gray-400" />
             </div>
           </div>
           {isDatePickerOpen && renderCalendar()}
         </div>
         <div>
-           <label htmlFor="appointmentTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.appointmentTime}</label>
-           <div className="mt-1">
-              {!formData.appointmentDate ? (
-                  <div className="text-sm p-3 bg-gray-50 dark:bg-slate-800 rounded-md text-gray-500 dark:text-gray-400">{t.contactForm.selectDateFirst}</div>
-              ) : availableSlots.length > 0 ? (
-                  <select 
-                    id="appointmentTime" 
-                    name="appointmentTime" 
-                    value={formData.appointmentTime} 
-                    onChange={handleChange} 
-                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white"
-                  >
-                    <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
-                    {availableSlots.map(time => (
-                      <option key={time} value={time}>{time}</option>
-                    ))}
-                  </select>
-              ) : (
-                  <div className="text-sm p-3 bg-red-50 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
-              )}
-            </div>
+          <label htmlFor="appointmentTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t.contactForm.appointmentTime}</label>
+          <div className="mt-1">
+            {!formData.appointmentDate ? (
+              <div className="text-sm p-3 bg-gray-50 dark:bg-slate-800 rounded-md text-gray-500 dark:text-gray-400">{t.contactForm.selectDateFirst}</div>
+            ) : availableSlots.length > 0 ? (
+              <select
+                id="appointmentTime"
+                name="appointmentTime"
+                value={formData.appointmentTime}
+                onChange={handleChange}
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-gray-600 dark:text-white"
+              >
+                <option value="">{t.contactForm.appointmentTimePlaceholder}</option>
+                {availableSlots.map(time => (
+                  <option key={time} value={time}>{time}</option>
+                ))}
+              </select>
+            ) : (
+              <div className="text-sm p-3 bg-red-50 dark:bg-red-900/50 rounded-md text-red-600 dark:text-red-300">{t.contactForm.noSlotsAvailable}</div>
+            )}
+          </div>
         </div>
       </div>
-      
+
       <div>
         <button type="submit" className="w-full bg-orange-500 text-brand-dark font-bold py-3 px-6 rounded-md hover:bg-orange-600 transition duration-300 text-lg">
           {t.contactForm.submitButton}
