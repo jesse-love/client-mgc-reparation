@@ -1,24 +1,27 @@
 
-import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import React, { useState, useEffect, createContext, useContext, ReactNode, Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import ServicesPage from './pages/ServicesPage';
-import ServiceDetailPage from './pages/ServiceDetailPage';
-import LandingOfferPage from './pages/LandingOfferPage';
-import LandingHealthCheckPage from './pages/LandingHealthCheckPage';
-import LandingTiresPage from './pages/LandingTiresPage';
-import LandingTruckPage from './pages/LandingTruckPage';
-import LandingGeneratorPage from './pages/LandingGeneratorPage';
-import ThankYouPage from './pages/ThankYouPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import SubServicePage from './pages/SubServicePage';
-import LocationLandingPage from './pages/LocationLandingPage';
-import DynamicFAQPage from './pages/DynamicFAQPage';
-import DashboardPage from './pages/DashboardPage';
+
+// Lazy load pages
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const ServicesPage = React.lazy(() => import('./pages/ServicesPage'));
+const ServiceDetailPage = React.lazy(() => import('./pages/ServiceDetailPage'));
+const LandingOfferPage = React.lazy(() => import('./pages/LandingOfferPage'));
+const LandingHealthCheckPage = React.lazy(() => import('./pages/LandingHealthCheckPage'));
+const LandingTiresPage = React.lazy(() => import('./pages/LandingTiresPage'));
+const LandingTruckPage = React.lazy(() => import('./pages/LandingTruckPage'));
+const LandingGeneratorPage = React.lazy(() => import('./pages/LandingGeneratorPage'));
+const ThankYouPage = React.lazy(() => import('./pages/ThankYouPage'));
+const PrivacyPolicyPage = React.lazy(() => import('./pages/PrivacyPolicyPage'));
+const SubServicePage = React.lazy(() => import('./pages/SubServicePage'));
+const LocationLandingPage = React.lazy(() => import('./pages/LocationLandingPage'));
+const DynamicFAQPage = React.lazy(() => import('./pages/DynamicFAQPage'));
+const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+
 import UrgencyTopbar from './components/UrgencyTopbar';
 import SEO from './components/SEO';
 
@@ -302,7 +305,9 @@ const App: React.FC = () => {
     <ThemeProvider>
       <LanguageProvider>
         <HelmetProvider>
-          {renderAppContent()}
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-brand-dark"><div className="w-12 h-12 border-4 border-brand-blue border-t-transparent rounded-full animate-spin"></div></div>}>
+            {renderAppContent()}
+          </Suspense>
         </HelmetProvider>
       </LanguageProvider>
     </ThemeProvider>
